@@ -88,10 +88,18 @@
 # -Set some groundwork for later ideas
 # -Fixed some spelling mistakes (including a misspelling of "type" :P )
 # -Attempted some layout of cool future features- including updating from command-line
+
+#Version 0.3.1
+# -Added loading bar that works
+# -Moved the location of game files to a unique repo
+# -Re-worked the dodging mechanic
+# -Completely added the loading bar feature (First totally finished feature)
+# -
 import os, random, time
 import argparse
-import Loadingbartest
-#A lot of code here was removed for a while in Version 0.3
+os.system('clear')
+import Loadingbar
+#A lot of code here was removed for a while in Version 0.3 (Reworked and implemented)
 #def nicedesu():
 #	global tbar
 #	tbar = []
@@ -119,10 +127,6 @@ def update():
 global wait
 wait = 0
 #I will eventually add in a timer thingy here to add some fancy delay :P
-print "Loading.",
-print ".",
-print ".",
-print " Done!"
 print "Welcome to Kazoo Quest!  For help type \"help\"!"
 current_version = "v0.2"
 global weapon
