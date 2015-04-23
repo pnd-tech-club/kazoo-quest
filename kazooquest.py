@@ -100,22 +100,11 @@ import argparse
 os.system('clear')
 import Loadingbar
 #A lot of code here was removed for a while in Version 0.3 (Reworked and implemented)
-#def nicedesu():
-#	global tbar
-#	tbar = []
-#	timet = 0
-#	while timet == 100000:
-#		tbar.extend('|')
-#		print ''.join(tbar)
-#		if timet >= 201:
-#			skip = 0
-#	timet += 1
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
 		pstatus = "Connection to Github available.  Downloading update."
-		os.system('wget -q https://raw.githubusercontent.com/pnd-tech-club/Practice-code/Python/kazooquest.py')
-		nicedesu()
+		os.system('git pull -q https://raw.githubusercontent.com/pnd-tech-club/kazoo-quest')
 		print "Done!"
 	else:
 		print "Connection failed.  Check your internet connection and try again."
