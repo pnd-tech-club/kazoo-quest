@@ -138,6 +138,8 @@ global damage
 damage = 3
 global max_hp
 max_hp = 20
+global max_mana
+max_mana = 5
 global level
 level = 0
 global levels
@@ -255,6 +257,8 @@ while stop != 1:
 			print "You wiggle the switch but nothing happens."
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
 			print "You use the crowbar to open the door."
+		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
+			print "You use the crowbar to open the trapdoor."
 	if "take" in words:
 		if "torch" in words and x == 0 and y == 0 and torch_true == 0:
 			items = "torch"
@@ -403,13 +407,13 @@ while stop != 1:
 		roominfo = "You are nearing the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 6 and letter_true == 0:
+	elif x == 2 and y == 6 and z == 0 and letter_true == 0:
 		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage.  No lights are on inside the house.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
+		roominfo = "You stand in front of the mailbox of the cottage.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
 		print roominfo
-	elif x == 2 and y == 6 and letter_true == 1:
+	elif x == 2 and y == 6 and z == 0 and letter_true == 1:
 		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage.  No lights are on inside the house.  There is a cave far to the south and a forest to the east."
+		roominfo = "You stand in front of the mailbox of the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
 		print roominfo
 	elif x == 2 and y == 7 and lights_true == 0:
@@ -430,7 +434,7 @@ while stop != 1:
 		roominfo = "The living room is completely barren.  There appears to be a locked trapdoor in the floor.  The doorway is to the south."
 		print roominfo
 	elif x == 2 and y == 8 and lights_true == 1 and trapdoor_true == 1 and "key" not in inventory:
-		roominfo = "The trapdoor in this room has a kay inside.  The doorway is to the south."
+		roominfo = "The trapdoor in this room has a key inside.  The doorway is to the south."
 		print roominfo
 	elif x == 2 and y == 8 and lights_true == 1 and trapdoor_true == 1 and "key" in inventory:
 		roominfo = "The trapdoor in the center of the room is empty.  The doorway is to the south."
@@ -658,26 +662,54 @@ while stop != 1:
 		elif level == 2:
 			exp_limit = 30
 		elif level == 3:
-			exp_limit = 50
+			exp_limit = 40
 		elif level == 4:
+			exp_limit = 50
+		elif level == 5:
+			exp_limit = 65
+		elif level == 6:
 			exp_limit = 75
+		elif level == 7:
+			exp_limit = 85
+		elif level == 8:
+			exp_limit = 100
 		levels += "L"
 	if len(levels) == 1:
 		damage += 3
 		max_hp += 5
-		mana += 2
+		max_mana += 2
 	elif len(levels) == 2:
+		damage += 3
+		max_hp += 5
+		max_mana += 5
+	elif len(levels) == 3:
+		damage += 5
+		max_hp += 8
+		max_mana += 5
+	elif len(levels) == 4:
 		damage += 5
 		max_hp += 10
-		mana += 5
-	elif len(levels) == 3:
+		max_mana += 5
+	elif len(levels) == 5:
 		damage += 8
+		max_hp += 10
+		max_mana += 7
+	elif len(levels) == 6:
+		damage += 10
 		max_hp += 15
-		mana += 10
-	elif len(levels) == 4:
+		max_mana += 8
+	elif len(levels) == 7:
 		damage += 13
-		max_hp += 20
-		mana += 15
+		max_hp += 15
+		max_mana += 9
+	elif len(levels) == 8:
+		damage += 15
+		max_hp += 15
+		max_mana += 10
+	elif len(levels) >= 9:
+		damage += 2
+		max_hp += 2
+		max_mana += 1
 #For some reason this code seems to be giving everything strange effects (removed in v0.1.4) (Re-implementation testing beginning in v0.3- testing produced no good results)
 #	if outside == 1:
 #		if time == 0:
@@ -705,7 +737,7 @@ while stop != 1:
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
-	while encounter_time <= 0:
+	while encounter_time <= 0 and encounter != 1:
 		stop = 1
 		while enemy_set != 1:
 			if enemy_type == "wolf":
@@ -732,6 +764,11 @@ while stop != 1:
 				enemy_hp = 40
 				enemy_dam = random.randint(7, 10)
 				enemy_dam_info = "7 to 10"
+				enemy_dodge = 0
+			elif enemy_type == "slime":
+				enemy_hp = 75
+				enemy_dam = random.randint(5, 8)
+				enemy_dam_info = "5 to 8"
 				enemy_dodge = 0
 #Remember to fix this silly grammar thingy here
 			enemy_info = "A "+enemy_type+" suddenly appears!."
@@ -779,21 +816,25 @@ while stop != 1:
 				enemy_dam = random.randint(6, 9)
 			elif enemy_type == "spirit":
 				enemy_dam = random.randint(7, 10)
+			elif enemy_type == "slime":
+				enemy_dam = random.randint(5, 8)
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			print "You killed the " + enemy_type +"!"
 			kills.append(enemy_type)
 			encounter_time = random.randint(5, 8)
 			if enemy_type == "wolf":
-				exp += 3
+				exp += 2
 			elif enemy_type == "orc":
-				exp += 5
+				exp += 3
 			elif enemy_type == "wraith":
-				exp += 6
+				exp += 4
 			elif enemy_type == "dwarf":
-				exp += 8
+				exp += 6
 			elif enemy_type == "spirit":
-				exp += 14
+				exp += 8
+			elif enemy_type == "goo":
+				exp += 10
 		if hp <= 0:
 			print "You have died!"
 			print "Do you want to see your final stats?"
@@ -809,3 +850,5 @@ while stop != 1:
 		stop = 0
 	if hp > max_hp:
 		hp = max_hp
+	if mana > max_mana:
+		mana = max_mana
