@@ -94,7 +94,13 @@
 # -Moved the location of game files to a unique repo
 # -Re-worked the dodging mechanic
 # -Completely added the loading bar feature (First totally finished feature)
-# -
+
+#Version 0.4 (Major update!)
+# -Added LEVELS!!!!!!!! :D
+# -Added rooms
+# -Added more sotry
+# -Reworked some features like healing
+# -A few other minor changes
 import os, random, time
 import argparse
 os.system('clear')
@@ -104,7 +110,7 @@ def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
 		pstatus = "Connection to Github available.  Downloading update."
-		os.system('git pull -q https://raw.githubusercontent.com/pnd-tech-club/kazoo-quest')
+		os.system('git pull')
 		print "Done!"
 	else:
 		print "Connection failed.  Check your internet connection and try again."
@@ -132,6 +138,14 @@ global damage
 damage = 3
 global max_hp
 max_hp = 20
+global level
+level = 0
+global levels
+levels = ""
+global exp
+exp = 0
+global points
+points = 0
 #Note to add all needed triggers after here
 global trapdoor_true
 trapdoor_true = 0
@@ -144,6 +158,8 @@ global branch_true
 branch_true = 0
 global letter_true
 letter_true = 0
+global underground_door_true
+underground_door_true = 0
 #Add all needed triggers before here
 #global outside
 #outside = 0
@@ -192,6 +208,8 @@ global defe
 defe = 1
 global mana
 mana = 5
+global exp_limit
+exp_limit = 10
 global kills
 kills = []
 global enemy_dam_info
@@ -235,6 +253,8 @@ while stop != 1:
 			print "You flip the switch and the lights in the house suddenly turn on."
 		elif "switch" in words and x == 3 and y == 7 and z == 0 and lights_true == 1:
 			print "You wiggle the switch but nothing happens."
+		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
+			print "You use the crowbar to open the door."
 	if "take" in words:
 		if "torch" in words and x == 0 and y == 0 and torch_true == 0:
 			items = "torch"
@@ -280,6 +300,10 @@ while stop != 1:
 			inventory.append(items)
 			armor = 2
 			print "You put on the chainmail armor."
+		elif "crowbar" in words and x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
+			items = "crowbar"
+			inventory.append(items)
+			print "You pick up the crowbar."
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory:
 			items = "key"
 			inventory.append(items)
@@ -296,6 +320,8 @@ while stop != 1:
 	if act == "look":
 		skip = 0
 		encounter_time += 1
+	elif act == "debug.update":
+		update()
 	elif act == "quit":
 		print "Are you sure you want to quit? (yes/no)"
 		quit_response = raw_input('> ')
@@ -311,8 +337,9 @@ while stop != 1:
 	elif act == "etime":
 		print encounter
 		print encounter_time
-	elif act == "wait":
-		hp += random.randint(0, 1)
+	elif act == "heal":
+		hp = hp + hp * random.randint(1, 2) /2
+		encounter_time -= 3
 	elif act == "time":
 		skip = 0
 #Debugging command
@@ -454,32 +481,17 @@ while stop != 1:
 		enemy_type = "orc"
 		roominfo = "As you walk, an ominous presence overwhelms you."
 		print roominfo
-	elif x == 3 and y == 9 and z == 1 and "westpath" not in triggers and "eastpath" not in triggers:
+	elif x == 3 and y == 9 and z == 1:
 		encounter = 1
 		enemy_type = "orc"
 		print "There are paths to the north, east, and west."
-	elif x == 3 and y == 9 and z == 1 and "westpath" not in triggers and "eastpath" in triggers:
-		encounter = 1
-		enemy_type = "orc"
-		print "There are paths to the north and west."
-	elif x == 3 and y == 9 and z == 1 and "westpath" in triggers and "eastpath" not in triggers:
-		encounter = 1
-		enemy_type ="orc"
-		print "There are paths to the north and east."
-	elif x == 3 and y == 9 and z == 1 and "westpath" in triggers and "eastpath" in triggers:
-		encounter = 1
-		enemy_type = "orc"
-		print "There is a path to the north."
-#West path split
-	elif x == 2 and y == 9 and z == 1 and "westpath" not in triggers:
-		roominfo = "You hear dripping water in the distance.  A large slab of stone blocks your way back.  There is a path to the west"
-		print roominfo
-		triggers.append("westpath")
-	elif x == 2 and y == 9 and z == 1 and "westpath" in triggers:
+	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west"
 		print roominfo
-		if act == "e":
-			w += 1
+		triggers.append("westpath")
+	elif x == 2 and y == 9 and z == 1:
+		roominfo = "You hear dripping water in the distance.  There is a path to the west."
+		print roominfo
 	elif x == 1 and y == 9 and z == 1:
 		roominfo = "The strange dripping sound seems a short distance away.  There is a path to the north and east."
 		print roominfo
@@ -521,12 +533,10 @@ while stop != 1:
 		y = 9
 		z = 1
 #East path split
-	elif x == 4 and y == 9 and z == 1 and "eastpath" not in triggers:
+	elif x == 4 and y == 9 and z == 1:
 		roominfo = "There is a slight clanking noise in the distance.  There is a path that stretches far ahead of you."
 		print roominfo
 		triggers.append("eastpath")
-		if act == "w":
-			x -= 1
 	elif x == 5 and y == 9 and z == 1:
 		enemy_type = "dwarf"
 		roominfo = "You sense something small nearby."
@@ -540,11 +550,41 @@ while stop != 1:
 	elif x == 8 and y == 9 and z == 1:
 		roominfo = "There seems to be something far ahead of you in."
 		print roominfo
-
+	elif x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
+		roominfo = "There appears to be a crowbar on the ground."
+		print roominfo
+	elif x == 9 and y == 9 and z == 1 and "crowbar" in inventory:
+		roominfo = "The passageway a bit ahead appears to be very bright."
+		print roominfo
+	elif x == 10 and y == 9 and z == 1:
+		roominfo = "The wall in front of you seems to be made of solid light..."
+		print roominfo
+	elif x == 11 and y == 8 and z == 1:
+		roominfo = "You feel yourself being taken somewhere else..."
+		print roominfo
+		x == 3
+		y == 9
+		z == 1
 #North path split
 	elif x == 3 and y == 10 and z == 1:
 		roominfo = "All you see to the north is darkness."
 		print roominfo
+	elif x == 3 and y == 11 and z == 1:
+		roominfo = "..."
+		print roominfo
+	elif x == 3 and y == 12 and z == 1 and underground_door_true == 0:
+		roominfo = "There is suddenly a door in front of you.  You can't open it with your hands."
+		print roominfo
+	elif x == 3 and y == 12 and z == 1 and underground_door_true == 1:
+		roominfo = "The door is open."
+		print roominfo
+	elif x == 3 and y == 13 and z == 1 and underground_door_true == 0:
+		y -= 1
+	elif x == 3 and y == 13 and z == 1 and underground_door_true == 1:
+		roominfo = "The path to the north continues for a while."
+		print roominfo
+	elif x == 3 and y == 14 and z == 1:
+		roominfo = ""
 #This is used to undo movement into an unexisting room V
 	else:
 		if act == "n":
@@ -610,6 +650,34 @@ while stop != 1:
 		defe = 420
 		max_hp = 9001
 		mana = 6.9e+42
+	if exp >= exp_limit:
+		print "Level up!"
+		exp = 0
+		if level == 1:
+			exp_limit = 20
+		elif level == 2:
+			exp_limit = 30
+		elif level == 3:
+			exp_limit = 50
+		elif level == 4:
+			exp_limit = 75
+		levels += "L"
+	if len(levels) == 1:
+		damage += 3
+		max_hp += 5
+		mana += 2
+	elif len(levels) == 2:
+		damage += 5
+		max_hp += 10
+		mana += 5
+	elif len(levels) == 3:
+		damage += 8
+		max_hp += 15
+		mana += 10
+	elif len(levels) == 4:
+		damage += 13
+		max_hp += 20
+		mana += 15
 #For some reason this code seems to be giving everything strange effects (removed in v0.1.4) (Re-implementation testing beginning in v0.3- testing produced no good results)
 #	if outside == 1:
 #		if time == 0:
@@ -637,7 +705,7 @@ while stop != 1:
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
-	while encounter_time == 0:
+	while encounter_time <= 0:
 		stop = 1
 		while enemy_set != 1:
 			if enemy_type == "wolf":
@@ -669,14 +737,14 @@ while stop != 1:
 			enemy_info = "A "+enemy_type+" suddenly appears!."
 			print enemy_info
 			enemy_set = 1
-		act_f = raw_input(fight_p + "\n")
+		fight_act = raw_input(fight_p + "\n")
 		dodges = 0
-		if act_f == "1":
+		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
 			print "You dealt %d damage to the %s!" % (damage, enemy_type)
-		elif act_f == "2":
+		elif fight_act == "2":
 			print inventory
-		elif act_f == "3":
+		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
 				print "You dodged the attack!"
@@ -686,9 +754,9 @@ while stop != 1:
 				enemy_hp -= parrypowa
 				print "You parried the attack and dealt %d damage!" % parrypowa
 				dodges = 1
-		elif act_f == "4":
+		elif fight_act == "4":
 			print "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info)
-		elif act_f == "5":
+		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
 				encounter_time = random.randint(5, 7)
@@ -697,32 +765,44 @@ while stop != 1:
 				print "You ran away!"
 		else:
 			print "You can't do that!"
-		if enemy_hp > 0 and dodges == 0 and act_f != "4":
+		if enemy_hp > 0 and dodges == 0 and fight_act != "4":
 			hp = hp - enemy_dam + defe
 			dodges = 0
 			print "The "+enemy_type+" dealt %r damage to you!" % enemy_dam
 			if enemy_type == "wolf":
 				enemy_dam = random.randint(1, 3)
 			elif enemy_type == "orc":
-				enemy_dam = random.randint(6, 8)
+				enemy_dam = random.randint(4, 6)
 			elif enemy_type == "wraith":
-				enemy_dam = random.randint(7, 9)
+				enemy_dam = random.randint(5, 8)
 			elif enemy_type == "dwarf":
-				enemy_dam = random.randint(8, 11)
-		if enemy_hp <= 0 and act_f != "5":
+				enemy_dam = random.randint(6, 9)
+			elif enemy_type == "spirit":
+				enemy_dam = random.randint(7, 10)
+		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			print "You killed the " + enemy_type +"!"
 			kills.append(enemy_type)
 			encounter_time = random.randint(5, 8)
+			if enemy_type == "wolf":
+				exp += 3
+			elif enemy_type == "orc":
+				exp += 5
+			elif enemy_type == "wraith":
+				exp += 6
+			elif enemy_type == "dwarf":
+				exp += 8
+			elif enemy_type == "spirit":
+				exp += 14
 		if hp <= 0:
 			print "You have died!"
 			print "Do you want to see your final stats?"
 			dead_p = raw_input('y/n ')
 			if dead_p == "y":
 				print "You killed these enemies:"
-				print ', '.join(kills)
+				print ', '.join(kills) + '\n'
 				print "These are your final stats:"
-				print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r" % (damage, hp, defe, mana)
+				print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, hp, defe, mana, level)
 				quit()
 			else:
 				quit()
