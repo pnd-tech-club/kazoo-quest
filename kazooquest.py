@@ -5,77 +5,59 @@
 #CHANGELOG
 #Version 0.0.1: 
 # -Basic ideas and laying out of variables
-
 #Version 0.0.2:
 # -Laying out rooms and plotline
-
 #Version 0.0.3:
 # -Bug fixing
 # -Added additional commands
 # -Added more rooms
-
 #Version 0.0.4:
 # -More bug fixing
-
 #Version 0.0.5:
 # -Added some more basic ideas
 # -Added more commands
-
 #Version 0.0.6:
 # -Added basic (aka broken) layout for enemy encounters
 # -Fixed some little bugs pertaining to walking through walls
-
 #Version 0.0.7
 # -Added more to encounter system- currently still very buggy
-
 #Version 0.1.0 (Major Update!)
 # -Added lots to the encounter system
 # -Removed some code for a dodge mechanic due to it causing bugs (code can be found nearly unmodified, just commented out)
 # -FIXED ALL KNOWN BUGS, EXPLOITS, AND ISSUES (yay)
-
 #Version 0.1.1
 # -Fixed/added in the "run away" mechanic during encounters
-
 #Version 0.1.2 (aka "The Remembering")
 # -Added a changelog
-
 #Version 0.1.3
 # -Added a semi-broken time system
-
 #Version 0.1.4
 # -Completely removed the time system until later notice
-
 #Version 0.1.5
 # -Changed the "take" command to allow things like "take torch"
 # -Fixed some minor bugs
-
 #Version 0.2.0 (Major update!)
 # -Added TONS of rooms
 # -Added base for armor code
 # -Added slightly better encounter math
 # -Added some other minor things
 # -Fixed some bugs
-
 #Version 0.2.1
 # -Fixed dodging
 # -Added more rooms
 # -Added better formatting for some stuff
 # -Removed junk
-
 #Version 0.2.5 (Semi-major update)
 # -Reworked inventory system to allow item removal
 # -Changed some other minor things
 # -Condensed some code
 # -Threw out some junk
 # -Laid out groundwork for better things and stuff
-
 #Version 0.2.6
 # -Added in "clear" command
 # -Bug fixes
-
 #Version 0.2.7
 # -Added more rooms
-
 #Version 0.3 (Major update! :^)
 # -Added basic magic functionality
 # -Implemented parrying into the dodge mechanic
@@ -88,30 +70,35 @@
 # -Set some groundwork for later ideas
 # -Fixed some spelling mistakes (including a misspelling of "type" :P )
 # -Attempted some layout of cool future features- including updating from command-line
-
 #Version 0.3.1
 # -Added loading bar that works
 # -Moved the location of game files to a unique repo
 # -Re-worked the dodging mechanic
 # -Completely added the loading bar feature (First totally finished feature)
-
 #Version 0.4 (Major update!)
 # -Added LEVELS!!!!!!!! :D
 # -Added rooms
 # -Added more sotry
 # -Reworked some features like healing
 # -A few other minor changes
-
 #Version 0.4.1
 # -Major rework of level system due to it being incredibly OP
 # -Reworked healing
 # -Fixed being able to activate encounters while not in encounter zone using heal
 # -Removed old time code due to it being a stupid idea in the first place
+#Version 0.4.2
+# -lol42
+# -Fixed some typos that were causing issues
+# -Condensed some stuff
+#Version 0.5 (WUUTT, HOWSOSOON!?!??!?)
+# -Added in a basic points system, it's been there for a while but I haven't bothered with it until now
+# -Fixed so many little issues/typos
+# -Reworked encounter system (unknown if it will work very well)
 import os, random, time
 import argparse
 os.system('clear')
 import Loadingbar
-#A lot of code here was removed for a while in Version 0.3 (Reworked and implemented)
+#A lot of code here was removed for a while in Version 0.3 (Reworked and implemented as loadingbar.py)
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -120,15 +107,14 @@ def update():
 		print "Done!"
 	else:
 		print "Connection failed.  Check your internet connection and try again."
-#This code may be severely broken, I really don't have a clue at the time of writing it as I wrote it using online documentation and couldn't test it
+#This code may be severely broken, I really don't have a clue at the time of writing it as I wrote it using online documentation and couldn't test it (yes, yes it is broken)
 #parser = argparse.ArgumentParser(description='Kazoo Quest')
 #parser.add_argument('--update', update = update())
 #args = parser.parse_args()
-#nicedesu()
 global wait
 wait = 0
 print "Welcome to Kazoo Quest!  For help type \"help\"!"
-current_version = "v0.4.1"
+current_version = "v0.4.2"
 global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -188,7 +174,7 @@ enemy_set = 0
 global time
 time = 0
 global encounter_time
-encounter_time = 5 #Eventually implement something like encounter_time = random.randint(1, 100) and something like if encounter_time <= 10:      enemy encounter or something
+encounter_time = random.randint(0, 100)
 global lamp_true
 lamp_true = 0
 global skip
@@ -249,7 +235,6 @@ while stop != 1:
 	if act == "num":
 		print x
 		print y
-		encounter_time += 1
 	if "use" in words:
 		if "switch" in words and x == 3 and y == 7 and z == 0:
 			lights_true = 1
@@ -307,6 +292,8 @@ while stop != 1:
 			inventory.append(items)
 			armor = 2
 			print "You put on the chainmail armor."
+			items = "leather armor"
+			inventory.remove(items)
 		elif "crowbar" in words and x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
 			items = "crowbar"
 			inventory.append(items)
@@ -317,16 +304,12 @@ while stop != 1:
 			print "You pick up a mysterious key."
 		else:
 			print "You don't see that here."
-		encounter_time += 1
 	if act == "clear":
 		os.system('clear')
-		encounter_time += 1
 	if act == "inv":
 		print '\n'.join(inventory)
-		encounter_time += 1
 	if act == "look":
 		skip = 0
-		encounter_time += 1
 	elif act == "debug.update":
 		update()
 	elif act == "quit":
@@ -343,10 +326,9 @@ while stop != 1:
 #Debugging command
 	elif act == "etime":
 		print encounter
-		print encounter_time
 	elif act == "heal":
 		hp = hp + hp * random.randint(1, 2) /2
-		encounter_time -= 3
+		encounter = random.randint(25, 75)
 	elif act == "time":
 		skip = 0
 #Debugging command
@@ -361,13 +343,13 @@ while stop != 1:
 		lights_true = 1
 	elif act == "info":
 		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r" % (damage, hp, defe, mana)
-		encounter_time += 1
+		
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
-		encounter_time += 1
+		
 	if act == "help":
 		print "-help \n -look \n -wait \n -use \n -take \n -move(n, s, e, w, u, d) \n -back \n -info"
-		encounter_time += 1
+		
 	if x == 0 and y == 0 and torch_true == 0:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
@@ -607,21 +589,27 @@ while stop != 1:
 		elif act == "u":
 			z += 1
 	if encounter != 0:
-		encounter_time -= 1
+		encounter_time = random.randint(0,0)
 	if weapon == 0:
 		damage = 3
 	elif weapon == 1:
 		damage = 5
+		points += 1
 	elif weapon == 2:
 		damage = 8
+		points += 3
 	elif weapon == 3:
 		damage = 10
+		points += 5
 	elif weapon == 4:
 		damage = 15
+		points += 10
 	elif weapon == 5:
 		damage = 20
+		points += 20
 	elif weapon == 6:
 		damage = 30
+		points += 25
 #This weapon is going to be available for debugging through the input of "OP420"
 	elif weapon == 7:
 		damage = 1337
@@ -633,26 +621,32 @@ while stop != 1:
 		defe = 5
 		max_hp = 25
 		mana = 10
+		points += 2
 	elif armor == 2:
 		defe = 9
 		max_hp = 30
 		mana = 15
+		points += 4
 	elif armor == 3:
 		defe = 15
 		max_hp = 40
 		mana = 20
+		points += 5
 	elif armor == 4:
 		defe = 23
 		max_hp = 50
 		mana = 30
+		points += 10
 	elif armor == 5:
 		defe = 30
 		max_hp = 60
 		mana = 40
+		points += 15
 	elif armor == 6:
 		defe = 45
 		max_hp = 75
 		mana = 50
+		points += 20
 	elif armor == 7:
 		defe = 420
 		max_hp = 9001
@@ -680,17 +674,18 @@ while stop != 1:
 			exp_limit = 175
 		elif level == 10:
 			exp_limit = 200
-		levels += "L"
+		levels += "!"
+		points += 10
 	if len(levels) == 1:
-		damage += 3
+		damage += 2
 		max_hp += 5
 		max_mana += 2
 	elif len(levels) == 2:
 		damage += 3
 		max_hp += 5
-		max_mana += 5
+		max_mana += 3
 	elif len(levels) == 3:
-		damage += 5
+		damage += 3
 		max_hp += 8
 		max_mana += 5
 	elif len(levels) == 4:
@@ -703,14 +698,14 @@ while stop != 1:
 		max_mana += 7
 	elif len(levels) == 6:
 		damage += 10
-		max_hp += 15
+		max_hp += 10
 		max_mana += 8
 	elif len(levels) == 7:
-		damage += 13
+		damage += 10
 		max_hp += 15
 		max_mana += 9
 	elif len(levels) == 8:
-		damage += 15
+		damage += 10
 		max_hp += 15
 		max_mana += 10
 	elif len(levels) >= 9:
@@ -723,7 +718,7 @@ while stop != 1:
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
-	while encounter_time <= 0 and encounter != 0:
+	while encounter_time >= 40 and encounter_time <= 55 and encounter != 0:
 		stop = 1
 		while enemy_set != 1:
 			if enemy_type == "wolf":
@@ -782,7 +777,7 @@ while stop != 1:
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
-				encounter_time = random.randint(5, 7)
+				encounter_time = random.randint(0, 100)
 				enemy_hp = 0
 				dodges = 0
 				print "You ran away!"
@@ -808,19 +803,25 @@ while stop != 1:
 			enemy_set = 0
 			print "You killed the " + enemy_type +"!"
 			kills.append(enemy_type)
-			encounter_time = random.randint(5, 8)
+			encounter_time = random.randint(0, 100)
 			if enemy_type == "wolf":
 				exp += 2
+				points += 2
 			elif enemy_type == "orc":
 				exp += 3
+				points += 3
 			elif enemy_type == "wraith":
 				exp += 4
+				points += 4
 			elif enemy_type == "dwarf":
 				exp += 6
+				points += 6
 			elif enemy_type == "spirit":
 				exp += 8
+				points += 8
 			elif enemy_type == "goo":
 				exp += 10
+				points += 10
 		if hp <= 0:
 			print "You have died!"
 			print "Do you want to see your final stats?"
@@ -830,8 +831,9 @@ while stop != 1:
 				print ', '.join(kills) + '\n'
 				print "These are your final stats:"
 				print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, hp, defe, mana, level)
+				print "\nYour final score was %r" % points
 				quit()
-			else:
+			elif dead_p == "n":
 				quit()
 		stop = 0
 	if hp > max_hp:
