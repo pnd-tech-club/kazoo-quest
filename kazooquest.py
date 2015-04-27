@@ -67,7 +67,7 @@
 # -Changed some other minor things
 # -Condensed some code
 # -Threw out some junk
-#Laid out groundwork for better things and stuff
+# -Laid out groundwork for better things and stuff
 
 #Version 0.2.6
 # -Added in "clear" command
@@ -101,6 +101,12 @@
 # -Added more sotry
 # -Reworked some features like healing
 # -A few other minor changes
+
+#Version 0.4.1
+# -Major rework of level system due to it being incredibly OP
+# -Reworked healing
+# -Fixed being able to activate encounters while not in encounter zone using heal
+# -Removed old time code due to it being a stupid idea in the first place
 import os, random, time
 import argparse
 os.system('clear')
@@ -121,9 +127,8 @@ def update():
 #nicedesu()
 global wait
 wait = 0
-#I will eventually add in a timer thingy here to add some fancy delay :P
 print "Welcome to Kazoo Quest!  For help type \"help\"!"
-current_version = "v0.2"
+current_version = "v0.4.1"
 global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -163,10 +168,6 @@ letter_true = 0
 global underground_door_true
 underground_door_true = 0
 #Add all needed triggers before here
-#global outside
-#outside = 0
-#global timeask
-#timeask = ""
 global inventory
 inventory = []
 global stop
@@ -257,8 +258,10 @@ while stop != 1:
 			print "You wiggle the switch but nothing happens."
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
 			print "You use the crowbar to open the door."
+			triggers.append("doorw/crowbar")
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
 			print "You use the crowbar to open the trapdoor."
+			triggers.append("trapdooropen")
 	if "take" in words:
 		if "torch" in words and x == 0 and y == 0 and torch_true == 0:
 			items = "torch"
@@ -308,7 +311,7 @@ while stop != 1:
 			items = "crowbar"
 			inventory.append(items)
 			print "You pick up the crowbar."
-		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory:
+		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdooropen" in triggers:
 			items = "key"
 			inventory.append(items)
 			print "You pick up a mysterious key."
@@ -658,21 +661,25 @@ while stop != 1:
 		print "Level up!"
 		exp = 0
 		if level == 1:
-			exp_limit = 20
+			exp_limit = 25
 		elif level == 2:
-			exp_limit = 30
+			exp_limit = 35
 		elif level == 3:
-			exp_limit = 40
-		elif level == 4:
 			exp_limit = 50
-		elif level == 5:
+		elif level == 4:
 			exp_limit = 65
+		elif level == 5:
+			exp_limit = 80
 		elif level == 6:
-			exp_limit = 75
-		elif level == 7:
-			exp_limit = 85
-		elif level == 8:
 			exp_limit = 100
+		elif level == 7:
+			exp_limit = 125
+		elif level == 8:
+			exp_limit = 150
+		elif level == 9:
+			exp_limit = 175
+		elif level == 10:
+			exp_limit = 200
 		levels += "L"
 	if len(levels) == 1:
 		damage += 3
@@ -707,31 +714,10 @@ while stop != 1:
 		max_hp += 15
 		max_mana += 10
 	elif len(levels) >= 9:
-		damage += 2
-		max_hp += 2
-		max_mana += 1
-#For some reason this code seems to be giving everything strange effects (removed in v0.1.4) (Re-implementation testing beginning in v0.3- testing produced no good results)
-#	if outside == 1:
-#		if time == 0:
-#			timeask = "The sun is high in the sky."
-#		if time == 15:
-#			timeask = "The sun appears to be setting."
-#		if time == 25:
-#			timeask = "The sunset is just finishing up, it will be night soon."
-#		if time == 30:
-#			timeask = "The sun has set and the moon begins to rise."
-#		if time == 45:
-#			timeask = "The moon is in the middle of the night sky."
-#		if time == 60:
-#			timeask = "The moon is nearing to horizon, soon it will be day."
-#		if time == 70:
-#			timeask = "The sun's glow forces the moon into hiding until tomorrow."
-#		if time == 75:
-#			timeask = "The moon crosses the horizon and out of your view.  The sun begins to brighten up the world again."
-#		if time > 75:
-#			time = -1
-#	elif outside == 0:
-#		timeask = "You can't see the sun from here."
+		damage += 5
+		max_hp += 5
+		max_mana += 5
+#For some reason this code seems to be giving everything strange effects (removed in v0.1.4) (Re-implementation testing beginning in v0.3- testing produced no good results) (Code completely removed in v0.4.1)
 	stop = 1
 	act = ""
 	act = raw_input('> ')
