@@ -723,7 +723,7 @@ while stop != 1:
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
-	while encounter_time <= 0 and encounter != 1:
+	while encounter_time <= 0 and encounter != 0:
 		stop = 1
 		while enemy_set != 1:
 			if enemy_type == "wolf":
