@@ -87,13 +87,14 @@
 # -Fixed being able to activate encounters while not in encounter zone using heal
 # -Removed old time code due to it being a stupid idea in the first place
 #Version 0.4.2
-# -lol42
 # -Fixed some typos that were causing issues
 # -Condensed some stuff
 #Version 0.5 (WUUTT, HOWSOSOON!?!??!?)
 # -Added in a basic points system, it's been there for a while but I haven't bothered with it until now
 # -Fixed so many little issues/typos
 # -Reworked encounter system (unknown if it will work very well)
+#Version 0.5.1
+# -Fixed encounter system that was causing massive issues and crashing
 import os, random, time
 import argparse
 os.system('clear')
@@ -135,6 +136,9 @@ global level
 level = 0
 global levels
 levels = ""
+global skills
+global spells
+spells = []
 global exp
 exp = 0
 global points
@@ -174,13 +178,12 @@ enemy_set = 0
 global time
 time = 0
 global encounter_time
-encounter_time = random.randint(0, 100)
+encounter_time = 5
 global lamp_true
 lamp_true = 0
 global skip
 skip = 0
 global enemy_hp
-enemy_hp = 1
 global enemy_dam
 enemy_dam = 0
 global enemy_dodge
@@ -235,6 +238,7 @@ while stop != 1:
 	if act == "num":
 		print x
 		print y
+		encounter_time += 1
 	if "use" in words:
 		if "switch" in words and x == 3 and y == 7 and z == 0:
 			lights_true = 1
@@ -247,6 +251,9 @@ while stop != 1:
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
 			print "You use the crowbar to open the trapdoor."
 			triggers.append("trapdooropen")
+		elif "spellbook" in words and "spellbook- Fire" in inventory:
+			print "You read the book and it bursts into flame."
+			spells.append("firebolt")
 	if "take" in words:
 		if "torch" in words and x == 0 and y == 0 and torch_true == 0:
 			items = "torch"
@@ -326,9 +333,10 @@ while stop != 1:
 #Debugging command
 	elif act == "etime":
 		print encounter
+		print encounter_time
 	elif act == "heal":
 		hp = hp + hp * random.randint(1, 2) /2
-		encounter = random.randint(25, 75)
+		encounter_time -= 3
 	elif act == "time":
 		skip = 0
 #Debugging command
@@ -589,7 +597,7 @@ while stop != 1:
 		elif act == "u":
 			z += 1
 	if encounter != 0:
-		encounter_time = random.randint(0,0)
+		encounter_time -= 1
 	if weapon == 0:
 		damage = 3
 	elif weapon == 1:
@@ -718,7 +726,7 @@ while stop != 1:
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
-	while encounter_time >= 40 and encounter_time <= 55 and encounter != 0:
+	while encounter != 0 and encounter_time <= 0:
 		stop = 1
 		while enemy_set != 1:
 			if enemy_type == "wolf":
@@ -777,7 +785,7 @@ while stop != 1:
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
-				encounter_time = random.randint(0, 100)
+				encounter_time = random.randint(5, 7)
 				enemy_hp = 0
 				dodges = 0
 				print "You ran away!"
@@ -803,7 +811,7 @@ while stop != 1:
 			enemy_set = 0
 			print "You killed the " + enemy_type +"!"
 			kills.append(enemy_type)
-			encounter_time = random.randint(0, 100)
+			encounter_time = random.randint(5, 8)
 			if enemy_type == "wolf":
 				exp += 2
 				points += 2
