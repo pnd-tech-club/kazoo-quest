@@ -556,7 +556,7 @@ while stop != 1:
 	elif x == 10 and y == 9 and z == 1:
 		roominfo = "The wall in front of you seems to be made of solid light..."
 		print roominfo
-	elif x == 11 and y == 8 and z == 1:
+	elif x == 11 and y == 9 and z == 1:
 		roominfo = "You feel yourself being taken somewhere else..."
 		print roominfo
 		x == 3
