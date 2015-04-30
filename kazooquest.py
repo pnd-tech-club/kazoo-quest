@@ -95,6 +95,12 @@
 # -Reworked encounter system (unknown if it will work very well)
 #Version 0.5.1
 # -Fixed encounter system that was causing massive issues and crashing
+#Version 0.6 (Major update)
+# -Added magicz
+# -Added basic saving
+# -Fixed some bugs
+# -Fixed some typos
+# -Loading is WIP as hell
 import os, random, time
 import argparse
 os.system('clear')
@@ -188,6 +194,14 @@ global enemy_dam
 enemy_dam = 0
 global enemy_dodge
 enemy_dodge = 0
+global magic_attack
+global enemy_buffs
+enemy_buffs = []
+global enemy_debuffs
+enemy_debuffs = []
+global enemy_debuff_timer
+enemy_debuff_timer = 5
+global magic_dam
 global enemy_info
 enemy_info = ""
 global enemy_type
@@ -207,6 +221,7 @@ kills = []
 global enemy_dam_info
 global encounter
 encounter = 0
+global f
 global x
 global y
 global z
@@ -309,6 +324,10 @@ while stop != 1:
 			items = "key"
 			inventory.append(items)
 			print "You pick up a mysterious key."
+		elif "book" in words and x == 3 and y == 14 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
+			items = "spellbook- Fire"
+			inventory.append(items)
+			print "You pick up the mysterious spellbook."
 		else:
 			print "You don't see that here."
 	if act == "clear":
@@ -319,6 +338,25 @@ while stop != 1:
 		skip = 0
 	elif act == "debug.update":
 		update()
+	elif act == "save":
+		f = open('game_save', 'w')
+		f.write(('%r\n%r\n%r\n%r\n%s\n%s\n%r\n%r\n%d\n%d\n%d\n%s\n%r') % (hp, damage, defe, mana, inventory, spells, max_hp, max_mana, x, y, z, levels, exp))
+		f.close()
+	elif act == "load":
+		f = open('game_save', 'r')
+		lines = f.readline()
+		hp = f.readline()
+		damage = f.readline()
+		defe = f.readline()
+		mana = f.readline()
+		inventory = f.readline()
+		spells = f.readline()
+		max_hp = f.readline()
+		max_mana = f.readline()
+		x = f.readline()
+		y = f.readline()
+		z = f.readline()
+		f.close()
 	elif act == "quit":
 		print "Are you sure you want to quit? (yes/no)"
 		quit_response = raw_input('> ')
@@ -559,9 +597,9 @@ while stop != 1:
 	elif x == 11 and y == 9 and z == 1:
 		roominfo = "You feel yourself being taken somewhere else..."
 		print roominfo
-		x == 3
-		y == 9
-		z == 1
+		x = 3
+		y = 9
+		z = 1
 #North path split
 	elif x == 3 and y == 10 and z == 1:
 		roominfo = "All you see to the north is darkness."
@@ -580,8 +618,15 @@ while stop != 1:
 	elif x == 3 and y == 13 and z == 1 and underground_door_true == 1:
 		roominfo = "The path to the north continues for a while."
 		print roominfo
-	elif x == 3 and y == 14 and z == 1:
-		roominfo = ""
+	elif x == 3 and y == 14 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
+		roominfo = "There is a book lying on the ground."
+		print roominfo
+	elif x == 3 and y == 14 and z == 1 and "spellbook- Fire" in inventory:
+		roominfo = "There is an empty room here."
+		print roominfo
+	elif x == 3 and y == 14 and z == 1 and "firebolt" in spells:
+		roominfo = "There is an empty room here."
+		print roominfo
 #This is used to undo movement into an unexisting room V
 	else:
 		if act == "n":
@@ -769,7 +814,17 @@ while stop != 1:
 			enemy_hp = enemy_hp - damage
 			print "You dealt %d damage to the %s!" % (damage, enemy_type)
 		elif fight_act == "2":
-			print inventory
+			print "Available spells:\n" + '\n'.join(spells)
+			magic_attack = raw_input('> ')
+			if magic_attack == "firebolt" and "firebolt" in spells:
+				magic_dam = random.randint(20, 40)
+				mana -= 5
+				enemy_hp -= magic_dam
+				enemy_debuffs.append("Burning")
+				enemy_debuff_timer = 5
+				print "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam
+			else:
+				print "You don't know that spell!"
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
@@ -791,7 +846,7 @@ while stop != 1:
 				print "You ran away!"
 		else:
 			print "You can't do that!"
-		if enemy_hp > 0 and dodges == 0 and fight_act != "4":
+		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs:
 			hp = hp - enemy_dam + defe
 			dodges = 0
 			print "The "+enemy_type+" dealt %r damage to you!" % enemy_dam
@@ -807,6 +862,18 @@ while stop != 1:
 				enemy_dam = random.randint(7, 10)
 			elif enemy_type == "slime":
 				enemy_dam = random.randint(5, 8)
+		if len(enemy_debuffs) > 0:
+			if "Burning" in enemy_debuffs:
+				enemy_hp -= 3
+				print "The enemy took 3 damage from burning!"
+			if "Poisoned" in enemy_debuffs:
+				enemy_hp -= 5
+				print "The enemy took 5 damage from poison!"
+			if "Frozen" in enemy_debuffs:
+				print "The enemy can't attack because it is frozen!"
+			enemy_debuff_timer -= 1
+			if enemy_debuff_timer <= 0:
+				enemy_debuffs = []
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			print "You killed the " + enemy_type +"!"
