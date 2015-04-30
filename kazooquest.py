@@ -332,10 +332,13 @@ while stop != 1:
 			print "You don't see that here."
 	if act == "clear":
 		os.system('clear')
+		encounter_time += 1
 	if act == "inv":
 		print '\n'.join(inventory)
+		encounter_time += 1
 	if act == "look":
 		skip = 0
+		encounter_time += 1
 	elif act == "debug.update":
 		update()
 	elif act == "save":
@@ -372,6 +375,7 @@ while stop != 1:
 	elif act == "etime":
 		print encounter
 		print encounter_time
+		encounter_time += 1
 	elif act == "heal":
 		hp = hp + hp * random.randint(1, 2) /2
 		encounter_time -= 3
