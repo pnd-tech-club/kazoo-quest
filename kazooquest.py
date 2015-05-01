@@ -107,6 +107,8 @@
 # -Fixed loading to make it work
 # -Condensed some code
 # -Reworked the trigger system, game may be slightly faster now
+#Version 0.6.6
+# -Fixed a handful of bugs that restricted some items/rooms
 import os, random, time
 import argparse
 import pickle
@@ -257,10 +259,10 @@ while stop != 1:
 			print "You wiggle the switch but nothing happens."
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
 			print "You use the crowbar to open the door."
-			triggers.append("doorw/crowbar")
+			triggers.append("underground_door")
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
 			print "You use the crowbar to open the trapdoor."
-			triggers.append("trapdooropen")
+			triggers.append("trapdoor")
 		elif "spellbook" in words and "spellbook- Fire" in inventory:
 			print "You read the book and it bursts into flame."
 			spells.append("firebolt")
@@ -316,11 +318,11 @@ while stop != 1:
 			items = "crowbar"
 			inventory.append(items)
 			print "You pick up the crowbar."
-		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdooropen" in triggers:
+		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdoor" in triggers:
 			items = "key"
 			inventory.append(items)
 			print "You pick up a mysterious key."
-		elif "book" in words and x == 3 and y == 14 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
+		elif "book" in words and x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 			items = "spellbook- Fire"
 			inventory.append(items)
 			print "You pick up the mysterious spellbook."
@@ -332,6 +334,8 @@ while stop != 1:
 		print '\n'.join(inventory)
 	if act == "look":
 		skip = 0
+	elif act == "input":
+		input("direct>")
 	elif act == "debug.update":
 		update()
 	elif act == "debug.triggers":
