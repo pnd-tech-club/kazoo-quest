@@ -101,8 +101,16 @@
 # -Fixed some bugs
 # -Fixed some typos
 # -Loading is WIP as hell
+#Version 0.6.1
+# -Broke loading more
+#Version 0.6.5 (Semi-major update)
+# -Fixed loading to make it work
+# -Condensed some code
+# -Reworked the trigger system, game may be slightly faster now
 import os, random, time
 import argparse
+import pickle
+current_version = "v0.6.5"
 os.system('clear')
 import Loadingbar
 #A lot of code here was removed for a while in Version 0.3 (Reworked and implemented as loadingbar.py)
@@ -121,7 +129,7 @@ def update():
 global wait
 wait = 0
 print "Welcome to Kazoo Quest!  For help type \"help\"!"
-current_version = "v0.4.2"
+print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
 global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -150,19 +158,8 @@ exp = 0
 global points
 points = 0
 #Note to add all needed triggers after here
-global trapdoor_true
-trapdoor_true = 0
+global triggers
 triggers = []
-global torch_true
-torch_true = 0
-global lights_true
-lights_true = 0
-global branch_true
-branch_true = 0
-global letter_true
-letter_true = 0
-global underground_door_true
-underground_door_true = 0
 #Add all needed triggers before here
 global inventory
 inventory = []
@@ -185,8 +182,6 @@ global time
 time = 0
 global encounter_time
 encounter_time = 5
-global lamp_true
-lamp_true = 0
 global skip
 skip = 0
 global enemy_hp
@@ -256,9 +251,9 @@ while stop != 1:
 		encounter_time += 1
 	if "use" in words:
 		if "switch" in words and x == 3 and y == 7 and z == 0:
-			lights_true = 1
+			triggers.append("lights")
 			print "You flip the switch and the lights in the house suddenly turn on."
-		elif "switch" in words and x == 3 and y == 7 and z == 0 and lights_true == 1:
+		elif "switch" in words and x == 3 and y == 7 and z == 0 and "lights" in triggers:
 			print "You wiggle the switch but nothing happens."
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
 			print "You use the crowbar to open the door."
@@ -270,24 +265,25 @@ while stop != 1:
 			print "You read the book and it bursts into flame."
 			spells.append("firebolt")
 	if "take" in words:
-		if "torch" in words and x == 0 and y == 0 and torch_true == 0:
+		if "torch" in words and x == 0 and y == 0 and "torch" not in triggers:
 			items = "torch"
 			inventory.append(items)
-			torch_true = 1
+			triggers.append(items)
 			print "You pick up the torch and are able to see better."
 		elif "shuriken" in words and x == 0 and y == -1 and "shuriken" not in inventory:
 			items = "shuriken"
 			inventory.append(items) * 7
 			print "You pick up seven shuriken."
-		elif "branch" in words and x == 2 and y == 1 and branch_true == 0:
+		elif "branch" in words and x == 2 and y == 1 and weapon < 1:
 			items = "branch"
 			inventory.append(items)
-			branch_true = 1
+			triggers.append(items)
+			weapon = 1
 			print "You pick up the branch and hold it like a spear."
-		elif "letter" in words and x == 2 and y == 6 and letter_true == 0:
+		elif "letter" in words and x == 2 and y == 6 and "letter" not in triggers:
 			items = "letter"
 			inventory.append(items)
-			letter_true = 1
+			triggers.append(items)
 			print "You take the letter out of the mailbox."
 			print letter
 		elif "dagger" in words and x == 3 and y == 7 and z == 1 and weapon < 2:
@@ -305,7 +301,7 @@ while stop != 1:
 		elif "lamp" in words and x == 3 and y == 7 and z == 1 and "lamp" not in inventory:
 			items = "lamp"
 			inventory.append(items)
-			lamp_true = 1
+			triggers.append(items)
 			items = "torch"
 			inventory.remove(items)
 			print "Your torch happens to burn out as you pick up the lamp."
@@ -338,25 +334,19 @@ while stop != 1:
 		skip = 0
 	elif act == "debug.update":
 		update()
+	elif act == "debug.triggers":
+		print triggers
 	elif act == "save":
-		f = open('game_save', 'w')
-		f.write(('%r\n%r\n%r\n%r\n%s\n%s\n%r\n%r\n%d\n%d\n%d\n%s\n%r') % (hp, damage, defe, mana, inventory, spells, max_hp, max_mana, x, y, z, levels, exp))
+		with open('game_save.dat', 'wb') as f:
+			pickle.dump([hp, damage, defe, mana, inventory, spells, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
 		f.close()
+		print "Save successful!"
 	elif act == "load":
-		f = open('game_save', 'r')
-		lines = f.readline()
-		hp = f.readline()
-		damage = f.readline()
-		defe = f.readline()
-		mana = f.readline()
-		inventory = f.readline()
-		spells = f.readline()
-		max_hp = f.readline()
-		max_mana = f.readline()
-		x = f.readline()
-		y = f.readline()
-		z = f.readline()
+		with open('game_save.dat', 'rb') as f:
+			hp, damage, defe, mana, inventory, spells, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
 		f.close()
+		os.system('clear')
+		print "Game loaded!"
 	elif act == "quit":
 		print "Are you sure you want to quit? (yes/no)"
 		quit_response = raw_input('> ')
@@ -385,8 +375,6 @@ while stop != 1:
 		x = int(raw_input('> '))
 		y = int(raw_input('> '))
 		z = int(raw_input('> '))
-		torch_true = 1
-		lights_true = 1
 	elif act == "info":
 		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r" % (damage, hp, defe, mana)
 		
@@ -396,28 +384,28 @@ while stop != 1:
 	if act == "help":
 		print "-help \n -look \n -wait \n -use \n -take \n -move(n, s, e, w, u, d) \n -back \n -info"
 		
-	if x == 0 and y == 0 and torch_true == 0:
+	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
 		print roominfo
-	elif x == 0 and y == 0 and torch_true == 1:
+	elif x == 0 and y == 0 and "torch" in triggers:
 		roominfo = "Your torch lights up the walls of the cave.  There is a path to the north and south."
 		print roominfo
-	elif x == 0 and y == 1 and torch_true == 0:
+	elif x == 0 and y == 1 and "torch" not in triggers:
 		roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly.  You decide to turn back until you find a light source."
 		print roominfo
 		y -= 1
-	elif x == 0 and y == 1 and torch_true == 1:
+	elif x == 0 and y == 1 and "torch" in triggers:
 		roominfo = "You begin to walk to the north, allowing your torch to light the way.  As you walk you begin to hear a slight howl of wind from ahead of you.  There is a path to the east."
 		print roominfo
 	elif x == 1 and y == 1:
 		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
 		print roominfo
-	elif x == 2 and y == 1 and branch_true == 0:
+	elif x == 2 and y == 1 and weapon < 1:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.  The trees tower over you and you hear the sound of rushing water to the north.  You see a good sized tree branch with a pointed end."
 		print roominfo
-	elif x == 2 and y == 1 and branch_true == 1:
+	elif x == 2 and y == 1 and weapon > 0:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and see a forest to the east.  You hear the sound of rushing water to the north."
 		print roominfo
@@ -438,48 +426,48 @@ while stop != 1:
 		roominfo = "You are nearing the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 6 and z == 0 and letter_true == 0:
+	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
 		print roominfo
-	elif x == 2 and y == 6 and z == 0 and letter_true == 1:
+	elif x == 2 and y == 6 and z == 0 and "letter" in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 7 and lights_true == 0:
+	elif x == 2 and y == 7 and "lights" not in triggers:
 		encounter = 0
 		roominfo = "The inside of the house is cold and dark.  You have an unexplainable feeling of gloom.  There are rooms to the east and the north."
 		print roominfo
-	elif x == 2 and y == 7 and lights_true == 1:
+	elif x == 2 and y == 7 and "lights" in triggers:
 		encounter = 0
 		roominfo = "There is a bright red stain on the rug in front of the door.  You have an unexplainable feeling of dread.  The kitchen is to the east and the living room is to the north."
 		print roominfo
-	elif x == 3 and y == 7 and z == 0 and lights_true == 0:
+	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 		roominfo = "The room is lit up slightly by a window.  You can see a switch by the window.  The doorway is to the west."
 		print roominfo
-	elif x == 2 and y == 8 and lights_true == 0:
+	elif x == 2 and y == 8 and "lights" not in triggers:
 		roominfo = "It's way too dark in here for you to see anything.  The doorway is to the south."
 		print roominfo
-	elif x == 2 and y == 8 and lights_true == 1 and trapdoor_true == 0:
+	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" not in triggers:
 		roominfo = "The living room is completely barren.  There appears to be a locked trapdoor in the floor.  The doorway is to the south."
 		print roominfo
-	elif x == 2 and y == 8 and lights_true == 1 and trapdoor_true == 1 and "key" not in inventory:
+	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
 		roominfo = "The trapdoor in this room has a key inside.  The doorway is to the south."
 		print roominfo
-	elif x == 2 and y == 8 and lights_true == 1 and trapdoor_true == 1 and "key" in inventory:
+	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" in inventory:
 		roominfo = "The trapdoor in the center of the room is empty.  The doorway is to the south."
 		print roominfo
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
-	elif x == 3 and y == 7 and z == 1 and lights_true == 0:
+	elif x == 3 and y == 7 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
 		print roominfo
 		z += 1
-	elif x == 3 and y == 7 and z == 0 and lights_true == 1:
+	elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
 		roominfo = "The light shows that there are stairs going down.  The entrance is to the west."
 		print roominfo
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
-	elif x == 3 and y == 7 and z == 1 and lights_true == 1 and "lamp" not in inventory and weapon < 2:
+	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground.  There is leather armor on the ground."
 		print roominfo
 #Player has nothing
@@ -607,24 +595,21 @@ while stop != 1:
 	elif x == 3 and y == 11 and z == 1:
 		roominfo = "..."
 		print roominfo
-	elif x == 3 and y == 12 and z == 1 and underground_door_true == 0:
+	elif x == 3 and y == 12 and z == 1 and "underground_door" not in triggers:
 		roominfo = "There is suddenly a door in front of you.  You can't open it with your hands."
 		print roominfo
-	elif x == 3 and y == 12 and z == 1 and underground_door_true == 1:
+	elif x == 3 and y == 12 and z == 1 and "underground_door" in triggers:
 		roominfo = "The door is open."
 		print roominfo
-	elif x == 3 and y == 13 and z == 1 and underground_door_true == 0:
+	elif x == 3 and y == 13 and z == 1 and "underground_door" not in triggers:
 		y -= 1
-	elif x == 3 and y == 13 and z == 1 and underground_door_true == 1:
-		roominfo = "The path to the north continues for a while."
-		print roominfo
-	elif x == 3 and y == 14 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
+	elif x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 		roominfo = "There is a book lying on the ground."
 		print roominfo
-	elif x == 3 and y == 14 and z == 1 and "spellbook- Fire" in inventory:
+	elif x == 3 and y == 13 and z == 1 and "spellbook- Fire" in inventory:
 		roominfo = "There is an empty room here."
 		print roominfo
-	elif x == 3 and y == 14 and z == 1 and "firebolt" in spells:
+	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
 		print roominfo
 #This is used to undo movement into an unexisting room V
