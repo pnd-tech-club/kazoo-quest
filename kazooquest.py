@@ -334,8 +334,9 @@ while stop != 1:
 		print '\n'.join(inventory)
 	if act == "look":
 		skip = 0
-	elif act == "input":
-		input("direct>")
+#Debugging command
+	elif act == "debug.input":
+		input('direct>')
 	elif act == "debug.update":
 		update()
 	elif act == "debug.triggers":
@@ -366,8 +367,11 @@ while stop != 1:
 	elif act == "etime":
 		print encounter
 		print encounter_time
+	elif act == "spells":
+		print '\n'.join(spells)
 	elif act == "heal":
-		hp = hp + hp * random.randint(1, 2) /2
+#I know this is shit but wahterver
+		hp = hp + max_hp / 4 * random.randint(1, 2)
 		encounter_time -= 3
 	elif act == "time":
 		skip = 0
@@ -515,7 +519,6 @@ while stop != 1:
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west"
 		print roominfo
-		triggers.append("westpath")
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west."
 		print roominfo
@@ -563,7 +566,6 @@ while stop != 1:
 	elif x == 4 and y == 9 and z == 1:
 		roominfo = "There is a slight clanking noise in the distance.  There is a path that stretches far ahead of you."
 		print roominfo
-		triggers.append("eastpath")
 	elif x == 5 and y == 9 and z == 1:
 		enemy_type = "dwarf"
 		roominfo = "You sense something small nearby."
@@ -805,7 +807,7 @@ while stop != 1:
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells)
 			magic_attack = raw_input('> ')
-			if magic_attack == "firebolt" and "firebolt" in spells:
+			if magic_attack == "1" and "firebolt" in spells:
 				magic_dam = random.randint(20, 40)
 				mana -= 5
 				enemy_hp -= magic_dam
