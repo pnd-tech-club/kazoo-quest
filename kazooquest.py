@@ -113,10 +113,14 @@
 # -Added in some more spells, you just can't get them legitimately yet
 # -Removed some useless comments
 # -Minor fixes with magic/fight mechanics
+#Version 0.7
+# -Added kinda classes
+# -Added some other things
+# -Documentation...? I guess...?
 import os, random, time
 import argparse
 import pickle
-current_version = "v0.6.7"
+current_version = "v0.7"
 os.system('clear')
 import Loadingbar
 def update():
@@ -134,7 +138,7 @@ def update():
 global wait
 wait = 0
 print "Welcome to Kazoo Quest!  For help type \"help\"!"
-#print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
+print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
 global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -145,6 +149,8 @@ global dodges
 dodges = 0
 global dodge_act
 dodge_act = 1
+global classs
+global classsc
 global damage
 damage = 3
 global max_hp
@@ -157,6 +163,18 @@ global levels
 levels = ""
 global skills
 skills = []
+silly = 0
+while silly != 1:
+	classsc = raw_input('What class would you like to be? \n1. Warrior\n2. Mage\n3. Assassin\n')
+	if classsc == "1":
+		skills.append("Rage")
+		silly = 1
+	elif classsc == "2":
+		skills.append("Recover")
+		silly = 1
+	elif classsc == "3":
+		skills.append("Stealth")
+		silly = 1
 global skill_energy
 skill_energy = 5
 global max_energy
@@ -344,8 +362,9 @@ while stop != 1:
 	elif act == "look":
 		skip = 0
 #Debugging commands
-	elif act == "sneak" and "Stealth" in skills and skill_energy => 5:
+	elif act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 		encounter_time += 6
+		skill_energy -= 5
 	elif act == "debug.update":
 		update()
 	elif act == "debug.triggers":
@@ -873,13 +892,13 @@ while stop != 1:
 			elif enemy_type == "orc":
 				enemy_dam = random.randint(4, 6)
 			elif enemy_type == "wraith":
-				enemy_dam = random.randint(5, 8)
+				enemy_dam = random.randint(6, 8)
 			elif enemy_type == "dwarf":
-				enemy_dam = random.randint(6, 9)
+				enemy_dam = random.randint(9, 11)
 			elif enemy_type == "spirit":
-				enemy_dam = random.randint(7, 10)
+				enemy_dam = random.randint(11, 14)
 			elif enemy_type == "slime":
-				enemy_dam = random.randint(5, 8)
+				enemy_dam = random.randint(15, 20)
 			hp = hp - enemy_dam + defe
 			dodges = 0
 			print "The "+enemy_type+" dealt %r damage to you!" % enemy_dam
@@ -897,6 +916,7 @@ while stop != 1:
 				enemy_debuffs = []
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
+			enemy_debuffs = []
 			print "You killed the " + enemy_type +"!"
 			kills.append(enemy_type)
 			encounter_time = random.randint(5, 8)
@@ -931,10 +951,12 @@ while stop != 1:
 				quit()
 			elif dead_p == "n":
 				quit()
+			else:
+				quit()
 		stop = 0
 	if hp > max_hp:
 		hp = max_hp
 	if mana > max_mana:
 		mana = max_mana
-	if skill_energy > max_energy
+	if skill_energy > max_energy:
 		skill_energy = max_energy

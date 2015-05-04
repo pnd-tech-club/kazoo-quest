@@ -1,0 +1,23 @@
+Yeah
+so
+yeah
+
+Classes:
+Warrior has a passive buff to attack and health
+Mage has a boost to magic attack and mana
+Assassin is sneaky and shit(has the "sneak" thingy)
+
+Fighting mechanics:
+You can attack
+You can wizardry
+You can use items (maybe eventually?)
+You can dodge/parry(25% chance for dodge/parry, 50% for getting hit)
+You can be a chicken and run away
+
+Moving…?:
+"n" goes north, "s" goes south, etc.
+"u" goes up, "d" goes down
+
+Interacting:
+"use" uses a thing
+"take" takes a thing
