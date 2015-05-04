@@ -109,13 +109,16 @@
 # -Reworked the trigger system, game may be slightly faster now
 #Version 0.6.6
 # -Fixed a handful of bugs that restricted some items/rooms
+#Version 0.6.7
+# -Added in some more spells, you just can't get them legitimately yet
+# -Removed some useless comments
+# -Minor fixes with magic/fight mechanics
 import os, random, time
 import argparse
 import pickle
-current_version = "v0.6.5"
+current_version = "v0.6.7"
 os.system('clear')
 import Loadingbar
-#A lot of code here was removed for a while in Version 0.3 (Reworked and implemented as loadingbar.py)
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -131,13 +134,13 @@ def update():
 global wait
 wait = 0
 print "Welcome to Kazoo Quest!  For help type \"help\"!"
-print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
+#print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
 global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
 global armor
 armor = 0
-#Armor list: 0 = Cloth shirt, 1 = Leather Breastplate, 2 = Chainmail Breastplate, 3 = Scale Breastplate, 4 = Crystal Breastplate, 5 = Cloak of Shadows, 6 = Shield of Honking, 7 = Kazoo shield of Death
+#Armor list: 0 = Cloth shirt, 1 = Leather Breastplate, 2 = Chainmail Breastplate, 3 = Scale Breastplate, 4 = Crystal Breastplate, 5 = Cloak of Shadows, 6 = Magic Shield, 7 = Kazoo Shield of Death
 global dodges
 dodges = 0
 global dodge_act
@@ -153,16 +156,21 @@ level = 0
 global levels
 levels = ""
 global skills
+skills = []
+global skill_energy
+skill_energy = 5
+global max_energy
+max_energy = 5
 global spells
 spells = []
+global spells_thing
+spells_thing = []
 global exp
 exp = 0
 global points
 points = 0
-#Note to add all needed triggers after here
 global triggers
 triggers = []
-#Add all needed triggers before here
 global inventory
 inventory = []
 global stop
@@ -266,6 +274,7 @@ while stop != 1:
 		elif "spellbook" in words and "spellbook- Fire" in inventory:
 			print "You read the book and it bursts into flame."
 			spells.append("firebolt")
+			spells_thing.append("1. Firebolt")
 	if "take" in words:
 		if "torch" in words and x == 0 and y == 0 and "torch" not in triggers:
 			items = "torch"
@@ -330,25 +339,25 @@ while stop != 1:
 			print "You don't see that here."
 	if act == "clear":
 		os.system('clear')
-	if act == "inv":
+	elif act == "inv":
 		print '\n'.join(inventory)
-	if act == "look":
+	elif act == "look":
 		skip = 0
-#Debugging command
-	elif act == "debug.input":
-		input('direct>')
+#Debugging commands
+	elif act == "sneak" and "Stealth" in skills and skill_energy => 5:
+		encounter_time += 6
 	elif act == "debug.update":
 		update()
 	elif act == "debug.triggers":
 		print triggers
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
 		f.close()
 		print "Save successful!"
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
 		f.close()
 		os.system('clear')
 		print "Game loaded!"
@@ -363,6 +372,9 @@ while stop != 1:
 	elif act == "OP420":
 		weapon = 7
 		armor = 7
+		spells.append("firebolt")
+		spells.append("frost")
+		spells.append("poison")
 #Debugging command
 	elif act == "etime":
 		print encounter
@@ -371,7 +383,13 @@ while stop != 1:
 		print '\n'.join(spells)
 	elif act == "heal":
 #I know this is shit but wahterver
-		hp = hp + max_hp / 4 * random.randint(1, 2)
+		hp_heal = hp + max_hp / 2 * random.randint(1, 2)
+		mana_heal = mana + max_mana / 4 * random.randint(1, 2)
+		skill_heal = skill_energy + max_energy / 4 * random.randint(1, 2)
+		hp += hp_heal
+		mana += mana_heal
+		skill_energy += skill_heal
+		print "You have healed %r health, %r mana and %r energy!" % (hp_heal, mana_heal, skill_heal)
 		encounter_time -= 3
 	elif act == "time":
 		skip = 0
@@ -390,7 +408,7 @@ while stop != 1:
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 		
 	if act == "help":
-		print "-help \n -look \n -wait \n -use \n -take \n -move(n, s, e, w, u, d) \n -back \n -info"
+		print "-help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)"
 		
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
@@ -701,23 +719,23 @@ while stop != 1:
 		if level == 1:
 			exp_limit = 25
 		elif level == 2:
-			exp_limit = 35
-		elif level == 3:
 			exp_limit = 50
+		elif level == 3:
+			exp_limit = 85
 		elif level == 4:
-			exp_limit = 65
-		elif level == 5:
-			exp_limit = 80
-		elif level == 6:
-			exp_limit = 100
-		elif level == 7:
 			exp_limit = 125
-		elif level == 8:
+		elif level == 5:
 			exp_limit = 150
+		elif level == 6:
+			exp_limit = 180
+		elif level == 7:
+			exp_limit = 210
+		elif level == 8:
+			exp_limit = 245
 		elif level == 9:
-			exp_limit = 175
+			exp_limit = 275
 		elif level == 10:
-			exp_limit = 200
+			exp_limit = 325
 		levels += "!"
 		points += 10
 	if len(levels) == 1:
@@ -805,17 +823,29 @@ while stop != 1:
 			enemy_hp = enemy_hp - damage
 			print "You dealt %d damage to the %s!" % (damage, enemy_type)
 		elif fight_act == "2":
-			print "Available spells:\n" + '\n'.join(spells)
+			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
-			if magic_attack == "1" and "firebolt" in spells:
+			if magic_attack == "1" and "firebolt" in spells and mana >= 5:
 				magic_dam = random.randint(20, 40)
 				mana -= 5
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Burning")
 				enemy_debuff_timer = 5
 				print "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam
+			elif magic_attack == "2" and "frost" in spells and mana >= 8:
+				magic_dam = random.randint(50, 60)
+				mana -= 8
+				enemy_hp -= magic_dam
+				enemy_debuffs.append("Frozen")
+				enemy_debuff_timer = 5
+			elif magic_attack == "3" and "poison" in spells and mana >= 13:
+				magic_dam = random.randint(25, 50)
+				mana -= 13
+				enemy_hp -= magic_dam
+				enemy_debuffs.append("Poisoned")
+				enemy_debuff_timer = 8
 			else:
-				print "You don't know that spell!"
+				print "You can't do that!"
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
@@ -838,9 +868,6 @@ while stop != 1:
 		else:
 			print "You can't do that!"
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs:
-			hp = hp - enemy_dam + defe
-			dodges = 0
-			print "The "+enemy_type+" dealt %r damage to you!" % enemy_dam
 			if enemy_type == "wolf":
 				enemy_dam = random.randint(1, 3)
 			elif enemy_type == "orc":
@@ -853,13 +880,16 @@ while stop != 1:
 				enemy_dam = random.randint(7, 10)
 			elif enemy_type == "slime":
 				enemy_dam = random.randint(5, 8)
+			hp = hp - enemy_dam + defe
+			dodges = 0
+			print "The "+enemy_type+" dealt %r damage to you!" % enemy_dam
 		if len(enemy_debuffs) > 0:
 			if "Burning" in enemy_debuffs:
 				enemy_hp -= 3
 				print "The enemy took 3 damage from burning!"
 			if "Poisoned" in enemy_debuffs:
-				enemy_hp -= 5
-				print "The enemy took 5 damage from poison!"
+				enemy_hp -= 15
+				print "The enemy took 15 damage from poison!"
 			if "Frozen" in enemy_debuffs:
 				print "The enemy can't attack because it is frozen!"
 			enemy_debuff_timer -= 1
@@ -906,3 +936,5 @@ while stop != 1:
 		hp = max_hp
 	if mana > max_mana:
 		mana = max_mana
+	if skill_energy > max_energy
+		skill_energy = max_energy
