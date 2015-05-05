@@ -381,6 +381,7 @@ while stop != 1:
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 	elif act == "quit":
 		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
@@ -898,9 +899,9 @@ while stop != 1:
 				enemy_hp = 0
 				dodges = 0
 				enemy_debuffs = []
-				print "You ran away!"
+				print color['darkyellow'] + "You ran away!" + color['off']
 		else:
-			print "You can't do that!"
+			print color['darkyellow'] + "You can't do that!" + color['off']
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs:
 			if enemy_type == "wolf":
 				enemy_dam = random.randint(2, 4)
@@ -932,7 +933,7 @@ while stop != 1:
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			enemy_debuffs = []
-			print "You killed the " + enemy_type +"!"
+			print color['blue'] + "You killed the " + enemy_type +"!" + color['off']
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
 			encounter_time = random.randint(5, 8)
