@@ -27,12 +27,12 @@ color = {
 global wait
 wait = 0
 os.system('clear')
-print("""\n
-+--------------------------LOADING GAME--------------------------+
-""")
-while len(desu) < 200:
+print(color['yellow'] + """
++-----------------------------------------LOADING GAME------------------------------------------+
+|												|""" + color['off'], end = '\r')
+while len(desu) < 290:
 	wait += 1
-	if wait >= 9000:
+	if wait >= 4500:
 		desu.extend('◼')
 		wait = 0
 	print(color['magenta'] + ''.join(desu), end = '\r' + color['off'])
