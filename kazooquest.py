@@ -1,130 +1,55 @@
 #Credits:
 #Written by Matthew Knecht
 #Written in Python 2.7
+#Storyline help by Ethan Copeland
+#Beta testing by ???
 
 #CHANGELOG
-#Version 0.0.1: 
-# -Basic ideas and laying out of variables
-#Version 0.0.2:
-# -Laying out rooms and plotline
-#Version 0.0.3:
-# -Bug fixing
-# -Added additional commands
-# -Added more rooms
-#Version 0.0.4:
-# -More bug fixing
-#Version 0.0.5:
-# -Added some more basic ideas
-# -Added more commands
-#Version 0.0.6:
-# -Added basic (aka broken) layout for enemy encounters
-# -Fixed some little bugs pertaining to walking through walls
-#Version 0.0.7
-# -Added more to encounter system- currently still very buggy
-#Version 0.1.0 (Major Update!)
-# -Added lots to the encounter system
-# -Removed some code for a dodge mechanic due to it causing bugs (code can be found nearly unmodified, just commented out)
-# -FIXED ALL KNOWN BUGS, EXPLOITS, AND ISSUES (yay)
-#Version 0.1.1
-# -Fixed/added in the "run away" mechanic during encounters
-#Version 0.1.2 (aka "The Remembering")
-# -Added a changelog
-#Version 0.1.3
-# -Added a semi-broken time system
-#Version 0.1.4
-# -Completely removed the time system until later notice
-#Version 0.1.5
-# -Changed the "take" command to allow things like "take torch"
-# -Fixed some minor bugs
-#Version 0.2.0 (Major update!)
-# -Added TONS of rooms
-# -Added base for armor code
-# -Added slightly better encounter math
-# -Added some other minor things
-# -Fixed some bugs
-#Version 0.2.1
-# -Fixed dodging
-# -Added more rooms
-# -Added better formatting for some stuff
-# -Removed junk
-#Version 0.2.5 (Semi-major update)
-# -Reworked inventory system to allow item removal
-# -Changed some other minor things
-# -Condensed some code
-# -Threw out some junk
-# -Laid out groundwork for better things and stuff
-#Version 0.2.6
-# -Added in "clear" command
-# -Bug fixes
-#Version 0.2.7
-# -Added more rooms
-#Version 0.3 (Major update! :^)
-# -Added basic magic functionality
-# -Implemented parrying into the dodge mechanic
-# -Official game rename- from "Dumpster Quest" to "Kazoo Quest"
-# -Added many rooms
-# -Added new enemies
-# -Testing re-implementation of time functionality
-# -Balanced enemy/player health and damage
-# -Made some other minor functionality changes
-# -Set some groundwork for later ideas
-# -Fixed some spelling mistakes (including a misspelling of "type" :P )
-# -Attempted some layout of cool future features- including updating from command-line
-#Version 0.3.1
-# -Added loading bar that works
-# -Moved the location of game files to a unique repo
-# -Re-worked the dodging mechanic
-# -Completely added the loading bar feature (First totally finished feature)
-#Version 0.4 (Major update!)
-# -Added LEVELS!!!!!!!! :D
-# -Added rooms
-# -Added more sotry
-# -Reworked some features like healing
-# -A few other minor changes
-#Version 0.4.1
-# -Major rework of level system due to it being incredibly OP
-# -Reworked healing
-# -Fixed being able to activate encounters while not in encounter zone using heal
-# -Removed old time code due to it being a stupid idea in the first place
-#Version 0.4.2
-# -Fixed some typos that were causing issues
-# -Condensed some stuff
-#Version 0.5 (WUUTT, HOWSOSOON!?!??!?)
-# -Added in a basic points system, it's been there for a while but I haven't bothered with it until now
-# -Fixed so many little issues/typos
-# -Reworked encounter system (unknown if it will work very well)
-#Version 0.5.1
-# -Fixed encounter system that was causing massive issues and crashing
-#Version 0.6 (Major update)
-# -Added magicz
-# -Added basic saving
-# -Fixed some bugs
-# -Fixed some typos
-# -Loading is WIP as hell
-#Version 0.6.1
-# -Broke loading more
-#Version 0.6.5 (Semi-major update)
-# -Fixed loading to make it work
-# -Condensed some code
-# -Reworked the trigger system, game may be slightly faster now
-#Version 0.6.6
-# -Fixed a handful of bugs that restricted some items/rooms
-#Version 0.6.7
-# -Added in some more spells, you just can't get them legitimately yet
-# -Removed some useless comments
-# -Minor fixes with magic/fight mechanics
-#Version 0.7 (Major update!)
-# -Added kinda classes
-# -Added some other things
-# -Documentation...? I guess...?
-#Version 0.8 (Major update!)
-# -Added colors!?!?!?
-# -Hit 1000 lines!!!! (Celebration time! :D)
-# -Added fancier things in general
+#Version 0.0.1: -Basic ideas and laying out of variables
+#Version 0.0.2: -Laying out rooms and plotline
+#Version 0.0.3: -Bug fixing, added additional commands, added more rooms
+#Version 0.0.4: -More bug fixing
+#Version 0.0.5: -Added some more basic ideas, added more commands
+#Version 0.0.6: -Added basic (aka broken) layout for enemy encounters, fixed some little bugs pertaining to walking through walls
+#Version 0.0.7: -Added more to encounter system- currently still very buggy
+
+#Version 0.1.0 (Major Update!): -Added lots to the encounter system, removed some code for a dodge mechanic due to it causing bugs (code can be found nearly unmodified, just commented out), FIXED ALL KNOWN BUGS, EXPLOITS, AND ISSUES (yay)
+#Version 0.1.1: -Fixed/added in the "run away" mechanic during encounters
+#Version 0.1.2 (aka "The Remembering"): -Added a changelog
+#Version 0.1.3: -Added a semi-broken time system
+#Version 0.1.4: -Completely removed the time system until later notice
+#Version 0.1.5: -Changed the "take" command to allow things like "take torch", fixed some minor bugs
+
+#Version 0.2.0 (Major update!): -Added TONS of rooms, added base for armor code, added slightly better encounter math, added some other minor things, fixed some bugs
+#Version 0.2.1: -Fixed dodging, added more rooms, added better formatting for some stuff, removed junk
+#Version 0.2.5 (Semi-major update): -Reworked inventory system to allow item removal, changed some other minor things, condensed some code, threw out some junk, laid out groundwork for better things and stuff
+#Version 0.2.6: -Added in "clear" command, bug fixes
+#Version 0.2.7: -Added more rooms
+
+#Version 0.3 (Major update!): -Added basic magic functionality, implemented parrying into the dodge mechanic, official game rename- from "Dumpster Quest" to "Kazoo Quest", added many rooms, added new enemies, testing re-implementation of time functionality, balanced enemy/player health and damage, made some other minor functionality changes, set some groundwork for later ideas, fixed some spelling mistakes (including a misspelling of "type" :P ), attempted some layout of cool future features- including updating from command-line
+#Version 0.3.1: -Added loading bar that works, moved the location of game files to a unique repo, re-worked the dodging mechanic, completely added the loading bar feature (First totally finished feature)
+
+#Version 0.4 (Major update!): -Added LEVELS!!!!!!!! :D, added rooms, added more story, reworked some features like healing, a few other minor changes
+#Version 0.4.1: -Major rework of level system due to it being incredibly OP, reworked healing, fixed being able to activate encounters while not in encounter zone using heal, removed old time code due to it being a stupid idea in the first place
+#Version 0.4.2: -Fixed some typos that were causing issues, condensed some stuff
+
+#Version 0.5 (WUUTT, HOWSOSOON!?!??!?): -Added in a basic points system, it's been there for a while but I haven't bothered with it until now, fixed so many little issues/typos, reworked encounter system (unknown if it will work very well)
+#Version 0.5.1: -Fixed encounter system that was causing massive issues and crashing
+
+#Version 0.6 (Major update): -Added magicz, added basic saving, fixed some bugs, fixed some typos, loading is WIP as hell
+#Version 0.6.1: -Broke loading more
+#Version 0.6.5 (Semi-major update): -Fixed loading to make it work, condensed some code, reworked the trigger system, game may be slightly faster now
+#Version 0.6.6: -Fixed a handful of bugs that restricted some items/rooms
+#Version 0.6.7: -Added in some more spells, you just can't get them legitimately yet, removed some useless comments, minor fixes with magic/fight mechanics
+
+#Version 0.7 (Major update!): -Added kinda classes, added some other things, documentation...? I guess...?
+
+#Version 0.8 (Major update!): -Added colors!?!?!?, added fancier things in general
+#Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement
 import os, random, time, pickle, sys
 import argparse
 from collections import Counter
-current_version = "v0.8"
+current_version = "v0.8.1"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
@@ -142,8 +67,25 @@ def update():
 #args = parser.parse_args()
 global wait
 wait = 0
-print color['yellow'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
-print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
+color = {
+    'white':    "\033[1;37m",
+    'yellow':   "\033[1;33m",
+    'green':    "\033[1;32m",
+    'blue':     "\033[1;34m",
+    'cyan':     "\033[1;36m",
+    'red':      "\033[1;31m",
+    'magenta':  "\033[1;35m",
+    'black':      "\033[1;30m",
+    'darkwhite':  "\033[0;37m",
+    'darkyellow': "\033[0;33m",
+    'darkgreen':  "\033[0;32m",
+    'darkblue':   "\033[0;34m",
+    'darkcyan':   "\033[0;36m",
+    'darkred':    "\033[0;31m",
+    'darkmagenta':"\033[0;35m",
+    'darkblack':  "\033[0;30m",
+    'off':        "\033[0;0m"
+}
 global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -168,37 +110,6 @@ global levels
 levels = ""
 global skills
 skills = []
-color = {
-    'white':    "\033[1;37m",
-    'yellow':   "\033[1;33m",
-    'green':    "\033[1;32m",
-    'blue':     "\033[1;34m",
-    'cyan':     "\033[1;36m",
-    'red':      "\033[1;31m",
-    'magenta':  "\033[1;35m",
-    'black':      "\033[1;30m",
-    'darkwhite':  "\033[0;37m",
-    'darkyellow': "\033[0;33m",
-    'darkgreen':  "\033[0;32m",
-    'darkblue':   "\033[0;34m",
-    'darkcyan':   "\033[0;36m",
-    'darkred':    "\033[0;31m",
-    'darkmagenta':"\033[0;35m",
-    'darkblack':  "\033[0;30m",
-    'off':        "\033[0;0m"
-}
-silly = 0
-while silly != 1:
-	classsc = raw_input('What class would you like to be? \n1. Warrior\n2. Mage\n3. Assassin\n')
-	if classsc == "1":
-		skills.append("Rage")
-		silly = 1
-	elif classsc == "2":
-		skills.append("Recover")
-		silly = 1
-	elif classsc == "3":
-		skills.append("Stealth")
-		silly = 1
 global skill_energy
 skill_energy = 5
 global max_energy
@@ -275,7 +186,30 @@ global z
 x = 0
 y = 0
 z = 0
-print color['black'] + "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south You see a torch on the ground." + color['off']
+import os.path
+autoload = os.path.isfile('game_save.dat')
+if autoload == True:
+	with open('game_save.dat', 'rb') as f:
+		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
+	f.close()
+	os.system('clear')
+	print color['cyan'] + "Game loaded!" + color['off']
+else:
+	wait = 0
+silly = 0
+while silly != 1 and autoload != True:
+	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\n2. Mage\n3. Assassin\n" + color['off'])
+	if classsc == "1":
+		skills.append("Rage")
+		silly = 1
+	elif classsc == "2":
+		skills.append("Recover")
+		silly = 1
+	elif classsc == "3":
+		skills.append("Stealth")
+		silly = 1
+print color['black'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
+print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW." + color['off']
 act = raw_input('> ')
 words = act.split(" ")
 stop = 0
@@ -304,81 +238,81 @@ while stop != 1:
 	if "use" in words:
 		if "switch" in words and x == 3 and y == 7 and z == 0:
 			triggers.append("lights")
-			print "You flip the switch and the lights in the house suddenly turn on."
+			print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
 		elif "switch" in words and x == 3 and y == 7 and z == 0 and "lights" in triggers:
-			print "You wiggle the switch but nothing happens."
+			print color['magenta'] + "You wiggle the switch but nothing happens." + color['off']
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
-			print "You use the crowbar to open the door."
+			print color['magenta'] + "You use the crowbar to open the door." + color['off']
 			triggers.append("underground_door")
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
-			print "You use the crowbar to open the trapdoor."
+			print color['magenta'] + "You use the crowbar to open the trapdoor." + color['off']
 			triggers.append("trapdoor")
 		elif "spellbook" in words and "spellbook- Fire" in inventory:
-			print "You read the book and it bursts into flame."
+			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
 			spells_thing.append("1. Firebolt")
-	if "take" in words:
+	if "take" or "pick up" or "grab" in words:
 		if "torch" in words and x == 0 and y == 0 and "torch" not in triggers:
 			items = "torch"
 			inventory.append(items)
 			triggers.append(items)
-			print "You pick up the torch and are able to see better."
+			print color['magenta'] + "You pick up the torch and are able to see better." + color['off']
 		elif "shuriken" in words and x == 0 and y == -1 and "shuriken" not in inventory:
 			items = "shuriken"
 			inventory.append(items) * 7
-			print "You pick up seven shuriken."
+			print color['magenta'] + "You pick up seven shuriken." + color['off']
 		elif "branch" in words and x == 2 and y == 1 and weapon < 1:
 			items = "branch"
 			inventory.append(items)
 			triggers.append(items)
 			weapon = 1
-			print "You pick up the branch and hold it like a spear."
+			print color['magenta'] + "You pick up the branch and hold it like a spear." + color['off']
 		elif "letter" in words and x == 2 and y == 6 and "letter" not in triggers:
 			items = "letter"
 			inventory.append(items)
 			triggers.append(items)
-			print "You take the letter out of the mailbox."
+			print color['magenta'] + "You take the letter out of the mailbox." + color['off']
 			print letter
 		elif "dagger" in words and x == 3 and y == 7 and z == 1 and weapon < 2:
 			items = "dagger"
 			inventory.append(items)
 			weapon = 2
-			print "You wield the dagger and feel stronger."
+			print color['magenta'] + "You wield the dagger and feel stronger." + color['off']
 			items = "branch"
 			inventory.remove(items)
 		elif "armor" in words and x == 3 and y == 7 and z == 1 and armor < 1:
 			items = "leather armor"
 			inventory.append(items)
 			armor = 1
-			print "You put on the leather armor."
+			print color['magenta'] + "You put on the leather armor." + color['off']
 		elif "lamp" in words and x == 3 and y == 7 and z == 1 and "lamp" not in inventory:
 			items = "lamp"
 			inventory.append(items)
 			triggers.append(items)
 			items = "torch"
 			inventory.remove(items)
-			print "Your torch happens to burn out as you pick up the lamp."
+			print color['magenta'] + "Your torch happens to burn out as you pick up the lamp." + color['off']
 		elif "armor" in words and x == -1 and y == 15 and z == 1 and armor <= 1:
 			items = "Chainmail armor"
 			inventory.append(items)
 			armor = 2
-			print "You put on the chainmail armor."
+			print color['magenta'] + "You put on the chainmail armor." + color['off']
 			items = "leather armor"
 			inventory.remove(items)
 		elif "crowbar" in words and x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
 			items = "crowbar"
 			inventory.append(items)
-			print "You pick up the crowbar."
+			print color['magenta'] + "You pick up the crowbar." + color['off']
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdoor" in triggers:
 			items = "key"
 			inventory.append(items)
-			print "You pick up a mysterious key."
+			print color['magenta'] + "You pick up a mysterious key." + color['off']
 		elif "book" in words and x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 			items = "spellbook- Fire"
 			inventory.append(items)
-			print "You pick up the mysterious spellbook."
+			print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
-			print "You don't see that here."
+			print color['magenta'] + "You don't see that here." + color['off']
 	if act == "clear":
 		encounter_time += 1
 		os.system('clear')
@@ -407,7 +341,7 @@ while stop != 1:
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
 	elif act == "quit":
-		print color['green'] + "Are you sure you want to quit? (yes/no)" + color['off']
+		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
 		if quit_response == "yes":
 			quit()
@@ -730,27 +664,27 @@ while stop != 1:
 		mana = 10
 		points += 2
 	elif armor == 2:
-		defe = 9
+		defe = 8
 		max_hp = 30
 		mana = 15
 		points += 4
 	elif armor == 3:
-		defe = 15
+		defe = 13
 		max_hp = 40
 		mana = 20
 		points += 5
 	elif armor == 4:
-		defe = 23
+		defe = 20
 		max_hp = 50
 		mana = 30
 		points += 10
 	elif armor == 5:
-		defe = 30
+		defe = 25
 		max_hp = 60
 		mana = 40
 		points += 15
 	elif armor == 6:
-		defe = 45
+		defe = 30
 		max_hp = 75
 		mana = 50
 		points += 20
@@ -822,6 +756,7 @@ while stop != 1:
 #For some reason this code seems to be giving everything strange effects (removed in v0.1.4) (Re-implementation testing beginning in v0.3- testing produced no good results) (Code completely removed in v0.4.1)
 	stop = 1
 	act = ""
+	words = ""
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
@@ -830,33 +765,33 @@ while stop != 1:
 		while enemy_set != 1:
 			if enemy_type == "wolf":
 				enemy_hp = 15
-				enemy_dam = random.randint(1, 3)
-				enemy_dam_info = "1 to 3"
+				enemy_dam = random.randint(2, 4)
+				enemy_dam_info = "2 to 4"
 				enemy_dodge = 0
 			elif enemy_type == "orc":
 				enemy_hp = 25
-				enemy_dam = random.randint(5, 7)
-				enemy_dam_info = "5 to 7"
+				enemy_dam = random.randint(6, 8)
+				enemy_dam_info = "6 to 8"
 				enemy_dodge = 1
 			elif enemy_type == "wraith":
 				enemy_hp = 30
-				enemy_dam = random.randint(6, 8)
-				enemy_dam_info = "6 to 8"
+				enemy_dam = random.randint(7, 9)
+				enemy_dam_info = "7 to 9"
 				enemy_dodge = 3
 			elif enemy_type == "dwarf":
 				enemy_hp = 35
-				enemy_dam = random.randint(6, 9)
-				enemy_dam_info = "6 to 9"
+				enemy_dam = random.randint(7, 10)
+				enemy_dam_info = "7 to 10"
 				enemy_dodge = 1
 			elif enemy_type == "spirit":
 				enemy_hp = 40
-				enemy_dam = random.randint(7, 10)
-				enemy_dam_info = "7 to 10"
+				enemy_dam = random.randint(8, 11)
+				enemy_dam_info = "8 to 11"
 				enemy_dodge = 0
 			elif enemy_type == "slime":
-				enemy_hp = 75
-				enemy_dam = random.randint(5, 8)
-				enemy_dam_info = "5 to 8"
+				enemy_hp = 100
+				enemy_dam = random.randint(5, 15)
+				enemy_dam_info = "5 to 15"
 				enemy_dodge = 0
 #Remember to fix this silly grammar thingy here
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
@@ -902,7 +837,7 @@ while stop != 1:
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
-				print "You dodged the attack!"
+				print color['green'] + "You dodged the attack!" + color['off']
 				dodges = 1
 			if dodge_act >= 75:
 				parrypowa = damage * 2
@@ -923,20 +858,20 @@ while stop != 1:
 			print "You can't do that!"
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs:
 			if enemy_type == "wolf":
-				enemy_dam = random.randint(1, 3)
+				enemy_dam = random.randint(2, 4)
 			elif enemy_type == "orc":
-				enemy_dam = random.randint(4, 6)
-			elif enemy_type == "wraith":
 				enemy_dam = random.randint(6, 8)
+			elif enemy_type == "wraith":
+				enemy_dam = random.randint(7, 9)
 			elif enemy_type == "dwarf":
-				enemy_dam = random.randint(9, 11)
+				enemy_dam = random.randint(7, 10)
 			elif enemy_type == "spirit":
-				enemy_dam = random.randint(11, 14)
+				enemy_dam = random.randint(8, 11)
 			elif enemy_type == "slime":
-				enemy_dam = random.randint(15, 20)
+				enemy_dam = random.randint(5, 15)
 			hp = hp - enemy_dam + defe
 			dodges = 0
-			print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam) + color['off']
+			print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe) + color['off']
 		if len(enemy_debuffs) > 0:
 			if "Burning" in enemy_debuffs:
 				enemy_hp -= 3
@@ -979,11 +914,14 @@ while stop != 1:
 				points += 10
 		if hp <= 0:
 			print color['darkred'] + "You have died!" + color['off']
-			print color['yellow'] + "Do you want to see your final stats?" + color['off']
+			print color['blue'] + "Do you want to see your final stats?" + color['off']
 			dead_p = raw_input('y/n ')
 			if dead_p == "y":
 				print color['darkmagenta'] + "You killed these enemies:" + color['off']
-				print ', '.join(kills) + '\n'
+				cnt = Counter()
+				for word in kills:
+					cnt[word] += 1
+				print dict(cnt)
 				print "These are your final stats:"
 				print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, hp, defe, mana, level) + color['off']
 				print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
