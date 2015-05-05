@@ -361,6 +361,9 @@ while stop != 1:
 		spells.append("frost")
 		spells.append("poison")
 		spells.append("life drain")
+		spells_thing.append("2. Frost")
+		spells_thing.append("3. Poison")
+		spells_thing.append("4. Life Steal")
 #Debugging command
 	elif act == "etime":
 		print encounter
