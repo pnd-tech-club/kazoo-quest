@@ -843,7 +843,7 @@ while stop != 1:
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
-		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack" + color['green'] + "\tHealth:%r" % hp+ color['yellow'] + "\n2: Magic" + color['green'] + "\tMana: %r" % mana + color['yellow'] + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
+		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack" + color['green'] + "\tHealth: %r" % hp + color['red'] + "\tEnemy Health: %r" % enemy_hp + color['yellow'] + "\n2: Magic" + color['green'] + "\tMana: %r" % mana + color['red'] + "\t\tEnemy Damage: %s" % enemy_dam_info + color['yellow'] + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
 		dodges = 0
 		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
