@@ -45,7 +45,7 @@
 #Version 0.7 (Major update!): -Added kinda classes, added some other things, documentation...? I guess...?
 
 #Version 0.8 (Major update!): -Added colors!?!?!?, added fancier things in general
-#Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement
+#Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement and readability, ideas for balancing levels: area limits, item evolution/or/other, really freaking low xp rates, start everything over... from scratch
 import os, random, time, pickle, sys
 import argparse
 from collections import Counter
@@ -120,6 +120,8 @@ global spells_thing
 spells_thing = []
 global exp
 exp = 0
+global evolve_count
+evolve_count = 0
 global points
 points = 0
 global triggers
@@ -251,7 +253,11 @@ while stop != 1:
 			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
 			spells_thing.append("1. Firebolt")
-	if "take" or "pick up" or "grab" in words:
+		elif "charm" in words and "mysterious charm" in inventory:
+			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
+			evolve_count += 1
+			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".  It grants whoever uses it a beautiful voice!"
+	if "take" in words:
 		if "torch" in words and x == 0 and y == 0 and "torch" not in triggers:
 			items = "torch"
 			inventory.append(items)
