@@ -1,39 +1,40 @@
+# -*- coding: latin-1 -*-
 from __future__ import print_function
+import sys, os
+sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
+os.system('clear')
+global desu
 desu = []
+color = {
+    'white':    "\033[1;37m",
+    'yellow':   "\033[1;33m",
+    'green':    "\033[1;32m",
+    'blue':     "\033[1;34m",
+    'cyan':     "\033[1;36m",
+    'red':      "\033[1;31m",
+    'magenta':  "\033[1;35m",
+    'black':      "\033[1;30m",
+    'darkwhite':  "\033[0;37m",
+    'darkyellow': "\033[0;33m",
+    'darkgreen':  "\033[0;32m",
+    'darkblue':   "\033[0;34m",
+    'darkcyan':   "\033[0;36m",
+    'darkred':    "\033[0;31m",
+    'darkmagenta':"\033[0;35m",
+    'darkblack':  "\033[0;30m",
+    'off':        "\033[0;0m"
+}
 global wait
 wait = 0
-while len(desu) < 20:
+os.system('clear')
+print("""\n
++--------------------------LOADING GAME--------------------------+
+""")
+while len(desu) < 200:
 	wait += 1
-	if wait >= 300000:
-		desu.extend('|')
+	if wait >= 9000:
+		desu.extend('◼')
 		wait = 0
-	if wait >= 3000000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 5000000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 100000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 1000000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 9000000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 100000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 2500000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 1337000:
-		desu.extend('|')
-		wait = 0
-	if wait >= 420000:
-		desu.extend('|')
-		wait = 0
-	print(''.join(desu), end = '\r')
+	print(color['magenta'] + ''.join(desu), end = '\r' + color['off'])
 print('\n')
 import kazooquest
