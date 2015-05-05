@@ -113,15 +113,20 @@
 # -Added in some more spells, you just can't get them legitimately yet
 # -Removed some useless comments
 # -Minor fixes with magic/fight mechanics
-#Version 0.7
+#Version 0.7 (Major update!)
 # -Added kinda classes
 # -Added some other things
 # -Documentation...? I guess...?
-import os, random, time
+#Version 0.8 (Major update!)
+# -Added colors!?!?!?
+# -Hit 1000 lines!!!! (Celebration time! :D)
+# -Added fancier things in general
+import os, random, time, pickle, sys
 import argparse
-import pickle
-current_version = "v0.7"
+from collections import Counter
+current_version = "v0.8"
 os.system('clear')
+sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
@@ -137,7 +142,7 @@ def update():
 #args = parser.parse_args()
 global wait
 wait = 0
-print "Welcome to Kazoo Quest!  For help type \"help\"!"
+print color['yellow'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 print "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW."
 global weapon
 weapon = 0
@@ -163,6 +168,25 @@ global levels
 levels = ""
 global skills
 skills = []
+color = {
+    'white':    "\033[1;37m",
+    'yellow':   "\033[1;33m",
+    'green':    "\033[1;32m",
+    'blue':     "\033[1;34m",
+    'cyan':     "\033[1;36m",
+    'red':      "\033[1;31m",
+    'magenta':  "\033[1;35m",
+    'black':      "\033[1;30m",
+    'darkwhite':  "\033[0;37m",
+    'darkyellow': "\033[0;33m",
+    'darkgreen':  "\033[0;32m",
+    'darkblue':   "\033[0;34m",
+    'darkcyan':   "\033[0;36m",
+    'darkred':    "\033[0;31m",
+    'darkmagenta':"\033[0;35m",
+    'darkblack':  "\033[0;30m",
+    'off':        "\033[0;0m"
+}
 silly = 0
 while silly != 1:
 	classsc = raw_input('What class would you like to be? \n1. Warrior\n2. Mage\n3. Assassin\n')
@@ -228,8 +252,6 @@ global magic_dam
 global enemy_info
 enemy_info = ""
 global enemy_type
-global fight_p
-fight_p = enemy_info + "What do you want to do?\n1: Attack\n2: Magic\n3: Dodge\n4: Enemy Info\n5: Run Away"
 global f_act
 global hp
 hp = 20
@@ -244,6 +266,8 @@ kills = []
 global enemy_dam_info
 global encounter
 encounter = 0
+global history
+history = []
 global f
 global x
 global y
@@ -251,7 +275,7 @@ global z
 x = 0
 y = 0
 z = 0
-print "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south You see a torch on the ground."
+print color['black'] + "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south You see a torch on the ground." + color['off']
 act = raw_input('> ')
 words = act.split(" ")
 stop = 0
@@ -356,11 +380,13 @@ while stop != 1:
 		else:
 			print "You don't see that here."
 	if act == "clear":
+		encounter_time += 1
 		os.system('clear')
 	elif act == "inv":
 		print '\n'.join(inventory)
 	elif act == "look":
 		skip = 0
+		encounter_time += 1
 #Debugging commands
 	elif act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 		encounter_time += 6
@@ -373,15 +399,15 @@ while stop != 1:
 		with open('game_save.dat', 'wb') as f:
 			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
 		f.close()
-		print "Save successful!"
+		print color['cyan'] + "Save successful!" + color['off']
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
 			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
 		f.close()
 		os.system('clear')
-		print "Game loaded!"
+		print color['cyan'] + "Game loaded!" + color['off']
 	elif act == "quit":
-		print "Are you sure you want to quit? (yes/no)"
+		print color['green'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
 		if quit_response == "yes":
 			quit()
@@ -394,6 +420,7 @@ while stop != 1:
 		spells.append("firebolt")
 		spells.append("frost")
 		spells.append("poison")
+		spells.append("life drain")
 #Debugging command
 	elif act == "etime":
 		print encounter
@@ -401,14 +428,14 @@ while stop != 1:
 	elif act == "spells":
 		print '\n'.join(spells)
 	elif act == "heal":
-#I know this is shit but wahterver
+#Reminder to redo this
 		hp_heal = hp + max_hp / 2 * random.randint(1, 2)
 		mana_heal = mana + max_mana / 4 * random.randint(1, 2)
 		skill_heal = skill_energy + max_energy / 4 * random.randint(1, 2)
 		hp += hp_heal
 		mana += mana_heal
 		skill_energy += skill_heal
-		print "You have healed %r health, %r mana and %r energy!" % (hp_heal, mana_heal, skill_heal)
+		print color['darkblue'] + "You have healed %r health, %r mana and %r energy!" % (hp_heal, mana_heal, skill_heal) + color['off']
 		encounter_time -= 3
 	elif act == "time":
 		skip = 0
@@ -422,239 +449,238 @@ while stop != 1:
 		z = int(raw_input('> '))
 	elif act == "info":
 		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r" % (damage, hp, defe, mana)
-		
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 		
 	if act == "help":
-		print "-help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)"
+		print color['black']+ "-help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']
 		
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 0 and y == 0 and "torch" in triggers:
 		roominfo = "Your torch lights up the walls of the cave.  There is a path to the north and south."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 0 and y == 1 and "torch" not in triggers:
 		roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly.  You decide to turn back until you find a light source."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 		y -= 1
 	elif x == 0 and y == 1 and "torch" in triggers:
 		roominfo = "You begin to walk to the north, allowing your torch to light the way.  As you walk you begin to hear a slight howl of wind from ahead of you.  There is a path to the east."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 1 and y == 1:
 		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 1 and weapon < 1:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.  The trees tower over you and you hear the sound of rushing water to the north.  You see a good sized tree branch with a pointed end."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 1 and weapon > 0:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and see a forest to the east.  You hear the sound of rushing water to the north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 2:
 		encounter = 1
 		enemy_type = "wolf"
 		roominfo = "There is a swiftly flowing stream here.  To the east is a path to the forest.  You think you see a small cottage far to the north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 3:
 		roominfo = "You keep walking around the side of the mountain.  There is a cottage far to the north and a cave to the south.  There is a forest to the east."
 		enemy_type = "wolf"
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 4:
 		roominfo = "The mountain path seems to be rougher here.  You see that the stream flows from a grate in the mountain.  There is a forest to the east, a cave to the south, and a cottage to the north."
 		enemy_type = "wolf"
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 5:
 		roominfo = "You are nearing the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 6 and z == 0 and "letter" in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 7 and "lights" not in triggers:
 		encounter = 0
 		roominfo = "The inside of the house is cold and dark.  You have an unexplainable feeling of gloom.  There are rooms to the east and the north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 7 and "lights" in triggers:
 		encounter = 0
 		roominfo = "There is a bright red stain on the rug in front of the door.  You have an unexplainable feeling of dread.  The kitchen is to the east and the living room is to the north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 		roominfo = "The room is lit up slightly by a window.  You can see a switch by the window.  The doorway is to the west."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 8 and "lights" not in triggers:
 		roominfo = "It's way too dark in here for you to see anything.  The doorway is to the south."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" not in triggers:
 		roominfo = "The living room is completely barren.  There appears to be a locked trapdoor in the floor.  The doorway is to the south."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
 		roominfo = "The trapdoor in this room has a key inside.  The doorway is to the south."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" in inventory:
 		roominfo = "The trapdoor in the center of the room is empty.  The doorway is to the south."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
 	elif x == 3 and y == 7 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 		z += 1
 	elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
 		roominfo = "The light shows that there are stairs going down.  The entrance is to the west."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground.  There is leather armor on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has nothing
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and "dagger" not in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground.  There is leather armor on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has lamp ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and "dagger" not in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has lamp and armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and "dagger" in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is leather armor on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has lamp and dagger ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and "dagger" in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has all items ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and "dagger" in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has leather armor ^
 	elif x == 3 and y == 7 and z == 1 and "dagger" in inventory and "lamp" not in inventory and armor >= 1:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has dagger and armor ^
 	elif x == 3 and y == 7 and z == 1 and "dagger" in inventory and "lamp" not in inventory and armor != 1:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is leather armor on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #Player has dagger ^
 	elif x == 3 and y == 8 and z == 1:
 		encounter = 0
 		enemy_type = "orc"
 		roominfo = "As you walk, an ominous presence overwhelms you."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 9 and z == 1:
 		encounter = 1
 		enemy_type = "orc"
-		print "There are paths to the north, east, and west."
+		print color['black'] + "There are paths to the north, east, and west." + color['off']
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west"
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 1 and y == 9 and z == 1:
 		roominfo = "The strange dripping sound seems a short distance away.  There is a path to the north and east."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 1 and y == 10 and z == 1:
 		roominfo = "The dripping sound appears to be just around the corner up ahead.  You hear a deep moaning sound.  There is a path to the west and south."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 0 and y == 10 and z == 1:
 		roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume.  There are paths to the west and east."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 10 and z == 1:
 		enemy_type = "wraith"
 		roominfo = "You notice a rapidly dripping spot on the ceiling.  You can hear the moaning sound ahead.  There is a path to the east and north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 11 and z == 1:
 		roominfo = "As you look north, you can't see the end of the passage.  There is a path to the south and north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 12 and z == 1:
 		roominfo = "Something seems off around you..."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 13 and z == 1:
 		roominfo = "You think you can see a light to the north."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 14 and z == 1:
 		roominfo = "The light to the north grows in brightness."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 15 and z == 1 and armor <= 1:
 		roominfo = "You almost trip on the chainmail armor that lays on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 15 and z == 1 and armor >= 2:
 		roominfo = "The silence here is intense.  The light ahead seems to be getting brighter."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 16 and z == 1:
 		roominfo = "The light to the north appears to be a wall of solid light."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == -1 and y == 17 and z == 1:
 		roominfo = "You feel yourself being whisped away to somewhere else."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 		x = 3
 		y = 9
 		z = 1
 #East path split
 	elif x == 4 and y == 9 and z == 1:
 		roominfo = "There is a slight clanking noise in the distance.  There is a path that stretches far ahead of you."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 5 and y == 9 and z == 1:
 		enemy_type = "dwarf"
 		roominfo = "You sense something small nearby."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 6 and y == 9 and z == 1:
 		roominfo = "You smell something foreign to you... Then again you don't really remember anything..."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 7 and y == 9 and z == 1:
 		roominfo = "This passage seems absurdly long..."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 8 and y == 9 and z == 1:
 		roominfo = "There seems to be something far ahead of you in."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
 		roominfo = "There appears to be a crowbar on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 9 and y == 9 and z == 1 and "crowbar" in inventory:
 		roominfo = "The passageway a bit ahead appears to be very bright."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 10 and y == 9 and z == 1:
 		roominfo = "The wall in front of you seems to be made of solid light..."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 11 and y == 9 and z == 1:
 		roominfo = "You feel yourself being taken somewhere else..."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 		x = 3
 		y = 9
 		z = 1
 #North path split
 	elif x == 3 and y == 10 and z == 1:
 		roominfo = "All you see to the north is darkness."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 11 and z == 1:
 		roominfo = "..."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 12 and z == 1 and "underground_door" not in triggers:
 		roominfo = "There is suddenly a door in front of you.  You can't open it with your hands."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 12 and z == 1 and "underground_door" in triggers:
 		roominfo = "The door is open."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 13 and z == 1 and "underground_door" not in triggers:
 		y -= 1
 	elif x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 		roominfo = "There is a book lying on the ground."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 13 and z == 1 and "spellbook- Fire" in inventory:
 		roominfo = "There is an empty room here."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
-		print roominfo
+		print color['black'] + roominfo + color['off']
 #This is used to undo movement into an unexisting room V
 	else:
 		if act == "n":
@@ -733,7 +759,7 @@ while stop != 1:
 		max_hp = 9001
 		mana = 6.9e+42
 	if exp >= exp_limit:
-		print "Level up!"
+		print color['blue'] + "Level up!" + color['off']
 		exp = 0
 		if level == 1:
 			exp_limit = 25
@@ -833,14 +859,14 @@ while stop != 1:
 				enemy_dam_info = "5 to 8"
 				enemy_dodge = 0
 #Remember to fix this silly grammar thingy here
-			enemy_info = "A "+enemy_type+" suddenly appears!."
+			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
-		fight_act = raw_input(fight_p + "\n")
+		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack\n2: Magic\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
 		dodges = 0
 		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
-			print "You dealt %d damage to the %s!" % (damage, enemy_type)
+			print color['green'] + "You dealt %d damage to the %s!" % (damage, enemy_type) + color['off']
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
@@ -850,21 +876,29 @@ while stop != 1:
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Burning")
 				enemy_debuff_timer = 5
-				print "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam
+				print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
 			elif magic_attack == "2" and "frost" in spells and mana >= 8:
 				magic_dam = random.randint(50, 60)
 				mana -= 8
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Frozen")
 				enemy_debuff_timer = 5
+				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
 			elif magic_attack == "3" and "poison" in spells and mana >= 13:
 				magic_dam = random.randint(25, 50)
 				mana -= 13
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Poisoned")
 				enemy_debuff_timer = 8
+				print color['darkgreen'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
+			elif magic_attack == "4" and "life drain" in spells and mana >= 20:
+				drain_dam = random.randint(20, 35)
+				mana -= 20
+				enemy_hp -= drain_dam
+				hp += drain_dam
+				print color['magenta'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
 			else:
-				print "You can't do that!"
+				print color['darkyellow'] + "You can't do that!" + color['off']
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
@@ -873,16 +907,17 @@ while stop != 1:
 			if dodge_act >= 75:
 				parrypowa = damage * 2
 				enemy_hp -= parrypowa
-				print "You parried the attack and dealt %d damage!" % parrypowa
+				print color['green'] + "You parried the attack and dealt %d damage!" % parrypowa  + color['off']
 				dodges = 1
 		elif fight_act == "4":
-			print "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info)
+			print color['darkgreen'] + "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info) + color['off']
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
 				encounter_time = random.randint(5, 7)
 				enemy_hp = 0
 				dodges = 0
+				enemy_debuffs = []
 				print "You ran away!"
 		else:
 			print "You can't do that!"
@@ -901,7 +936,7 @@ while stop != 1:
 				enemy_dam = random.randint(15, 20)
 			hp = hp - enemy_dam + defe
 			dodges = 0
-			print "The "+enemy_type+" dealt %r damage to you!" % enemy_dam
+			print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam) + color['off']
 		if len(enemy_debuffs) > 0:
 			if "Burning" in enemy_debuffs:
 				enemy_hp -= 3
@@ -918,6 +953,7 @@ while stop != 1:
 			enemy_set = 0
 			enemy_debuffs = []
 			print "You killed the " + enemy_type +"!"
+#Prepare for inefficiency : 3
 			kills.append(enemy_type)
 			encounter_time = random.randint(5, 8)
 			if enemy_type == "wolf":
@@ -932,6 +968,9 @@ while stop != 1:
 			elif enemy_type == "dwarf":
 				exp += 6
 				points += 6
+			elif enemy_type == "elf":
+				exp += 5
+				points += 5
 			elif enemy_type == "spirit":
 				exp += 8
 				points += 8
@@ -939,19 +978,17 @@ while stop != 1:
 				exp += 10
 				points += 10
 		if hp <= 0:
-			print "You have died!"
-			print "Do you want to see your final stats?"
+			print color['darkred'] + "You have died!" + color['off']
+			print color['yellow'] + "Do you want to see your final stats?" + color['off']
 			dead_p = raw_input('y/n ')
 			if dead_p == "y":
-				print "You killed these enemies:"
+				print color['darkmagenta'] + "You killed these enemies:" + color['off']
 				print ', '.join(kills) + '\n'
 				print "These are your final stats:"
-				print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, hp, defe, mana, level)
-				print "\nYour final score was %r" % points
+				print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, hp, defe, mana, level) + color['off']
+				print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
 				quit()
 			elif dead_p == "n":
-				quit()
-			else:
 				quit()
 		stop = 0
 	if hp > max_hp:
