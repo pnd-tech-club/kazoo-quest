@@ -944,3 +944,8 @@ while stop != 1:
 		mana = max_mana
 	if skill_energy > max_energy:
 		skill_energy = max_energy
+	except KeyboardInterrupt:
+		print "Wow, someone is in a hurry..."
+		with open('game_save.dat', 'wb') as f:
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
+		f.close()
