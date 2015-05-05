@@ -46,7 +46,8 @@
 
 #Version 0.8 (Major update!): -Added colors!?!?!?, added fancier things in general
 #Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement and readability, ideas for balancing levels: area limits, item evolution/or/other, really freaking low xp rates, start everything over... from scratch
-import os, random, time, pickle, sys
+#Version 0.8.2: -Reworked some stuff, fixed some bugs, reworked colors, added some more sillies, random things
+import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
 current_version = "v0.8.1"
@@ -181,6 +182,18 @@ global encounter
 encounter = 0
 global history
 history = []
+global save
+def save():
+	with open('game_save.dat', 'wb') as f:
+		pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
+	f.close()
+class CleanExit(object):
+	def __enter__(self):
+		return self
+	def __exit__(self, exc_type, exc_value, exc_tb):
+		if exc_type is KeyboardInterrupt:
+			return True
+		return exc_type is None
 global f
 global x
 global y
@@ -336,9 +349,7 @@ while stop != 1:
 	elif act == "debug.triggers":
 		print triggers
 	elif act == "save":
-		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
-		f.close()
+		save()
 		print color['cyan'] + "Save successful!" + color['off']
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
@@ -396,8 +407,7 @@ while stop != 1:
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 		
 	if act == "help":
-		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']
-		
+		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']	
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
@@ -944,8 +954,5 @@ while stop != 1:
 		mana = max_mana
 	if skill_energy > max_energy:
 		skill_energy = max_energy
-	except KeyboardInterrupt:
-		print "Wow, someone is in a hurry..."
-		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
-		f.close()
+	with CleanExit():
+		save()
