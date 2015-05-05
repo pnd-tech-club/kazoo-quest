@@ -194,16 +194,6 @@ global encounter
 encounter = 0
 global history
 history = []
-def save():
-	with open('game_save.dat', 'wb') as f:
-		pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter], f, protocol = 2)
-	f.close()
-def load():
-	with open('game_save.dat', 'rb') as f:
-		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter = pickle.load(f)
-	f.close()
-	os.system('clear')
-	print color['cyan'] + "Game loaded!" + color['off']
 class CleanExit(object):
 	def __enter__(self):
 		return self
@@ -221,7 +211,11 @@ z = 0
 import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
-	load()
+	with open('game_save.dat', 'rb') as f:
+		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter = pickle.load(f)
+	f.close()
+	os.system('clear')
+	print color['cyan'] + "Game loaded!" + color['off']
 else:
 	wait = 0
 silly = 0
@@ -377,10 +371,16 @@ while stop != 1:
 	elif act == "debug.triggers":
 		print triggers
 	elif act == "save":
-		save()
+		with open('game_save.dat', 'wb') as f:
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter], f, protocol = 2)
+		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
 	elif act == "load":
-		load()
+		with open('game_save.dat', 'rb') as f:
+			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter = pickle.load(f)
+		f.close()
+		os.system('clear')
+		print color['cyan'] + "Game loaded!" + color['off']
 	elif act == "quit":
 		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
@@ -842,7 +842,7 @@ while stop != 1:
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
-		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack\n2: Magic\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
+		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack" + color['green'] + "\tHealth:%r" % hp+ color['yellow'] + "\n2: Magic" + color['green'] + "\tMana: %r" % mana + color['yellow'] + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
 		dodges = 0
 		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
@@ -980,6 +980,3 @@ while stop != 1:
 		mana = max_mana
 	if skill_energy > max_energy:
 		skill_energy = max_energy
-	with CleanExit():
-		print "yudodis"
-		save()
