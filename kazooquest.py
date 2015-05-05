@@ -210,7 +210,7 @@ while silly != 1 and autoload != True:
 	elif classsc == "3":
 		skills.append("Stealth")
 		silly = 1
-print color['black'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
+print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW." + color['off']
 act = raw_input('> ')
 words = act.split(" ")
@@ -393,234 +393,234 @@ while stop != 1:
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 		
 	if act == "help":
-		print color['black']+ "-help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']
+		print color['darkwhite']+ "-help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']
 		
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 0 and y == 0 and "torch" in triggers:
 		roominfo = "Your torch lights up the walls of the cave.  There is a path to the north and south."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 0 and y == 1 and "torch" not in triggers:
 		roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly.  You decide to turn back until you find a light source."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 		y -= 1
 	elif x == 0 and y == 1 and "torch" in triggers:
 		roominfo = "You begin to walk to the north, allowing your torch to light the way.  As you walk you begin to hear a slight howl of wind from ahead of you.  There is a path to the east."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 1 and y == 1:
 		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 1 and weapon < 1:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.  The trees tower over you and you hear the sound of rushing water to the north.  You see a good sized tree branch with a pointed end."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 1 and weapon > 0:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and see a forest to the east.  You hear the sound of rushing water to the north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 2:
 		encounter = 1
 		enemy_type = "wolf"
 		roominfo = "There is a swiftly flowing stream here.  To the east is a path to the forest.  You think you see a small cottage far to the north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 3:
 		roominfo = "You keep walking around the side of the mountain.  There is a cottage far to the north and a cave to the south.  There is a forest to the east."
 		enemy_type = "wolf"
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 4:
 		roominfo = "The mountain path seems to be rougher here.  You see that the stream flows from a grate in the mountain.  There is a forest to the east, a cave to the south, and a cottage to the north."
 		enemy_type = "wolf"
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 5:
 		roominfo = "You are nearing the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 6 and z == 0 and "letter" in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 7 and "lights" not in triggers:
 		encounter = 0
 		roominfo = "The inside of the house is cold and dark.  You have an unexplainable feeling of gloom.  There are rooms to the east and the north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 7 and "lights" in triggers:
 		encounter = 0
 		roominfo = "There is a bright red stain on the rug in front of the door.  You have an unexplainable feeling of dread.  The kitchen is to the east and the living room is to the north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 		roominfo = "The room is lit up slightly by a window.  You can see a switch by the window.  The doorway is to the west."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 8 and "lights" not in triggers:
 		roominfo = "It's way too dark in here for you to see anything.  The doorway is to the south."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" not in triggers:
 		roominfo = "The living room is completely barren.  There appears to be a locked trapdoor in the floor.  The doorway is to the south."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
 		roominfo = "The trapdoor in this room has a key inside.  The doorway is to the south."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" in inventory:
 		roominfo = "The trapdoor in the center of the room is empty.  The doorway is to the south."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
 	elif x == 3 and y == 7 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 		z += 1
 	elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
 		roominfo = "The light shows that there are stairs going down.  The entrance is to the west."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground.  There is leather armor on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has nothing
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and "dagger" not in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground.  There is leather armor on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has lamp ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and "dagger" not in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has lamp and armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and "dagger" in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is leather armor on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has lamp and dagger ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and "dagger" in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has all items ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and "dagger" in inventory:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has leather armor ^
 	elif x == 3 and y == 7 and z == 1 and "dagger" in inventory and "lamp" not in inventory and armor >= 1:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has dagger and armor ^
 	elif x == 3 and y == 7 and z == 1 and "dagger" in inventory and "lamp" not in inventory and armor != 1:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is leather armor on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #Player has dagger ^
 	elif x == 3 and y == 8 and z == 1:
 		encounter = 0
 		enemy_type = "orc"
 		roominfo = "As you walk, an ominous presence overwhelms you."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 9 and z == 1:
 		encounter = 1
 		enemy_type = "orc"
-		print color['black'] + "There are paths to the north, east, and west." + color['off']
+		print "There are paths to the north, east, and west."
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west"
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 1 and y == 9 and z == 1:
 		roominfo = "The strange dripping sound seems a short distance away.  There is a path to the north and east."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 1 and y == 10 and z == 1:
 		roominfo = "The dripping sound appears to be just around the corner up ahead.  You hear a deep moaning sound.  There is a path to the west and south."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 0 and y == 10 and z == 1:
 		roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume.  There are paths to the west and east."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 10 and z == 1:
 		enemy_type = "wraith"
 		roominfo = "You notice a rapidly dripping spot on the ceiling.  You can hear the moaning sound ahead.  There is a path to the east and north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 11 and z == 1:
 		roominfo = "As you look north, you can't see the end of the passage.  There is a path to the south and north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 12 and z == 1:
 		roominfo = "Something seems off around you..."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 13 and z == 1:
 		roominfo = "You think you can see a light to the north."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 14 and z == 1:
 		roominfo = "The light to the north grows in brightness."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 15 and z == 1 and armor <= 1:
 		roominfo = "You almost trip on the chainmail armor that lays on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 15 and z == 1 and armor >= 2:
 		roominfo = "The silence here is intense.  The light ahead seems to be getting brighter."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 16 and z == 1:
 		roominfo = "The light to the north appears to be a wall of solid light."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == -1 and y == 17 and z == 1:
 		roominfo = "You feel yourself being whisped away to somewhere else."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 		x = 3
 		y = 9
 		z = 1
 #East path split
 	elif x == 4 and y == 9 and z == 1:
 		roominfo = "There is a slight clanking noise in the distance.  There is a path that stretches far ahead of you."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 5 and y == 9 and z == 1:
 		enemy_type = "dwarf"
 		roominfo = "You sense something small nearby."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 6 and y == 9 and z == 1:
 		roominfo = "You smell something foreign to you... Then again you don't really remember anything..."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 7 and y == 9 and z == 1:
 		roominfo = "This passage seems absurdly long..."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 8 and y == 9 and z == 1:
 		roominfo = "There seems to be something far ahead of you in."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
 		roominfo = "There appears to be a crowbar on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 9 and y == 9 and z == 1 and "crowbar" in inventory:
 		roominfo = "The passageway a bit ahead appears to be very bright."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 10 and y == 9 and z == 1:
 		roominfo = "The wall in front of you seems to be made of solid light..."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 11 and y == 9 and z == 1:
 		roominfo = "You feel yourself being taken somewhere else..."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 		x = 3
 		y = 9
 		z = 1
 #North path split
 	elif x == 3 and y == 10 and z == 1:
 		roominfo = "All you see to the north is darkness."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 11 and z == 1:
 		roominfo = "..."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 12 and z == 1 and "underground_door" not in triggers:
 		roominfo = "There is suddenly a door in front of you.  You can't open it with your hands."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 12 and z == 1 and "underground_door" in triggers:
 		roominfo = "The door is open."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 13 and z == 1 and "underground_door" not in triggers:
 		y -= 1
 	elif x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 		roominfo = "There is a book lying on the ground."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 13 and z == 1 and "spellbook- Fire" in inventory:
 		roominfo = "There is an empty room here."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
-		print color['black'] + roominfo + color['off']
+		print roominfo
 #This is used to undo movement into an unexisting room V
 	else:
 		if act == "n":
