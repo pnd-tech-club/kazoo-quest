@@ -47,10 +47,11 @@
 #Version 0.8 (Major update!): -Added colors!?!?!?, added fancier things in general
 #Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement and readability, ideas for balancing levels: area limits, item evolution/or/other, really freaking low xp rates, start everything over... from scratch
 #Version 0.8.2: -Reworked some stuff, fixed some bugs, reworked colors, added some more sillies, random things
+#Version 0.8.3: -Added "restart" command, various changes, defense rebalancing, small idea layouts, fixed some minor bugs
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-current_version = "v0.8.1"
+current_version = "v0.8.3"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
@@ -58,10 +59,21 @@ def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
 		pstatus = "Connection to Github available.  Downloading update."
-		os.system('git pull')
-		print "Done!"
 	else:
 		print "Connection failed.  Check your internet connection and try again."
+#		try:
+#			os.system('git pull')
+#			if False:
+#				print "Would you like to clone the game to your current directory?"
+#				thing = raw_input('y/n ')
+#				if thing == "y":
+#					os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
+#					print "Done!"
+#				break
+#			elif True:
+#				os.system('git pull')
+#				print "Done!"
+#				break
 #This code may be severely broken, I really don't have a clue at the time of writing it as I wrote it using online documentation and couldn't test it (yes, yes it is broken)
 #parser = argparse.ArgumentParser(description='Kazoo Quest')
 #parser.add_argument('--update', update = update())
@@ -182,11 +194,16 @@ global encounter
 encounter = 0
 global history
 history = []
-global save
 def save():
 	with open('game_save.dat', 'wb') as f:
-		pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon], f, protocol = 2)
+		pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter], f, protocol = 2)
 	f.close()
+def load():
+	with open('game_save.dat', 'rb') as f:
+		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter = pickle.load(f)
+	f.close()
+	os.system('clear')
+	print color['cyan'] + "Game loaded!" + color['off']
 class CleanExit(object):
 	def __enter__(self):
 		return self
@@ -204,11 +221,7 @@ z = 0
 import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
-	with open('game_save.dat', 'rb') as f:
-		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
-	f.close()
-	os.system('clear')
-	print color['cyan'] + "Game loaded!" + color['off']
+	load()
 else:
 	wait = 0
 silly = 0
@@ -216,15 +229,19 @@ while silly != 1 and autoload != True:
 	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\n2. Mage\n3. Assassin\n" + color['off'])
 	if classsc == "1":
 		skills.append("Rage")
+		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
 	elif classsc == "2":
 		skills.append("Recover")
+		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
 	elif classsc == "3":
 		skills.append("Stealth")
+		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
-print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
-print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW." + color['off']
+if autoload == True:
+	print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
+	print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW." + color['off']
 act = raw_input('> ')
 words = act.split(" ")
 stop = 0
@@ -337,6 +354,17 @@ while stop != 1:
 		os.system('clear')
 	elif act == "inv":
 		print '\n'.join(inventory)
+	elif act == "restart":
+		while wait == 0:
+			print color['red'] + "Are you sure you want to delete your save and restart all progress?" + color['off']
+			response = raw_input('(y/n) >')
+			if response == "y":
+				print "Okay, deleting your save and restarting..."
+				os.system('rm game_save.dat')
+				os.system('python kazooquest.py')
+				wait = 1
+			elif response == "n":
+				wait = 1
 	elif act == "look":
 		skip = 0
 		encounter_time += 1
@@ -352,11 +380,7 @@ while stop != 1:
 		save()
 		print color['cyan'] + "Save successful!" + color['off']
 	elif act == "load":
-		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon = pickle.load(f)
-		f.close()
-		os.system('clear')
-		print color['cyan'] + "Game loaded!" + color['off']
+		load()
 	elif act == "quit":
 		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
@@ -368,10 +392,13 @@ while stop != 1:
 	elif act == "OP420":
 		weapon = 7
 		armor = 7
+		spells = []
+		spells_thing = []
 		spells.append("firebolt")
 		spells.append("frost")
 		spells.append("poison")
 		spells.append("life drain")
+		spells_thing.append("1. Firebolt")
 		spells_thing.append("2. Frost")
 		spells_thing.append("3. Poison")
 		spells_thing.append("4. Life Steal")
@@ -405,7 +432,6 @@ while stop != 1:
 		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r" % (damage, hp, defe, mana)
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
-		
 	if act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']	
 	if x == 0 and y == 0 and "torch" not in triggers:
@@ -678,32 +704,32 @@ while stop != 1:
 		max_hp = 20
 		mana = 5
 	elif armor == 1:
-		defe = 5
+		defe = 4
 		max_hp = 25
 		mana = 10
 		points += 2
 	elif armor == 2:
-		defe = 8
+		defe = 6
 		max_hp = 30
 		mana = 15
 		points += 4
 	elif armor == 3:
-		defe = 13
+		defe = 9
 		max_hp = 40
 		mana = 20
 		points += 5
 	elif armor == 4:
-		defe = 20
+		defe = 12
 		max_hp = 50
 		mana = 30
 		points += 10
 	elif armor == 5:
-		defe = 25
+		defe = 15
 		max_hp = 60
 		mana = 40
 		points += 15
 	elif armor == 6:
-		defe = 30
+		defe = 20
 		max_hp = 75
 		mana = 50
 		points += 20
@@ -955,4 +981,5 @@ while stop != 1:
 	if skill_energy > max_energy:
 		skill_energy = max_energy
 	with CleanExit():
+		print "yudodis"
 		save()
