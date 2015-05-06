@@ -49,7 +49,7 @@
 #Version 0.8.2: -Reworked some stuff, fixed some bugs, reworked colors, added some more sillies, random things
 #Version 0.8.3: -Added "restart" command, various changes, defense rebalancing, small idea layouts, fixed some minor bugs
 #Version 0.8.4: -Reworked/condensed some of the code(may have unpredicted results)
-#Version 0.8.5: -Attempted 
+#Version 0.8.5: -Managed to allow for better user input
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -121,8 +121,12 @@ evolve_count = 0
 points = 0
 triggers = []
 inventory = []
-take_words = set('take', 'grab', 'pick up', 'get', 'aquire')
-use_words = set('use', 'eat', 'read', 'drink')
+take_words = ['take', 'grab', 'pick up', 'get', 'aquire']
+use_words = ['use', 'eat', 'read', 'drink']
+n_words = ['n', 'north']
+s_words = ['s', 'south']
+e_words = ['e', 'east']
+w_words = ['w', 'west']
 stop = 0
 letter = """The letter reads as follows:
 Dear [The name is smudged out]
@@ -138,6 +142,7 @@ enemy_set = 0
 time = 0
 encounter_time = 5
 skip = 0
+enemy_type = ""
 enemy_dam = 0
 enemy_dodge = 0
 enemy_buffs = []
@@ -166,7 +171,7 @@ import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
 	with open('game_save.dat', 'rb') as f:
-		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter = pickle.load(f)
+		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type = pickle.load(f)
 	f.close()
 	os.system('clear')
 	print color['cyan'] + "Game loaded!" + color['off']
@@ -199,13 +204,13 @@ while stop != 1:
 #Variable 'x' is west/east(ex. -1 would be to the west and +1 would be to the east)
 #Variable 'y' is south/north(ex. -1 would be to the south and +1 would be to the north)
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
-	if act == "n":
+	if list(set(n_words) & set(words)):
 		y += 1
-	elif act == "s":
+	elif list(set(s_words) & set(words)):
 		y -= 1
-	elif act == "e":
+	elif list(set(e_words) & set(words)):
 		x += 1
-	elif act == "w":
+	elif list(set(w_words) & set(words)):
 		x -= 1
 	elif act == "d":
 		z += 1
@@ -216,7 +221,7 @@ while stop != 1:
 		print x
 		print y
 		encounter_time += 1
-	if "use" in words:
+	if list(set(use_words) & set(words)):
 		if "switch" in words and x == 3 and y == 7 and z == 0:
 			triggers.append("lights")
 			print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
@@ -237,7 +242,7 @@ while stop != 1:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
 			evolve_count += 1
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".  It grants whoever uses it a beautiful voice!"
-	if "take" in words:
+	if list(set(take_words) & set(words)):
 		if "torch" in words and x == 0 and y == 0 and "torch" not in triggers:
 			items = "torch"
 			inventory.append(items)
@@ -328,12 +333,12 @@ while stop != 1:
 		print triggers
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter], f, protocol = 2)
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type], f, protocol = 2)
 		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type = pickle.load(f)
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
