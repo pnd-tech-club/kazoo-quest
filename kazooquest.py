@@ -48,6 +48,7 @@
 #Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement and readability, ideas for balancing levels: area limits, item evolution/or/other, really freaking low xp rates, start everything over... from scratch
 #Version 0.8.2: -Reworked some stuff, fixed some bugs, reworked colors, added some more sillies, random things
 #Version 0.8.3: -Added "restart" command, various changes, defense rebalancing, small idea layouts, fixed some minor bugs
+#Version 0.8.4: -Reworked/condensed some of the code(may have unpredicted results)
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -78,7 +79,6 @@ def update():
 #parser = argparse.ArgumentParser(description='Kazoo Quest')
 #parser.add_argument('--update', update = update())
 #args = parser.parse_args()
-global wait
 wait = 0
 color = {
     'white':    "\033[1;37m",
@@ -99,51 +99,28 @@ color = {
     'darkblack':  "\033[0;30m",
     'off':        "\033[0;0m"
 }
-global weapon
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
-global armor
 armor = 0
 #Armor list: 0 = Cloth shirt, 1 = Leather Breastplate, 2 = Chainmail Breastplate, 3 = Scale Breastplate, 4 = Crystal Breastplate, 5 = Cloak of Shadows, 6 = Magic Shield, 7 = Kazoo Shield of Death
-global dodges
 dodges = 0
-global dodge_act
 dodge_act = 1
-global classs
-global classsc
-global damage
 damage = 3
-global max_hp
 max_hp = 20
-global max_mana
 max_mana = 5
-global level
 level = 0
-global levels
 levels = ""
-global skills
 skills = []
-global skill_energy
 skill_energy = 5
-global max_energy
 max_energy = 5
-global spells
 spells = []
-global spells_thing
 spells_thing = []
-global exp
 exp = 0
-global evolve_count
 evolve_count = 0
-global points
 points = 0
-global triggers
 triggers = []
-global inventory
 inventory = []
-global stop
 stop = 0
-global letter
 letter = """The letter reads as follows:
 Dear [The name is smudged out]
 	We have recently heard about your ideas with our company.  We would like to officially meet with you on the fourth [The rest of the paragraph is blacked out].
@@ -153,46 +130,24 @@ We would also appreciate if you could begin to proceed with your ideas(at least 
                                                                                     A.L.
 [There appears to be a large chunk of the page torn out]
 """
-global enemy_set
 enemy_set = 0
 #Time removed in v0.1.4 (Re-implementation being tested in v0.3)
-global time
 time = 0
-global encounter_time
 encounter_time = 5
-global skip
 skip = 0
-global enemy_hp
-global enemy_dam
 enemy_dam = 0
-global enemy_dodge
 enemy_dodge = 0
-global magic_attack
-global enemy_buffs
 enemy_buffs = []
-global enemy_debuffs
 enemy_debuffs = []
-global enemy_debuff_timer
 enemy_debuff_timer = 5
-global magic_dam
-global enemy_info
 enemy_info = ""
-global enemy_type
-global f_act
-global hp
+enemy_dam_info = ""
 hp = 20
-global defe
 defe = 1
-global mana
 mana = 5
-global exp_limit
 exp_limit = 10
-global kills
 kills = []
-global enemy_dam_info
-global encounter
 encounter = 0
-global history
 history = []
 class CleanExit(object):
 	def __enter__(self):
@@ -201,10 +156,6 @@ class CleanExit(object):
 		if exc_type is KeyboardInterrupt:
 			return True
 		return exc_type is None
-global f
-global x
-global y
-global z
 x = 0
 y = 0
 z = 0
@@ -235,7 +186,7 @@ while silly != 1 and autoload != True:
 		silly = 1
 if autoload == True:
 	print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
-	print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS TO MATTHEW." + color['off']
+	print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
 words = act.split(" ")
 stop = 0
