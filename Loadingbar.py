@@ -32,7 +32,7 @@ print(color['yellow'] + """
 |												|""" + color['off'], end = '\r')
 while len(desu) < 290:
 	wait += 1
-	if wait >= 4500:
+	if wait >= 6000:
 		desu.extend('◼')
 		wait = 0
 	print(color['cyan'] + ''.join(desu), end = '\r' + color['off'])

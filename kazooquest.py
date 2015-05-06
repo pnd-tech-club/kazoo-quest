@@ -49,6 +49,7 @@
 #Version 0.8.2: -Reworked some stuff, fixed some bugs, reworked colors, added some more sillies, random things
 #Version 0.8.3: -Added "restart" command, various changes, defense rebalancing, small idea layouts, fixed some minor bugs
 #Version 0.8.4: -Reworked/condensed some of the code(may have unpredicted results)
+#Version 0.8.5: -Attempted 
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -120,6 +121,8 @@ evolve_count = 0
 points = 0
 triggers = []
 inventory = []
+take_words = set('take', 'grab', 'pick up', 'get', 'aquire')
+use_words = set('use', 'eat', 'read', 'drink')
 stop = 0
 letter = """The letter reads as follows:
 Dear [The name is smudged out]
@@ -168,7 +171,7 @@ if autoload == True:
 	os.system('clear')
 	print color['cyan'] + "Game loaded!" + color['off']
 else:
-	wait = 0
+	pass
 silly = 0
 while silly != 1 and autoload != True:
 	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\n2. Mage\n3. Assassin\n" + color['off'])
@@ -405,11 +408,11 @@ while stop != 1:
 	elif x == 1 and y == 1:
 		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
 		print roominfo
-	elif x == 2 and y == 1 and weapon < 1:
+	elif x == 2 and y == 1 and "branch" not in triggers:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.  The trees tower over you and you hear the sound of rushing water to the north.  You see a good sized tree branch with a pointed end."
 		print roominfo
-	elif x == 2 and y == 1 and weapon > 0:
+	elif x == 2 and y == 1 and "branch" in triggers:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and see a forest to the east.  You hear the sound of rushing water to the north."
 		print roominfo
@@ -427,9 +430,21 @@ while stop != 1:
 		enemy_type = "wolf"
 		print roominfo
 	elif x == 2 and y == 5:
-		roominfo = "You are nearing the cottage.  There is a cave far to the south and a forest to the east."
+		roominfo = "You are nearing the cottage.  There is a cave far to the south."
 		enemy_type = "wolf"
 		print roominfo
+#Forest area follows
+	elif x == 3 and y == 1:
+		roominfo = "The sunlight is slightly filtered by the trees above.  There is a cave to the west."
+		print roominfo
+	elif x == 3 and y == 2:
+		encounter = 0
+		roominfo = "The sunlight is slightly filtered by the trees above.  There is a stream to the west."
+		print roominfo
+	elif x == 3 and y == 3:
+		encounter = 0
+		roominfo = "The sunlight is slightly filtered by the trees above.  "
+#House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
