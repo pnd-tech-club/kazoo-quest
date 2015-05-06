@@ -28,13 +28,13 @@ global wait
 wait = 0
 os.system('clear')
 print(color['yellow'] + """
-+-----------------------------------------LOADING GAME------------------------------------------+
+ _________________________________________LOADING GAME__________________________________________
 |												|""" + color['off'], end = '\r')
 while len(desu) < 290:
 	wait += 1
 	if wait >= 4500:
 		desu.extend('◼')
 		wait = 0
-	print(color['magenta'] + ''.join(desu), end = '\r' + color['off'])
+	print(color['cyan'] + ''.join(desu), end = '\r' + color['off'])
 print('\n')
 import kazooquest

@@ -186,6 +186,7 @@ while silly != 1 and autoload != True:
 		silly = 1
 if autoload == True:
 	print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
+#The line below will be commented out when current version is known to be stable
 	print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
 words = act.split(" ")
@@ -228,6 +229,7 @@ while stop != 1:
 			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
 			spells_thing.append("1. Firebolt")
+#Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
 			evolve_count += 1
@@ -313,10 +315,10 @@ while stop != 1:
 	elif act == "look":
 		skip = 0
 		encounter_time += 1
-#Debugging commands
 	elif act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 		encounter_time += 6
 		skill_energy -= 5
+#Debugging commands
 	elif act == "debug.update":
 		update()
 	elif act == "debug.triggers":
@@ -734,7 +736,8 @@ while stop != 1:
 		damage += 8
 		max_hp += 10
 		max_mana += 7
-	elif len(levels) == 6:
+#Limits level until certain item is used
+	elif len(levels) == 6 and evolve_count >= 1:
 		damage += 10
 		max_hp += 10
 		max_mana += 8
@@ -889,16 +892,16 @@ while stop != 1:
 			kills.append(enemy_type)
 			encounter_time = random.randint(5, 8)
 			if enemy_type == "wolf":
-				exp += 2
+				exp += 1
 				points += 2
 			elif enemy_type == "orc":
-				exp += 3
+				exp += 2
 				points += 3
 			elif enemy_type == "wraith":
-				exp += 4
+				exp += 3
 				points += 4
 			elif enemy_type == "dwarf":
-				exp += 6
+				exp += 4
 				points += 6
 			elif enemy_type == "elf":
 				exp += 5
