@@ -30,7 +30,7 @@ os.system('clear')
 print(color['yellow'] + """
  _________________________________________LOADING GAME__________________________________________
 |												|""" + color['off'], end = '\r')
-while len(desu) < 290:
+while len(desu) < 289:
 	wait += 1
 	if wait >= 6000:
 		desu.extend('◼')
