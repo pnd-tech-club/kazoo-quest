@@ -51,6 +51,8 @@
 #Version 0.8.4: -Reworked/condensed some of the code(may have unpredicted results)
 #Version 0.8.5: -Managed to allow for better user input
 #Version 0.8.6: -Added some spell level stuff, fixed some minor bugs, changed some commands slightly due to enemy triggering issues
+
+#Version 0.9 (Major update!): -Added basic layout for difficulties, various things, will probably fix balance issues in the next update
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -184,31 +186,46 @@ import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
 	with open('game_save.dat', 'rb') as f:
-		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type, levels = pickle.load(f)
+		hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo = pickle.load(f)
 	f.close()
 	os.system('clear')
 	print color['cyan'] + "Game loaded!" + color['off']
+	print roominfo
 else:
 	pass
 silly = 0
 while silly != 1 and autoload != True:
+	game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['blue'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
+	if game_diff == "1":
+		hp = 25
+		defe = 2
+		mana = 8
+	elif game_diff == "2":
+		hp = 20
+		defe = 1
+		mana = 5
+	elif game_diff == "3":
+		hp = 15
+		defe = 1
+		mana = 5
+	elif game_diff == "4":
+		print color['red'] + "I hope you know what you're doing..." + color['off']
+		hp = 10
+		defe = 0
+		mana = 0
 	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\n2. Mage\n3. Assassin\n" + color['off'])
 	if classsc == "1":
 		skills.append("Rage")
-		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
 	elif classsc == "2":
 		spells.append("recover")
-		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
 	elif classsc == "3":
 		skills.append("Stealth")
-		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
-if autoload == True:
 	print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 #The line below will be commented out when current version is known to be stable
-	print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
+print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
 words = act.split(" ")
 stop = 0
@@ -233,7 +250,8 @@ while stop != 1:
 	if act == "num":
 		print x
 		print y
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	if list(set(use_words) & set(words)):
 		if "switch" in words and x == 3 and y == 7 and z == 0:
 			triggers.append("lights")
@@ -318,11 +336,13 @@ while stop != 1:
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
 	if act == "clear":
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 		os.system('clear')
 	elif act == "inv":
 		print '\n'.join(inventory)
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	elif act == "restart":
 		while wait == 0:
 			print color['red'] + "Are you sure you want to delete your save and restart all progress?" + color['off']
@@ -336,7 +356,8 @@ while stop != 1:
 				wait = 1
 	elif act == "look":
 		skip = 0
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	elif act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 		encounter_time += 6
 		skill_energy -= 5
@@ -349,17 +370,17 @@ while stop != 1:
 		inventory.append("mysterious charm")
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type, levels], f, protocol = 2)
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo], f, protocol = 2)
 		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type, levels = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo = pickle.load(f)
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
-		print roominfo
 	elif act == "quit":
 		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
@@ -387,10 +408,12 @@ while stop != 1:
 	elif act == "etime":
 		print encounter
 		print encounter_time
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	elif act == "spells":
 		print '\n'.join(spells)
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	elif act == "heal":
 #Reminder to redo this
 		hp_heal = max_hp / 2
@@ -420,7 +443,8 @@ while stop != 1:
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 	if act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']	
-		encounter_time += 1
+		if encounter == 1:
+			encounter_time += 1
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
@@ -516,35 +540,35 @@ while stop != 1:
 		roominfo = "The light shows that there are stairs going down.  The entrance is to the west."
 		print roominfo
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
-	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and weapon < 2:
+	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground.  There is leather armor on the ground."
 		print roominfo
-#Player has nothing
-	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and "dagger" not in inventory:
+#Player has nothing ^
+	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground.  There is leather armor on the ground."
 		print roominfo
 #Player has lamp ^
-	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and "dagger" not in inventory:
+	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground."
 		print roominfo
 #Player has lamp and armor ^
-	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and "dagger" in inventory:
+	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is leather armor on the ground."
 		print roominfo
 #Player has lamp and dagger ^
-	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and "dagger" in inventory:
+	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north."
 		print roominfo
 #Player has all items ^
-	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and "dagger" in inventory:
+	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground."
 		print roominfo
 #Player has leather armor ^
-	elif x == 3 and y == 7 and z == 1 and "dagger" in inventory and "lamp" not in inventory and armor >= 1:
+	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground."
 		print roominfo
 #Player has dagger and armor ^
-	elif x == 3 and y == 7 and z == 1 and "dagger" in inventory and "lamp" not in inventory and armor != 1:
+	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is leather armor on the ground."
 		print roominfo
 #Player has dagger ^
@@ -698,44 +722,139 @@ while stop != 1:
 #This weapon is going to be available for debugging through the input of "OP420"
 	elif weapon == 7:
 		damage = 1337
-	if armor == 0:
-		defe = 1
-		max_hp = 20
-		mana = 5
-	elif armor == 1:
-		defe = 4
-		max_hp = 25
-		mana = 10
-		points += 2
-	elif armor == 2:
-		defe = 6
-		max_hp = 30
-		mana = 15
-		points += 4
-	elif armor == 3:
-		defe = 9
-		max_hp = 40
-		mana = 20
-		points += 5
-	elif armor == 4:
-		defe = 12
-		max_hp = 50
-		mana = 30
-		points += 10
-	elif armor == 5:
-		defe = 15
-		max_hp = 60
-		mana = 40
-		points += 15
-	elif armor == 6:
-		defe = 20
-		max_hp = 75
-		mana = 50
-		points += 20
-	elif armor == 7:
-		defe = 420
-		max_hp = 9001
-		mana = 6.9e+42
+	if game_diff == "1":
+		if armor == 0:
+			defe = 2
+			max_hp = 25
+			mana = 8
+		elif armor == 1:
+			defe = 5
+			max_hp = 30
+			mana = 10
+		elif armor == 2:
+			defe = 8
+			max_hp = 35
+			mana = 15
+		elif armor == 3:
+			defe = 9
+			max_hp = 40
+			mana = 20
+		elif armor == 4:
+			defe = 12
+			max_hp = 50
+			mana = 30
+		elif armor == 5:
+			defe = 15
+			max_hp = 60
+			mana = 40
+		elif armor == 6:
+			defe = 20
+			max_hp = 75
+			mana = 50
+		elif armor == 7:
+			defe = 420
+			max_hp = 9001
+			mana = 6.9e+42
+	if game_diff == "2":
+		if armor == 0:
+			defe = 1
+			max_hp = 20
+			mana = 5
+		elif armor == 1:
+			defe = 4
+			max_hp = 25
+			mana = 10
+		elif armor == 2:
+			defe = 6
+			max_hp = 30
+			mana = 15
+		elif armor == 3:
+			defe = 9
+			max_hp = 40
+			mana = 20
+		elif armor == 4:
+			defe = 12
+			max_hp = 50
+			mana = 30
+		elif armor == 5:
+			defe = 15
+			max_hp = 60
+			mana = 40
+		elif armor == 6:
+			defe = 20
+			max_hp = 75
+			mana = 50
+		elif armor == 7:
+			defe = 420
+			max_hp = 9001
+			mana = 6.9e+42
+#Remember to change armor for difficulties 3 and 4
+	if game_diff == "3":
+		if armor == 0:
+			defe = 1
+			max_hp = 15
+			mana = 5
+		elif armor == 1:
+			defe = 4
+			max_hp = 25
+			mana = 10
+		elif armor == 2:
+			defe = 6
+			max_hp = 30
+			mana = 15
+		elif armor == 3:
+			defe = 9
+			max_hp = 40
+			mana = 20
+		elif armor == 4:
+			defe = 12
+			max_hp = 50
+			mana = 30
+		elif armor == 5:
+			defe = 15
+			max_hp = 60
+			mana = 40
+		elif armor == 6:
+			defe = 20
+			max_hp = 75
+			mana = 50
+		elif armor == 7:
+			defe = 420
+			max_hp = 9001
+			mana = 6.9e+42
+	if game_diff == "4":
+		if armor == 0:
+			defe = 0
+			max_hp = 10
+			mana = 0
+		elif armor == 1:
+			defe = 4
+			max_hp = 25
+			mana = 10
+		elif armor == 2:
+			defe = 6
+			max_hp = 30
+			mana = 15
+		elif armor == 3:
+			defe = 9
+			max_hp = 40
+			mana = 20
+		elif armor == 4:
+			defe = 12
+			max_hp = 50
+			mana = 30
+		elif armor == 5:
+			defe = 15
+			max_hp = 60
+			mana = 40
+		elif armor == 6:
+			defe = 20
+			max_hp = 75
+			mana = 50
+		elif armor == 7:
+			defe = 420
+			max_hp = 9001
+			mana = 6.9e+42
 	if exp >= exp_limit:
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
@@ -971,6 +1090,7 @@ while stop != 1:
 			print color['blue'] + "You killed the " + enemy_type +"!" + color['off']
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
+			skills_energy += 1
 			encounter_time = random.randint(5, 8)
 			if enemy_type == "wolf":
 				exp += 1
