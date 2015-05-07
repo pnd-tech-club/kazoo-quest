@@ -50,10 +50,11 @@
 #Version 0.8.3: -Added "restart" command, various changes, defense rebalancing, small idea layouts, fixed some minor bugs
 #Version 0.8.4: -Reworked/condensed some of the code(may have unpredicted results)
 #Version 0.8.5: -Managed to allow for better user input
+#Version 0.8.6: -Added some spell level stuff, fixed some minor bugs, changed some commands slightly due to enemy triggering issues
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-current_version = "v0.8.3"
+current_version = "v0.8.6"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
@@ -121,12 +122,14 @@ evolve_count = 0
 points = 0
 triggers = []
 inventory = []
-take_words = ['take', 'grab', 'pick up', 'get', 'aquire']
+take_words = ['take', 'grab', 'pick', 'get', 'aquire']
 use_words = ['use', 'eat', 'read', 'drink']
 n_words = ['n', 'north']
 s_words = ['s', 'south']
 e_words = ['e', 'east']
 w_words = ['w', 'west']
+u_words = ['u', 'up']
+d_words = ['d', 'down']
 stop = 0
 letter = """The letter reads as follows:
 Dear [The name is smudged out]
@@ -147,12 +150,22 @@ enemy_dam = 0
 enemy_dodge = 0
 enemy_buffs = []
 enemy_debuffs = []
+enemy_buff_timer = 5
 enemy_debuff_timer = 5
 enemy_info = ""
 enemy_dam_info = ""
 hp = 20
 defe = 1
 mana = 5
+player_buffs = []
+player_debuffs = []
+player_buff_timer = 5
+player_debuff_timer = 5
+firebolt_level = 0
+frost_level = 0
+poison_level = 0
+lifesteal_level = 0
+recover_level = 0
 exp_limit = 10
 kills = []
 encounter = 0
@@ -171,7 +184,7 @@ import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
 	with open('game_save.dat', 'rb') as f:
-		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type = pickle.load(f)
+		hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type, levels = pickle.load(f)
 	f.close()
 	os.system('clear')
 	print color['cyan'] + "Game loaded!" + color['off']
@@ -185,7 +198,7 @@ while silly != 1 and autoload != True:
 		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
 	elif classsc == "2":
-		skills.append("Recover")
+		spells.append("recover")
 		print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 		silly = 1
 	elif classsc == "3":
@@ -212,9 +225,9 @@ while stop != 1:
 		x += 1
 	elif list(set(w_words) & set(words)):
 		x -= 1
-	elif act == "d":
+	elif list(set(d_words) & set(words)):
 		z += 1
-	elif act == "u":
+	elif list(set(u_words) & set(words)):
 		z -= 1
 #Debugging command
 	if act == "num":
@@ -309,6 +322,7 @@ while stop != 1:
 		os.system('clear')
 	elif act == "inv":
 		print '\n'.join(inventory)
+		encounter_time += 1
 	elif act == "restart":
 		while wait == 0:
 			print color['red'] + "Are you sure you want to delete your save and restart all progress?" + color['off']
@@ -331,14 +345,17 @@ while stop != 1:
 		update()
 	elif act == "debug.triggers":
 		print triggers
+	elif act == "debug.evolveitem":
+		inventory.append("mysterious charm")
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type], f, protocol = 2)
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type, levels], f, protocol = 2)
 		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
+		encounter_time += 1
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, enemy_type, levels = pickle.load(f)
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
@@ -360,25 +377,31 @@ while stop != 1:
 		spells.append("frost")
 		spells.append("poison")
 		spells.append("life drain")
+		spells.append("recover")
 		spells_thing.append("1. Firebolt")
 		spells_thing.append("2. Frost")
 		spells_thing.append("3. Poison")
 		spells_thing.append("4. Life Steal")
+		spells_thing.append("5. Life Steal")
 #Debugging command
 	elif act == "etime":
 		print encounter
 		print encounter_time
+		encounter_time += 1
 	elif act == "spells":
 		print '\n'.join(spells)
+		encounter_time += 1
 	elif act == "heal":
 #Reminder to redo this
-		hp_heal = hp + max_hp / 2 * random.randint(1, 2)
-		mana_heal = mana + max_mana / 4 * random.randint(1, 2)
-		skill_heal = skill_energy + max_energy / 4 * random.randint(1, 2)
+		hp_heal = max_hp / 2
+		mana_heal = max_mana / 4 * random.randint(1, 2)
+		skill_heal = max_energy / 4 * random.randint(1, 2)
 		hp += hp_heal
 		mana += mana_heal
 		skill_energy += skill_heal
 		print color['darkblue'] + "You have healed %r health, %r mana and %r energy!" % (hp_heal, mana_heal, skill_heal) + color['off']
+		if hp > max_hp:
+			hp = max_hp
 		encounter_time -= 3
 	elif act == "time":
 		skip = 0
@@ -391,11 +414,13 @@ while stop != 1:
 		y = int(raw_input('> '))
 		z = int(raw_input('> '))
 	elif act == "info":
-		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r" % (damage, hp, defe, mana)
+		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r" % (damage, hp, defe, mana, len(levels))
+		encounter += 1
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 	if act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']	
+		encounter_time += 1
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
@@ -714,25 +739,25 @@ while stop != 1:
 	if exp >= exp_limit:
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
-		if level == 1:
+		if len(levels) == 1:
 			exp_limit = 25
-		elif level == 2:
+		elif len(levels) == 2:
 			exp_limit = 50
-		elif level == 3:
+		elif len(levels) == 3:
 			exp_limit = 85
-		elif level == 4:
+		elif len(levels) == 4:
 			exp_limit = 125
-		elif level == 5:
+		elif len(levels) == 5:
 			exp_limit = 150
-		elif level == 6:
+		elif len(levels) == 6 and evolve_count >= 1:
 			exp_limit = 180
-		elif level == 7:
+		elif len(levels) == 7:
 			exp_limit = 210
-		elif level == 8:
+		elif len(levels) == 8:
 			exp_limit = 245
-		elif level == 9:
+		elif len(levels) == 9:
 			exp_limit = 275
-		elif level == 10:
+		elif len(levels) == 10:
 			exp_limit = 325
 		levels += "!"
 		points += 10
@@ -756,7 +781,7 @@ while stop != 1:
 		damage += 8
 		max_hp += 10
 		max_mana += 7
-#Limits level until certain item is used
+#Limits level until certain item is used, I think
 	elif len(levels) == 6 and evolve_count >= 1:
 		damage += 10
 		max_hp += 10
@@ -826,21 +851,44 @@ while stop != 1:
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
 			if magic_attack == "1" and "firebolt" in spells and mana >= 5:
-				magic_dam = random.randint(20, 40)
+				if firebolt_level == 0:
+					magic_dam = random.randint(10, 25)
+				elif firebolt_level == 1:
+					magic_dam = random.randint(15, 30)
+				elif firebolt_level == 2:
+					magic_dam = random.randint(20, 35)
+				elif firebolt_level == 3:
+					magic_dam = random.randint(25, 40)
+				elif firebolt_level == 4:
+					magic_dam = random.randint(30, 45)
+				elif firebolt_level == 5:
+					magic_dam = random.randint(35, 50)
 				mana -= 5
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Burning")
 				enemy_debuff_timer = 5
 				print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
 			elif magic_attack == "2" and "frost" in spells and mana >= 8:
-				magic_dam = random.randint(50, 60)
+				if frost_level == 0:
+					magic_dam = random.randint(25, 35)
+				elif frost_level == 1:
+					magic_dam = random.randint(30, 40)
+				elif frost_level == 2:
+					magic_dam = random.randint(35, 45)
+				elif frost_level == 3:
+					magic_dam = random.randint(40, 50)
+				elif frost_level == 4:
+					magic_dam = random.randint(45, 55)
+				elif frost_level == 5:
+					magic_dam = random.randint(50, 60)
 				mana -= 8
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Frozen")
 				enemy_debuff_timer = 5
 				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
 			elif magic_attack == "3" and "poison" in spells and mana >= 13:
-				magic_dam = random.randint(25, 50)
+				if poison_level == 0:
+					magic_dam = random.randint(20, 30)
 				mana -= 13
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Poisoned")
@@ -852,6 +900,11 @@ while stop != 1:
 				enemy_hp -= drain_dam
 				hp += drain_dam
 				print color['magenta'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
+			elif magic_attack == "5" and "recover" in spells and mana >= 8:
+				mana -= 8
+				hp_heal = random.randint(10, 30)
+				hp += hp_heal
+				print "You healed %r health!" % hp_heal
 			else:
 				print color['darkyellow'] + "You can't do that!" + color['off']
 		elif fight_act == "3":
@@ -894,8 +947,16 @@ while stop != 1:
 			print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe) + color['off']
 		if len(enemy_debuffs) > 0:
 			if "Burning" in enemy_debuffs:
-				enemy_hp -= 3
-				print "The enemy took 3 damage from burning!"
+				if firebolt_level == 0:
+					burn_dam = random.randint(3, 5)
+				elif firebolt_level == 1:
+					burn_dam = random.randint(5, 8)
+				elif firebolt_level == 2:
+					burn_dam = random.randint(8, 12)
+				elif firebolt_level == 3:
+					burn_dam = random.randint(10, 15)
+				enemy_hp -= burn_dam
+				print "The enemy took %r damage from burning!" % burn_dam
 			if "Poisoned" in enemy_debuffs:
 				enemy_hp -= 15
 				print "The enemy took 15 damage from poison!"
@@ -932,6 +993,8 @@ while stop != 1:
 			elif enemy_type == "goo":
 				exp += 10
 				points += 10
+		if hp > max_hp:
+			hp = max_hp
 		if hp <= 0:
 			print color['darkred'] + "You have died!" + color['off']
 			print color['blue'] + "Do you want to see your final stats?" + color['off']
