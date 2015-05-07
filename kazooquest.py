@@ -250,7 +250,7 @@ while stop != 1:
 	if act == "num":
 		print x
 		print y
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	if list(set(use_words) & set(words)):
 		if "switch" in words and x == 3 and y == 7 and z == 0:
@@ -336,12 +336,12 @@ while stop != 1:
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
 	if act == "clear":
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 		os.system('clear')
 	elif act == "inv":
 		print '\n'.join(inventory)
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	elif act == "restart":
 		while wait == 0:
@@ -356,7 +356,7 @@ while stop != 1:
 				wait = 1
 	elif act == "look":
 		skip = 0
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	elif act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 		encounter_time += 6
@@ -373,7 +373,7 @@ while stop != 1:
 			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo], f, protocol = 2)
 		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
@@ -404,15 +404,17 @@ while stop != 1:
 		spells_thing.append("3. Poison")
 		spells_thing.append("4. Life Steal")
 		spells_thing.append("5. Life Steal")
+		skills.append("Stealth")
+		skills.append("Rage")
 #Debugging command
 	elif act == "etime":
 		print encounter
 		print encounter_time
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	elif act == "spells":
 		print '\n'.join(spells)
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	elif act == "heal":
 #Reminder to redo this
@@ -438,12 +440,12 @@ while stop != 1:
 		z = int(raw_input('> '))
 	elif act == "info":
 		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r" % (damage, hp, defe, mana, len(levels))
-		encounter += 1
+		encounter_time += 1
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
 	if act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']	
-		if encounter == 1:
+		if encounter >= 1:
 			encounter_time += 1
 	if x == 0 and y == 0 and "torch" not in triggers:
 		encounter = 0
@@ -556,7 +558,7 @@ while stop != 1:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is leather armor on the ground."
 		print roominfo
 #Player has lamp and dagger ^
-	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon < 2:
+	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north."
 		print roominfo
 #Player has all items ^
@@ -1090,7 +1092,7 @@ while stop != 1:
 			print color['blue'] + "You killed the " + enemy_type +"!" + color['off']
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
-			skills_energy += 1
+			skill_energy += 1
 			encounter_time = random.randint(5, 8)
 			if enemy_type == "wolf":
 				exp += 1
