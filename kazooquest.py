@@ -2,7 +2,6 @@
 #Written by Matthew Knecht
 #Written in Python 2.7
 #Storyline help by Ethan Copeland
-#Beta testing by ???
 
 #CHANGELOG
 #Version 0.0.1: -Basic ideas and laying out of variables
@@ -53,6 +52,7 @@
 #Version 0.8.6: -Added some spell level stuff, fixed some minor bugs, changed some commands slightly due to enemy triggering issues
 
 #Version 0.9 (Major update!): -Added basic layout for difficulties, various things, will probably fix balance issues in the next update
+#Version 0.9.1: -Added comments to make it easier for people who want to help with the game
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -159,6 +159,7 @@ enemy_dam_info = ""
 hp = 20
 defe = 1
 mana = 5
+var_set
 player_buffs = []
 player_debuffs = []
 player_buff_timer = 5
@@ -288,6 +289,7 @@ while stop != 1:
 			inventory.append(items)
 			triggers.append(items)
 			weapon = 1
+			var_set = 1
 			print color['magenta'] + "You pick up the branch and hold it like a spear." + color['off']
 		elif "letter" in words and x == 2 and y == 6 and "letter" not in triggers:
 			items = "letter"
@@ -299,6 +301,7 @@ while stop != 1:
 			items = "dagger"
 			inventory.append(items)
 			weapon = 2
+			var_set = 1
 			print color['magenta'] + "You wield the dagger and feel stronger." + color['off']
 			items = "branch"
 			inventory.remove(items)
@@ -417,7 +420,7 @@ while stop != 1:
 		if encounter >= 1:
 			encounter_time += 1
 	elif act == "heal":
-#Reminder to redo this
+#Reminder to redo this- needs to be reworked
 		hp_heal = max_hp / 2
 		mana_heal = max_mana / 4 * random.randint(1, 2)
 		skill_heal = max_energy / 4 * random.randint(1, 2)
@@ -701,7 +704,7 @@ while stop != 1:
 			z += 1
 	if encounter != 0:
 		encounter_time -= 1
-	if weapon == 0:
+	if weapon == 0 and var_set == 1:
 		damage = 3
 	elif weapon == 1:
 		damage = 5
@@ -724,6 +727,8 @@ while stop != 1:
 #This weapon is going to be available for debugging through the input of "OP420"
 	elif weapon == 7:
 		damage = 1337
+	var_set = 0
+#Armor OP- needs to be reworked
 	if game_diff == "1":
 		if armor == 0:
 			defe = 2
@@ -860,6 +865,7 @@ while stop != 1:
 	if exp >= exp_limit:
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
+#EXP limits are weird- needs to be reworked
 		if len(levels) == 1:
 			exp_limit = 25
 		elif len(levels) == 2:
@@ -880,6 +886,7 @@ while stop != 1:
 			exp_limit = 275
 		elif len(levels) == 10:
 			exp_limit = 325
+#Levels OP, pls nurf?- needs to be reworked
 		levels += "!"
 		points += 10
 	if len(levels) == 1:
@@ -929,6 +936,7 @@ while stop != 1:
 	while encounter != 0 and encounter_time <= 0:
 		stop = 1
 		while enemy_set != 1:
+#Some enemies have too high/too low of stats- needs to be reworked
 			if enemy_type == "wolf":
 				enemy_hp = 15
 				enemy_dam = random.randint(2, 4)
@@ -971,6 +979,7 @@ while stop != 1:
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
+#Magic is(as usual) OP- needs to be reworked
 			if magic_attack == "1" and "firebolt" in spells and mana >= 5:
 				if firebolt_level == 0:
 					magic_dam = random.randint(10, 25)
@@ -1051,6 +1060,7 @@ while stop != 1:
 		else:
 			print color['darkyellow'] + "You can't do that!" + color['off']
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs:
+#It seems like some enemies deal too much damage while some don't deal enough- needs to be reworked
 			if enemy_type == "wolf":
 				enemy_dam = random.randint(2, 4)
 			elif enemy_type == "orc":
@@ -1067,6 +1077,7 @@ while stop != 1:
 			dodges = 0
 			print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe) + color['off']
 		if len(enemy_debuffs) > 0:
+#Randomly gets the amount of damage to deal to the enemy while specific debuff is active
 			if "Burning" in enemy_debuffs:
 				if firebolt_level == 0:
 					burn_dam = random.randint(3, 5)
@@ -1079,11 +1090,24 @@ while stop != 1:
 				enemy_hp -= burn_dam
 				print "The enemy took %r damage from burning!" % burn_dam
 			if "Poisoned" in enemy_debuffs:
-				enemy_hp -= 15
-				print "The enemy took 15 damage from poison!"
+				if poison_level == 0:
+					poison_dam = random.randint(5, 10)
+				elif poison_level == 1:
+					poison_dam = random.rantint(10, 15)
+				elif poison_level == 2:
+					poison_dam = random.randint(15, 20)
+				elif poison_level == 3:
+					poison_dam = random.randint(20, 25)
+				elif poison_level == 4:
+					poison_dam = random.randint(25, 30)
+				elif poison_level == 5:
+					poison_dam = random.randint(30, 35)
+				enemy_hp -= poison_dam
+				print "The enemy took %r damage from poison!" % poison_dam
 			if "Frozen" in enemy_debuffs:
 				print "The enemy can't attack because it is frozen!"
 			enemy_debuff_timer -= 1
+#Clears the enemy's debuffs after 5 turns of not using a spell
 			if enemy_debuff_timer <= 0:
 				enemy_debuffs = []
 		if enemy_hp <= 0 and fight_act != "5":
@@ -1094,6 +1118,7 @@ while stop != 1:
 			kills.append(enemy_type)
 			skill_energy += 1
 			encounter_time = random.randint(5, 8)
+#EXP points might be a bit unbalanced, needs to be reworked
 			if enemy_type == "wolf":
 				exp += 1
 				points += 2
