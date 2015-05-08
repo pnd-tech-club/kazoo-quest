@@ -53,6 +53,7 @@
 
 #Version 0.9 (Major update!): -Added basic layout for difficulties, various things, will probably fix balance issues in the next update
 #Version 0.9.1: -Added comments to make it easier for people who want to help with the game
+#Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage, 
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -159,7 +160,7 @@ enemy_dam_info = ""
 hp = 20
 defe = 1
 mana = 5
-var_set
+var_set = 0
 player_buffs = []
 player_debuffs = []
 player_buff_timer = 5
@@ -251,6 +252,7 @@ while stop != 1:
 	if act == "num":
 		print x
 		print y
+		print z
 		if encounter >= 1:
 			encounter_time += 1
 	if list(set(use_words) & set(words)):
@@ -268,30 +270,30 @@ while stop != 1:
 		elif "spellbook" in words and "spellbook- Fire" in inventory:
 			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
-			spells_thing.append("1. Firebolt")
+			spells_thing.append("1. Firebolt" + "\tDamage: 10 to 25")
 #Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
 			evolve_count += 1
-			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".  It grants whoever uses it a beautiful voice!"
+			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".  It grants whoever uses it a beautiful voice!" + color['off']
 	if list(set(take_words) & set(words)):
-		if "torch" in words and x == 0 and y == 0 and "torch" not in triggers:
+		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			items = "torch"
 			inventory.append(items)
 			triggers.append(items)
 			print color['magenta'] + "You pick up the torch and are able to see better." + color['off']
-		elif "shuriken" in words and x == 0 and y == -1 and "shuriken" not in inventory:
+		elif "shuriken" in words and x == 0 and y == -1 and z == 0 and "shuriken" not in inventory:
 			items = "shuriken"
 			inventory.append(items) * 7
 			print color['magenta'] + "You pick up seven shuriken." + color['off']
-		elif "branch" in words and x == 2 and y == 1 and weapon < 1:
+		elif "branch" in words and x == 2 and y == 1 and z == 0 and weapon < 1:
 			items = "branch"
 			inventory.append(items)
 			triggers.append(items)
 			weapon = 1
 			var_set = 1
 			print color['magenta'] + "You pick up the branch and hold it like a spear." + color['off']
-		elif "letter" in words and x == 2 and y == 6 and "letter" not in triggers:
+		elif "letter" in words and x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 			items = "letter"
 			inventory.append(items)
 			triggers.append(items)
@@ -402,7 +404,7 @@ while stop != 1:
 		spells.append("poison")
 		spells.append("life drain")
 		spells.append("recover")
-		spells_thing.append("1. Firebolt")
+		spells_thing.append("1. Firebolt" + "\tDamage: 10 to 25")
 		spells_thing.append("2. Frost")
 		spells_thing.append("3. Poison")
 		spells_thing.append("4. Life Steal")
@@ -442,7 +444,7 @@ while stop != 1:
 		y = int(raw_input('> '))
 		z = int(raw_input('> '))
 	elif act == "info":
-		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r" % (damage, hp, defe, mana, len(levels))
+		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r\nExp: %r" % (damage, hp, defe, mana, len(levels), exp)
 		encounter_time += 1
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
@@ -450,59 +452,78 @@ while stop != 1:
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -info (Shows your your stats)" + color['off']	
 		if encounter >= 1:
 			encounter_time += 1
-	if x == 0 and y == 0 and "torch" not in triggers:
+	if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
 		print roominfo
-	elif x == 0 and y == 0 and "torch" in triggers:
+	elif x == 0 and y == 0 and z == 0 and "torch" in triggers:
 		roominfo = "Your torch lights up the walls of the cave.  There is a path to the north and south."
 		print roominfo
-	elif x == 0 and y == 1 and "torch" not in triggers:
+	elif x == 0 and y == 1 and z == 0 and "torch" not in triggers:
 		roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly.  You decide to turn back until you find a light source."
 		print roominfo
 		y -= 1
-	elif x == 0 and y == 1 and "torch" in triggers:
+	elif x == 0 and y == 1 and z == 0 and "torch" in triggers:
 		roominfo = "You begin to walk to the north, allowing your torch to light the way.  As you walk you begin to hear a slight howl of wind from ahead of you.  There is a path to the east."
 		print roominfo
-	elif x == 1 and y == 1:
+	elif x == 1 and y == 1 and z == 0:
 		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
 		print roominfo
-	elif x == 2 and y == 1 and "branch" not in triggers:
+	elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.  The trees tower over you and you hear the sound of rushing water to the north.  You see a good sized tree branch with a pointed end."
+		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 1 and "branch" in triggers:
+	elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 		encounter = 0
 		roominfo = "You reach the end of the tunnel and see a forest to the east.  You hear the sound of rushing water to the north."
+		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 2:
+	elif x == 2 and y == 2 and z == 0:
 		encounter = 1
 		enemy_type = "wolf"
 		roominfo = "There is a swiftly flowing stream here.  To the east is a path to the forest.  You think you see a small cottage far to the north."
 		print roominfo
-	elif x == 2 and y == 3:
+	elif x == 2 and y == 3 and z == 0:
 		roominfo = "You keep walking around the side of the mountain.  There is a cottage far to the north and a cave to the south.  There is a forest to the east."
 		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 4:
+	elif x == 2 and y == 4 and z == 0:
 		roominfo = "The mountain path seems to be rougher here.  You see that the stream flows from a grate in the mountain.  There is a forest to the east, a cave to the south, and a cottage to the north."
 		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 5:
+	elif x == 2 and y == 5 and z == 0:
 		roominfo = "You are nearing the cottage.  There is a cave far to the south."
-		enemy_type = "wolf"
 		print roominfo
 #Forest area follows
-	elif x == 3 and y == 1:
+	elif x == 3 and y == 1 and z == 0:
+		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above.  There is a cave to the west."
 		print roominfo
-	elif x == 3 and y == 2:
+	elif x == 4 and y == 1 and z == 0:
+		encounter = 1
+		enemy_type = "elf"
+		roominfo = "The trees here are denser than around the edge of the forest."
+		print roominfo
+	elif x == 3 and y == 2 and z == 0:
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above.  There is a stream to the west."
 		print roominfo
-	elif x == 3 and y == 3:
+	elif x == 3 and y == 4 and z == 0:
+		encounter = 1
+		enemy_type = "elf"
+		roominfo = "There appears to be an opening in the trees to the east."
+		print roominfo
+	elif x == 3 and y == 3 and z == 0:
 		encounter = 0
-		roominfo = "The sunlight is slightly filtered by the trees above.  "
+		roominfo = "The sunlight is slightly filtered by the trees above.  There is a mountain to the west."
+		print roominfo
+	elif x == 4 and y == 3 and z == 0:
+		encounter = 1
+		enemy_type = "elf"
+		roominfo = "The trees here are denser than around the edge of the forest."
+		print roominfo
+	
 #House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
@@ -513,31 +534,31 @@ while stop != 1:
 		roominfo = "You stand in front of the mailbox of the cottage.  There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
 		print roominfo
-	elif x == 2 and y == 7 and "lights" not in triggers:
+	elif x == 2 and y == 7 and z == 0 and "lights" not in triggers:
 		encounter = 0
 		roominfo = "The inside of the house is cold and dark.  You have an unexplainable feeling of gloom.  There are rooms to the east and the north."
 		print roominfo
-	elif x == 2 and y == 7 and "lights" in triggers:
+	elif x == 2 and y == 7 and z == 0 and "lights" in triggers:
 		encounter = 0
 		roominfo = "There is a bright red stain on the rug in front of the door.  You have an unexplainable feeling of dread.  The kitchen is to the east and the living room is to the north."
 		print roominfo
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 		roominfo = "The room is lit up slightly by a window.  You can see a switch by the window.  The doorway is to the west."
 		print roominfo
-	elif x == 2 and y == 8 and "lights" not in triggers:
+	elif x == 2 and y == 8 and z == 0 and "lights" not in triggers:
 		roominfo = "It's way too dark in here for you to see anything.  The doorway is to the south."
 		print roominfo
-	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" not in triggers:
+	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" not in triggers:
 		roominfo = "The living room is completely barren.  There appears to be a locked trapdoor in the floor.  The doorway is to the south."
 		print roominfo
-	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
+	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
 		roominfo = "The trapdoor in this room has a key inside.  The doorway is to the south."
 		print roominfo
-	elif x == 2 and y == 8 and "lights" in triggers and "trapdoor" in triggers and "key" in inventory:
+	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" in triggers and "key" in inventory:
 		roominfo = "The trapdoor in the center of the room is empty.  The doorway is to the south."
 		print roominfo
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
-	elif x == 3 and y == 7 and z == 1 and "lights" not in triggers:
+	elif x == 3 and y == 7 and z == 0 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
 		print roominfo
 		z += 1
@@ -690,17 +711,17 @@ while stop != 1:
 		print roominfo
 #This is used to undo movement into an unexisting room V
 	else:
-		if act == "n":
+		if list(set(n_words) & set(words)):
 			y -= 1
-		elif act == "s":
+		elif list(set(s_words) & set(words)):
 			y += 1
-		elif act == "w":
-			x += 1
-		elif act == "e":
+		elif list(set(e_words) & set(words)):
 			x -= 1
-		elif act == "d":
+		elif list(set(w_words) & set(words)):
+			x += 1
+		elif list(set(d_words) & set(words)):
 			z -= 1
-		elif act == "u":
+		elif list(set(u_words) & set(words)):
 			z += 1
 	if encounter != 0:
 		encounter_time -= 1
@@ -1018,14 +1039,35 @@ while stop != 1:
 				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
 			elif magic_attack == "3" and "poison" in spells and mana >= 13:
 				if poison_level == 0:
-					magic_dam = random.randint(20, 30)
+					magic_dam = random.randint(10, 18)
+				elif poison_level == 1:
+					magic_dam = random.randint(12, 20)
+				elif poison_level == 2:
+					magic_dam = random.randint(14, 22)
+				elif poison_level == 3:
+					magic_dam = random.randint(16, 24)
+				elif poison_level == 4:
+					magic_dam = random.randint(18, 26)
+				elif poison_level == 5:
+					magic_dam = random.randint(20, 28)
 				mana -= 13
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Poisoned")
 				enemy_debuff_timer = 8
 				print color['darkgreen'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
 			elif magic_attack == "4" and "life drain" in spells and mana >= 20:
-				drain_dam = random.randint(20, 35)
+				if lifedrain_level == 0:
+					drain_dam = random.randint(15, 30)
+				elif lifedrain_level == 1:
+					drain_dam = random.randint(18, 33)
+				elif lifedrain_level == 2:
+					drain_dam = random.randint(20, 35)
+				elif lifedrain_dam == 3:
+					drain_dam = random.randint(23, 38)
+				elif lifedrain_level == 4:
+					drain_dam = random.randint(25, 40)
+				elif lifedrain_level == 5:
+					drain_dam = random.randint(28, 43)
 				mana -= 20
 				enemy_hp -= drain_dam
 				hp += drain_dam
@@ -1073,9 +1115,12 @@ while stop != 1:
 				enemy_dam = random.randint(8, 11)
 			elif enemy_type == "slime":
 				enemy_dam = random.randint(5, 15)
-			hp = hp - enemy_dam + defe
-			dodges = 0
-			print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe) + color['off']
+			if enemy_dam - defe <= 0:
+				print color['magenta'] + "The enemy missed!" + color['off']
+			else:
+				hp = hp - enemy_dam + defe
+				dodges = 0
+				print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe) + color['off']
 		if len(enemy_debuffs) > 0:
 #Randomly gets the amount of damage to deal to the enemy while specific debuff is active
 			if "Burning" in enemy_debuffs:
