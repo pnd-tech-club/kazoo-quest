@@ -53,7 +53,8 @@
 
 #Version 0.9 (Major update!): -Added basic layout for difficulties, various things, will probably fix balance issues in the next update
 #Version 0.9.1: -Added comments to make it easier for people who want to help with the game
-#Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage, 
+#Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage
+#Version 0.9.3: -Added more spellbooks- usable but not accessable yet, 
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -287,9 +288,11 @@ while stop != 1:
 			
 #Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
-			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
+			print color['magenta'] + "You begin to feel funny.  You suddenly black out..." + color['off']
 			evolve_count += 1
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".  It grants whoever uses it a beautiful voice!" + color['off']
+		else:
+			print color['magenta'] + "You don't have that item!" + color['off']
 	if list(set(take_words) & set(words)):
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			items = "torch"
@@ -447,18 +450,15 @@ while stop != 1:
 		if hp > max_hp:
 			hp = max_hp
 		encounter_time -= 3
-	elif act == "time":
-		skip = 0
-#Debugging command
-	elif act == "rtime":
-		print time
+#	elif act == "time":
+#		skip = 0
 #Debugging command
 	elif act == "tp":
 		x = int(raw_input('> '))
 		y = int(raw_input('> '))
 		z = int(raw_input('> '))
-	elif act == "info":
-		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r\nExp: %r" % (damage, hp, defe, mana, len(levels), exp)
+	elif act == "stats":
+		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r\nExp: %r/%r" % (damage, hp, defe, mana, len(levels), exp, exp_limit)
 		encounter_time += 1
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
@@ -1067,7 +1067,7 @@ while stop != 1:
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Poisoned")
 				enemy_debuff_timer = 8
-				print color['darkgreen'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
+				print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
 			elif magic_attack == "4" and "life steal" in spells and mana >= 20:
 				if lifedrain_level == 0:
 					drain_dam = random.randint(15, 30)
@@ -1084,7 +1084,7 @@ while stop != 1:
 				mana -= 20
 				enemy_hp -= drain_dam
 				hp += drain_dam
-				print color['magenta'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
+				print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
 			elif magic_attack == "5" and "recover" in spells and mana >= 8:
 				mana -= 8
 				hp_heal = random.randint(10, 30)
