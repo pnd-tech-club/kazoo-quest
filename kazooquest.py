@@ -199,10 +199,9 @@ if autoload == True:
 	print color['cyan'] + "Game loaded!" + color['off']
 	print roominfo
 else:
-	pass
+	autoload == False
 silly = 0
 while silly != 1 and autoload != True:
-	import Tutorial
 	game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
 	if game_diff == "1":
 		hp = 25
@@ -1241,8 +1240,8 @@ while stop != 1:
 				exp += 8
 				points += 8
 			elif enemy_type == "slime":
-				exp += 10
-				points += 10
+				exp += 30
+				points += 50
 		if hp > max_hp:
 			hp = max_hp
 		if hp <= 0:

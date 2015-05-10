@@ -1,5 +1,5 @@
-#This was annoying and I know it looks bad but it works
-import os, sys
+#This was annoying and I know it looks bad but it works, nvm it works but can't be properly implemented yet
+import os, sys, os.path
 os.system('clear')
 color = {
     'white':    "\033[1;37m",
@@ -36,12 +36,7 @@ while stop != 1:
 		os.system('clear')
 	if act == "skip":
 		print "Okay! Let's get right to the game!"
-		import os.path
-		load = os.path.isfile('game_save.dat')
-		if load == True:
-			import Loadingbar
-		else:
-			os.system('touch game_save.dat')
+		import kazooquest
 	else:
 		if "thing" not in triggers:
 			print color['darkblue'] + "Alright!  First we're going to go over basic movement.  You need to go North, so try typing something like \"go north\" (The \"go\" isn't needed)" + color['off']
@@ -97,12 +92,7 @@ while stop != 1:
 			triggers.append("death")
 			y = 100
 		elif y == 100:
-			import os.path
-			load = os.path.isfile('game_save.dat')
-			if load == True:
-				import Loadingbar
-			else:
-				os.system('touch game_save.dat')
+			import kazooquest
 		else:
 			if list(set(n_words) & set(words)):
 				y -= 1
