@@ -54,7 +54,9 @@
 #Version 0.9 (Major update!): -Added basic layout for difficulties, various things, will probably fix balance issues in the next update
 #Version 0.9.1: -Added comments to make it easier for people who want to help with the game
 #Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage
-#Version 0.9.3: -Added more spellbooks- usable but not accessable yet, 
+#Version 0.9.3: -Added more spellbooks- usable but not accessable yet
+
+#Version 1 (TIME TO CELEBRATE!!!!!!!): -Added in a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -109,9 +111,11 @@ weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
 armor = 0
 #Armor list: 0 = Cloth shirt, 1 = Leather Breastplate, 2 = Chainmail Breastplate, 3 = Scale Breastplate, 4 = Crystal Breastplate, 5 = Cloak of Shadows, 6 = Magic Shield, 7 = Kazoo Shield of Death
+min_dam = 0
+max_dam = 0
 dodges = 0
 dodge_act = 1
-damage = 3
+damage = 0
 max_hp = 20
 max_mana = 5
 level = 0
@@ -198,6 +202,7 @@ else:
 	pass
 silly = 0
 while silly != 1 and autoload != True:
+	import Tutorial
 	game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
 	if game_diff == "1":
 		hp = 25
@@ -543,7 +548,7 @@ while stop != 1:
 		print roominfo
 	elif x == 5 and y == 2 and z == 0:
 		encounter = 0
-		enemy_type = "goo"
+		enemy_type = "slime"
 		roominfo = "There is a mysterious pool of water in the center of this clearing.  Various flowers surround it in a circle.  There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
 		print roominfo
 #Row 3
@@ -760,7 +765,7 @@ while stop != 1:
 		encounter_time -= 1
 	while var_set == 1:
 		if weapon == 0:
-			damage == 3
+			damage += 3
 		elif weapon == 1:
 			damage += 2
 			points += 1
@@ -993,33 +998,54 @@ while stop != 1:
 			if enemy_type == "wolf":
 				enemy_hp = 15
 				enemy_dam = random.randint(2, 4)
-				enemy_dam_info = "2 to 4"
-				enemy_dodge = 0
+				min_dam = 2 - defe
+				max_dam = 4 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
+			elif enemy_type == "elf":
+				enemy_hp = 20
+				enemy_dam = random.randint(3, 5)
+				min_dam = 3 - defe
+				max_dam = 5 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 			elif enemy_type == "orc":
 				enemy_hp = 25
 				enemy_dam = random.randint(6, 8)
-				enemy_dam_info = "6 to 8"
+				min_dam = 6 - defe
+				max_dam = 8 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 1
 			elif enemy_type == "wraith":
 				enemy_hp = 30
 				enemy_dam = random.randint(7, 9)
-				enemy_dam_info = "7 to 9"
+				min_dam = 7 - defe
+				max_dam = 9 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 3
 			elif enemy_type == "dwarf":
 				enemy_hp = 35
 				enemy_dam = random.randint(7, 10)
-				enemy_dam_info = "7 to 10"
+				min_dam = 7 - defe
+				max_dam = 10 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 1
 			elif enemy_type == "spirit":
 				enemy_hp = 40
 				enemy_dam = random.randint(8, 11)
-				enemy_dam_info = "8 to 11"
+				min_dam = 8 - defe
+				max_dam = 11 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 0
 			elif enemy_type == "slime":
-				enemy_hp = 100
-				enemy_dam = random.randint(5, 15)
-				enemy_dam_info = "5 to 15"
+				enemy_hp = 150
+				enemy_dam = random.randint(10, 25)
+				min_dam = 10 - defe
+				max_dam = 25 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 0
+			if min_dam < 0:
+				min_dam = 0
+			if max_dam < 0:
+				max_dam = 0
 #Remember to fix this silly grammar thingy here
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
@@ -1214,7 +1240,7 @@ while stop != 1:
 			elif enemy_type == "spirit":
 				exp += 8
 				points += 8
-			elif enemy_type == "goo":
+			elif enemy_type == "slime":
 				exp += 10
 				points += 10
 		if hp > max_hp:
