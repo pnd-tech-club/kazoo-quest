@@ -275,7 +275,8 @@ while stop != 1:
 			print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
 			spells.append("frost")
 			spells_thing.append("2. Frost" + "\tDamage: 25 to 35")
-		
+		elif "spellbook" in words and "spellbook- Poison" in inventory:
+			print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
 #Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
