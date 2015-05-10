@@ -267,6 +267,7 @@ while stop != 1:
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
 			print color['magenta'] + "You use the crowbar to open the trapdoor." + color['off']
 			triggers.append("trapdoor")
+#I know this prioritizes certain spellbooks over others but who actually cares?
 		elif "spellbook" in words and "spellbook- Fire" in inventory:
 			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
@@ -277,10 +278,13 @@ while stop != 1:
 			spells_thing.append("2. Frost" + "\tDamage: 25 to 35")
 		elif "spellbook" in words and "spellbook- Poison" in inventory:
 			print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
-			spells.append("poison")
+			spells.append("posion")
 			spells_thing.append("3. Poison" + "\tDamage: 10 to 18")
 		elif "spellbook" in words and "spellbook- Life Steal" in inventory:
-			print color['magenta'] + "As you finish reading the runes, the book glows a mysterious pink and vanishes." + color['off']
+			print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
+			spells.append("life steal")
+			spells_thing.append("4. Life Steal" + "\tDamage/Heal: 15 to 30")
+			
 #Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
@@ -412,13 +416,13 @@ while stop != 1:
 		spells.append("firebolt")
 		spells.append("frost")
 		spells.append("poison")
-		spells.append("life drain")
+		spells.append("life steal")
 		spells.append("recover")
 		spells_thing.append("1. Firebolt" + "\tDamage: 10 to 25")
 		spells_thing.append("2. Frost")
 		spells_thing.append("3. Poison")
 		spells_thing.append("4. Life Steal")
-		spells_thing.append("5. Life Steal")
+		spells_thing.append("5. ") #Need an idea for this spell
 		skills.append("Stealth")
 		skills.append("Rage")
 #Debugging command
@@ -735,164 +739,163 @@ while stop != 1:
 			z += 1
 	if encounter != 0:
 		encounter_time -= 1
-	if weapon == 0 and var_set == 1:
-		damage = 3
-	elif weapon == 1:
-		damage = 5
-		points += 1
-	elif weapon == 2:
-		damage = 8
-		points += 3
-	elif weapon == 3:
-		damage = 10
-		points += 5
-	elif weapon == 4:
-		damage = 15
-		points += 10
-	elif weapon == 5:
-		damage = 20
-		points += 20
-	elif weapon == 6:
-		damage = 30
-		points += 25
+	while var_set == 1:
+		if weapon == 0:
+			damage == 3
+		elif weapon == 1:
+			damage += 2
+			points += 1
+		elif weapon == 2:
+			damage += 3
+			points += 3
+		elif weapon == 3:
+			damage += 3
+			points += 5
+		elif weapon == 4:
+			damage += 5
+			points += 10
+		elif weapon == 5:
+			damage += 8
+			points += 20
+		elif weapon == 6:
+			damage += 10
+			points += 25
 #This weapon is going to be available for debugging through the input of "OP420"
-	elif weapon == 7:
-		damage = 1337
-	var_set = 0
-#Armor OP- needs to be reworked
+		elif weapon == 7:
+			damage = 1337
+		var_set = 0
 	if game_diff == "1":
 		if armor == 0:
 			defe = 2
 			max_hp = 25
-			mana = 8
+			max_mana = 8
 		elif armor == 1:
 			defe = 5
 			max_hp = 30
-			mana = 10
+			max_mana = 10
 		elif armor == 2:
 			defe = 8
 			max_hp = 35
-			mana = 15
+			max_mana = 15
 		elif armor == 3:
 			defe = 9
 			max_hp = 40
-			mana = 20
+			max_mana = 20
 		elif armor == 4:
 			defe = 12
 			max_hp = 50
-			mana = 30
+			max_mana = 30
 		elif armor == 5:
 			defe = 15
 			max_hp = 60
-			mana = 40
+			max_mana = 40
 		elif armor == 6:
 			defe = 20
 			max_hp = 75
-			mana = 50
+			max_mana = 50
 		elif armor == 7:
 			defe = 420
 			max_hp = 9001
-			mana = 6.9e+42
+			max_mana = 6.9e+42
 	if game_diff == "2":
 		if armor == 0:
 			defe = 1
 			max_hp = 20
-			mana = 5
+			max_mana = 5
 		elif armor == 1:
 			defe = 4
 			max_hp = 25
-			mana = 10
+			max_mana = 10
 		elif armor == 2:
 			defe = 6
 			max_hp = 30
-			mana = 15
+			max_mana = 15
 		elif armor == 3:
 			defe = 9
 			max_hp = 40
-			mana = 20
+			max_mana = 20
 		elif armor == 4:
 			defe = 12
 			max_hp = 50
-			mana = 30
+			max_mana = 30
 		elif armor == 5:
 			defe = 15
 			max_hp = 60
-			mana = 40
+			max_mana = 40
 		elif armor == 6:
 			defe = 20
 			max_hp = 75
-			mana = 50
+			max_mana = 50
 		elif armor == 7:
 			defe = 420
 			max_hp = 9001
-			mana = 6.9e+42
-#Remember to change armor for difficulties 3 and 4
+			max_mana = 6.9e+42
 	if game_diff == "3":
 		if armor == 0:
 			defe = 1
 			max_hp = 15
-			mana = 5
+			max_mana = 5
 		elif armor == 1:
-			defe = 4
-			max_hp = 25
-			mana = 10
+			defe = 3
+			max_hp = 20
+			max_mana = 8
 		elif armor == 2:
-			defe = 6
-			max_hp = 30
-			mana = 15
+			defe = 5
+			max_hp = 25
+			max_mana = 10
 		elif armor == 3:
-			defe = 9
-			max_hp = 40
-			mana = 20
+			defe = 8
+			max_hp = 30
+			max_mana = 15
 		elif armor == 4:
-			defe = 12
-			max_hp = 50
-			mana = 30
+			defe = 10
+			max_hp = 40
+			max_mana = 20
 		elif armor == 5:
-			defe = 15
-			max_hp = 60
-			mana = 40
+			defe = 13
+			max_hp = 50
+			max_mana = 30
 		elif armor == 6:
-			defe = 20
-			max_hp = 75
-			mana = 50
+			defe = 18
+			max_hp = 70
+			max_mana = 45
 		elif armor == 7:
 			defe = 420
 			max_hp = 9001
-			mana = 6.9e+42
+			max_mana = 6.9e+42
 	if game_diff == "4":
 		if armor == 0:
 			defe = 0
 			max_hp = 10
-			mana = 0
+			max_mana = 0
 		elif armor == 1:
-			defe = 4
-			max_hp = 25
-			mana = 10
+			defe = 3
+			max_hp = 20
+			max_mana = 5
 		elif armor == 2:
-			defe = 6
-			max_hp = 30
-			mana = 15
+			defe = 5
+			max_hp = 25
+			max_mana = 10
 		elif armor == 3:
-			defe = 9
-			max_hp = 40
-			mana = 20
+			defe = 8
+			max_hp = 30
+			max_mana = 15
 		elif armor == 4:
-			defe = 12
-			max_hp = 50
-			mana = 30
+			defe = 10
+			max_hp = 35
+			max_mana = 20
 		elif armor == 5:
 			defe = 15
-			max_hp = 60
-			mana = 40
+			max_hp = 40
+			max_mana = 25
 		elif armor == 6:
 			defe = 20
-			max_hp = 75
-			mana = 50
+			max_hp = 50
+			max_mana = 35
 		elif armor == 7:
 			defe = 420
 			max_hp = 9001
-			mana = 6.9e+42
+			max_mana = 6.9e+42
 	if exp >= exp_limit:
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
@@ -1065,7 +1068,7 @@ while stop != 1:
 				enemy_debuffs.append("Poisoned")
 				enemy_debuff_timer = 8
 				print color['darkgreen'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
-			elif magic_attack == "4" and "life drain" in spells and mana >= 20:
+			elif magic_attack == "4" and "life steal" in spells and mana >= 20:
 				if lifedrain_level == 0:
 					drain_dam = random.randint(15, 30)
 				elif lifedrain_level == 1:
