@@ -57,7 +57,7 @@
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-current_version = "v0.8.6"
+current_version = "v0.9.3"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
@@ -271,6 +271,11 @@ while stop != 1:
 			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
 			spells_thing.append("1. Firebolt" + "\tDamage: 10 to 25")
+		elif "spellbook" in words and "spellbook- Frost" in inventory:
+			print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
+			spells.append("frost")
+			spells_thing.append("2. Frost" + "\tDamage: 25 to 35")
+		
 #Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
