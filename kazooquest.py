@@ -277,6 +277,10 @@ while stop != 1:
 			spells_thing.append("2. Frost" + "\tDamage: 25 to 35")
 		elif "spellbook" in words and "spellbook- Poison" in inventory:
 			print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
+			spells.append("poison")
+			spells_thing.append("3. Poison" + "\tDamage: 10 to 18")
+		elif "spellbook" in words and "spellbook- Life Steal" in inventory:
+			print color['magenta'] + "As you finish reading the runes, the book glows a mysterious pink and vanishes." + color['off']
 #Yeah this thing :3
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['blue'] + "You begin to feel funny.  You suddenly black out..." + color['off']
