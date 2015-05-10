@@ -480,8 +480,12 @@ while stop != 1:
 	elif x == 0 and y == 1 and z == 0 and "torch" in triggers:
 		roominfo = "You begin to walk to the north, allowing your torch to light the way.  As you walk you begin to hear a slight howl of wind from ahead of you.  There is a path to the east."
 		print roominfo
-	elif x == 1 and y == 1 and z == 0:
+	elif x == 1 and y == 1 and z == 0 and "outside1" not in triggers:
 		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
+		print roominfo
+		triggers.append("outside1")
+	elif x == 1 and y == 1 and z == 0 and "outside1" in triggers:
+		roominfo = "The exit to the cave is to the east."
 		print roominfo
 	elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 		encounter = 0
@@ -510,6 +514,8 @@ while stop != 1:
 		roominfo = "You are nearing the cottage.  There is a cave far to the south."
 		print roominfo
 #Forest area follows
+#To prevent a lot of mistakes here, I'm spliting the forest into 3 rows(at least for now)
+#Row 1
 	elif x == 3 and y == 1 and z == 0:
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above.  There is a cave to the west."
@@ -519,15 +525,28 @@ while stop != 1:
 		enemy_type = "elf"
 		roominfo = "The trees here are denser than around the edge of the forest."
 		print roominfo
+	elif x == 5 and y == 1 and z == 0:
+		roominfo = "The forest seems to only get darker further to the east."
+		print roominfo
+	elif x == 6 and y == 1 and z == 0:
+		roominfo = "The trees here are wat too thick to even get by, you turn around and go back."
+		x -= 1
+#Row 2
 	elif x == 3 and y == 2 and z == 0:
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above.  There is a stream to the west."
 		print roominfo
-	elif x == 3 and y == 4 and z == 0:
+	elif x == 4 and y == 2 and z == 0:
 		encounter = 1
 		enemy_type = "elf"
 		roominfo = "There appears to be an opening in the trees to the east."
 		print roominfo
+	elif x == 5 and y == 2 and z == 0:
+		encounter = 0
+		enemy_type = "goo"
+		roominfo = "There is a mysterious pool of water in the center of this clearing.  Various flowers surround it in a circle.  There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
+		print roominfo
+#Row 3
 	elif x == 3 and y == 3 and z == 0:
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above.  There is a mountain to the west."
