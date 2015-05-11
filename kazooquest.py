@@ -58,6 +58,7 @@
 
 #Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game, reworked room printing and fixed info not printing during unknown room movement, will be adding second area soon- not currently sure as to how I will do it
 #Version 1.0.1: -Possibly fixed a bug that resulted in an insta-kill after running away, removed and condesned random bits of code
+#Version 1.0.2: -Bug fixes, more optimizing, combat now prints much cleaner- maybe a bit too clean
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -172,7 +173,7 @@ player_debuff_timer = 5
 firebolt_level = 0
 frost_level = 0
 poison_level = 0
-lifesteal_level = 0
+lifedrain_level = 0
 recover_level = 0
 exp_limit = 10
 kills = []
@@ -376,6 +377,7 @@ while stop != 1:
 			if response == "y":
 				print "Okay, deleting your save and restarting..."
 				os.system('rm game_save.dat')
+				os.system('exit')
 				os.system('python kazooquest.py')
 				wait = 1
 			elif response == "n":
@@ -429,9 +431,10 @@ while stop != 1:
 		spells_thing.append("2. Frost")
 		spells_thing.append("3. Poison")
 		spells_thing.append("4. Life Steal")
-		spells_thing.append("5. ") #Need an idea for this spell
+		spells_thing.append("5. Recover") #Need an idea for this spell
 		skills.append("Stealth")
 		skills.append("Rage")
+		var_set = 1
 #Debugging command
 	elif act == "etime":
 		print encounter
@@ -605,7 +608,7 @@ while stop != 1:
 	elif x == 3 and y == 9 and z == 1:
 		encounter = 1
 		enemy_type = "orc"
-		print "There are paths to the north, east, and west."
+		roominfo = "There are paths to the north, east, and west."
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance.  There is a path to the west"
 	elif x == 1 and y == 9 and z == 1:
@@ -634,7 +637,7 @@ while stop != 1:
 	elif x == -1 and y == 17 and z == 1:
 		roominfo = "You feel yourself being whisped away to somewhere else."
 		x = 3
-		y = 9
+		y = 8
 		z = 1
 #East path split
 	elif x == 4 and y == 9 and z == 1:
@@ -657,7 +660,7 @@ while stop != 1:
 	elif x == 11 and y == 9 and z == 1:
 		roominfo = "You feel yourself being taken somewhere else..."
 		x = 3
-		y = 9
+		y = 8
 		z = 1
 #North path split
 	elif x == 3 and y == 10 and z == 1:
@@ -854,26 +857,28 @@ while stop != 1:
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
 #EXP limits are weird- needs to be reworked
-		if len(levels) == 1:
-			exp_limit = 25
-		elif len(levels) == 2:
-			exp_limit = 50
-		elif len(levels) == 3:
-			exp_limit = 85
-		elif len(levels) == 4:
-			exp_limit = 125
-		elif len(levels) == 5:
-			exp_limit = 150
-		elif len(levels) == 6 and evolve_count >= 1:
-			exp_limit = 180
-		elif len(levels) == 7:
-			exp_limit = 210
-		elif len(levels) == 8:
-			exp_limit = 245
-		elif len(levels) == 9:
-			exp_limit = 275
-		elif len(levels) == 10:
-			exp_limit = 325
+		if evolve_count >= 0:
+			if len(levels) == 1:
+				exp_limit = 25
+			elif len(levels) == 2:
+				exp_limit = 50
+			elif len(levels) == 3:
+				exp_limit = 85
+			elif len(levels) == 4:
+				exp_limit = 125
+			elif len(levels) == 5:
+				exp_limit = 150
+		if evolve_count >= 1:
+			if len(levels) == 6:
+				exp_limit = 180
+			elif len(levels) == 7:
+				exp_limit = 210
+			elif len(levels) == 8:
+				exp_limit = 245
+			elif len(levels) == 9:
+				exp_limit = 275
+			elif len(levels) == 10:
+				exp_limit = 325
 #Levels OP, pls nurf?- needs to be reworked
 		levels += "!"
 		points += 10
@@ -984,6 +989,7 @@ while stop != 1:
 		dodges = 0
 		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
+			os.system('clear')
 			print color['green'] + "You dealt %d damage to the %s!" % (damage, enemy_type) + color['off']
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells_thing)
@@ -1006,6 +1012,7 @@ while stop != 1:
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Burning")
 				enemy_debuff_timer = 5
+				os.system('clear')
 				print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
 			elif magic_attack == "2" and "frost" in spells and mana >= 8:
 				if frost_level == 0:
@@ -1024,6 +1031,7 @@ while stop != 1:
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Frozen")
 				enemy_debuff_timer = 5
+				os.system('clear')
 				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
 			elif magic_attack == "3" and "poison" in spells and mana >= 13:
 				if poison_level == 0:
@@ -1042,6 +1050,7 @@ while stop != 1:
 				enemy_hp -= magic_dam
 				enemy_debuffs.append("Poisoned")
 				enemy_debuff_timer = 8
+				os.system('clear')
 				print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
 			elif magic_attack == "4" and "life steal" in spells and mana >= 20:
 				if lifedrain_level == 0:
@@ -1059,17 +1068,21 @@ while stop != 1:
 				mana -= 20
 				enemy_hp -= drain_dam
 				hp += drain_dam
+				os.system('clear')
 				print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
 			elif magic_attack == "5" and "recover" in spells and mana >= 8:
 				mana -= 8
 				hp_heal = random.randint(10, 30)
 				hp += hp_heal
+				os.system('clear')
 				print "You healed %r health!" % hp_heal
 			else:
+				os.system('clear')
 				print color['darkyellow'] + "You can't do that!" + color['off']
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
+				os.system('clear')
 				print color['green'] + "You dodged the attack!" + color['off']
 				dodges = 1
 			if dodge_act >= 75:
@@ -1078,6 +1091,7 @@ while stop != 1:
 				print color['green'] + "You parried the attack and dealt %d damage!" % parrypowa  + color['off']
 				dodges = 1
 		elif fight_act == "4":
+			os.system('clear')
 			print color['darkgreen'] + "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info) + color['off']
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
@@ -1087,10 +1101,12 @@ while stop != 1:
 				enemy_hp = 0
 				dodges = 0
 				enemy_debuffs = []
+				os.system('clear')
 				print color['darkyellow'] + "You ran away!" + color['off']
 		else:
+			os.system('clear')
 			print color['darkyellow'] + "You can't do that!" + color['off']
-		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs:
+		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and fight_act != "":
 #It seems like some enemies deal too much damage while some don't deal enough- needs to be reworked
 			if enemy_type == "wolf":
 				enemy_dam = random.randint(2, 4)
@@ -1105,6 +1121,8 @@ while stop != 1:
 			elif enemy_type == "slime":
 				enemy_dam = random.randint(5, 15)
 			if enemy_dam - defe <= 0:
+				if fight_act == "3":
+					os.system('clear')
 				print color['magenta'] + "The enemy missed!" + color['off']
 			else:
 				hp = hp - enemy_dam + defe
@@ -1147,6 +1165,7 @@ while stop != 1:
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			enemy_debuffs = []
+			os.system('clear')
 			print color['blue'] + "You killed the " + enemy_type +"!" + color['off']
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
@@ -1187,7 +1206,7 @@ while stop != 1:
 					cnt[word] += 1
 				print dict(cnt)
 				print "These are your final stats:"
-				print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, hp, defe, mana, level) + color['off']
+				print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, max_hp, defe, max_mana, level) + color['off']
 				print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
 				quit()
 			elif dead_p == "n":
