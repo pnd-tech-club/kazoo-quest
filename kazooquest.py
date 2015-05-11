@@ -2,64 +2,6 @@
 #Written by Matthew Knecht
 #Written in Python 2.7
 #Storyline help by Ethan Copeland
-
-#CHANGELOG
-#Version 0.0.1: -Basic ideas and laying out of variables
-#Version 0.0.2: -Laying out rooms and plotline
-#Version 0.0.3: -Bug fixing, added additional commands, added more rooms
-#Version 0.0.4: -More bug fixing
-#Version 0.0.5: -Added some more basic ideas, added more commands
-#Version 0.0.6: -Added basic (aka broken) layout for enemy encounters, fixed some little bugs pertaining to walking through walls
-#Version 0.0.7: -Added more to encounter system- currently still very buggy
-
-#Version 0.1.0 (Major Update!): -Added lots to the encounter system, removed some code for a dodge mechanic due to it causing bugs (code can be found nearly unmodified, just commented out), FIXED ALL KNOWN BUGS, EXPLOITS, AND ISSUES (yay)
-#Version 0.1.1: -Fixed/added in the "run away" mechanic during encounters
-#Version 0.1.2 (aka "The Remembering"): -Added a changelog
-#Version 0.1.3: -Added a semi-broken time system
-#Version 0.1.4: -Completely removed the time system until later notice
-#Version 0.1.5: -Changed the "take" command to allow things like "take torch", fixed some minor bugs
-
-#Version 0.2.0 (Major update!): -Added TONS of rooms, added base for armor code, added slightly better encounter math, added some other minor things, fixed some bugs
-#Version 0.2.1: -Fixed dodging, added more rooms, added better formatting for some stuff, removed junk
-#Version 0.2.5 (Semi-major update): -Reworked inventory system to allow item removal, changed some other minor things, condensed some code, threw out some junk, laid out groundwork for better things and stuff
-#Version 0.2.6: -Added in "clear" command, bug fixes
-#Version 0.2.7: -Added more rooms
-
-#Version 0.3 (Major update!): -Added basic magic functionality, implemented parrying into the dodge mechanic, official game rename- from "Dumpster Quest" to "Kazoo Quest", added many rooms, added new enemies, testing re-implementation of time functionality, balanced enemy/player health and damage, made some other minor functionality changes, set some groundwork for later ideas, fixed some spelling mistakes (including a misspelling of "type" :P ), attempted some layout of cool future features- including updating from command-line
-#Version 0.3.1: -Added loading bar that works, moved the location of game files to a unique repo, re-worked the dodging mechanic, completely added the loading bar feature (First totally finished feature)
-
-#Version 0.4 (Major update!): -Added LEVELS!!!!!!!! :D, added rooms, added more story, reworked some features like healing, a few other minor changes
-#Version 0.4.1: -Major rework of level system due to it being incredibly OP, reworked healing, fixed being able to activate encounters while not in encounter zone using heal, removed old time code due to it being a stupid idea in the first place
-#Version 0.4.2: -Fixed some typos that were causing issues, condensed some stuff
-
-#Version 0.5 (WUUTT, HOWSOSOON!?!??!?): -Added in a basic points system, it's been there for a while but I haven't bothered with it until now, fixed so many little issues/typos, reworked encounter system (unknown if it will work very well)
-#Version 0.5.1: -Fixed encounter system that was causing massive issues and crashing
-
-#Version 0.6 (Major update): -Added magicz, added basic saving, fixed some bugs, fixed some typos, loading is WIP as hell
-#Version 0.6.1: -Broke loading more
-#Version 0.6.5 (Semi-major update): -Fixed loading to make it work, condensed some code, reworked the trigger system, game may be slightly faster now
-#Version 0.6.6: -Fixed a handful of bugs that restricted some items/rooms
-#Version 0.6.7: -Added in some more spells, you just can't get them legitimately yet, removed some useless comments, minor fixes with magic/fight mechanics
-
-#Version 0.7 (Major update!): -Added kinda classes, added some other things, documentation...? I guess...?
-
-#Version 0.8 (Major update!): -Added colors!?!?!?, added fancier things in general
-#Version 0.8.1: -Added in autoloading, reworked the changelog for reasons of inaccurate code length measurement and readability, ideas for balancing levels: area limits, item evolution/or/other, really freaking low xp rates, start everything over... from scratch
-#Version 0.8.2: -Reworked some stuff, fixed some bugs, reworked colors, added some more sillies, random things
-#Version 0.8.3: -Added "restart" command, various changes, defense rebalancing, small idea layouts, fixed some minor bugs
-#Version 0.8.4: -Reworked/condensed some of the code(may have unpredicted results)
-#Version 0.8.5: -Managed to allow for better user input
-#Version 0.8.6: -Added some spell level stuff, fixed some minor bugs, changed some commands slightly due to enemy triggering issues
-
-#Version 0.9 (Major update!): -Added basic layout for difficulties, various things, will probably fix balance issues in the next update
-#Version 0.9.1: -Added comments to make it easier for people who want to help with the game
-#Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage
-#Version 0.9.3: -Added more spellbooks- usable but not accessable yet
-
-#Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game, reworked room printing and fixed info not printing during unknown room movement, will be adding second area soon- not currently sure as to how I will do it
-#Version 1.0.1: -Possibly fixed a bug that resulted in an insta-kill after running away, removed and condesned random bits of code
-#Version 1.0.2: -Bug fixes, more optimizing, combat now prints much cleaner- maybe a bit too clean
-#Version 1.0.3: -Testing colors a bit more in depth
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -70,9 +12,9 @@ import Loadingbar
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
-		pstatus = "Connection to Github available.  Downloading update."
+		pstatus = "Connection to Github available. Downloading update."
 	else:
-		print "Connection failed.  Check your internet connection and try again."
+		print "Connection failed. Check your internet connection and try again."
 #		try:
 #			os.system('git pull')
 #			if False:
@@ -104,7 +46,7 @@ color = {
     'darkblue':   "\033[0;34m",
     'darkcyan':   "\033[0;36m",
     'darkred':    "\033[0;31m",
-    'darkmagenta':"\033[0;35m",
+    'darkmagenta': "\033[0;35m",
     'darkblack':  "\033[0;30m",
     'off':        "\033[0;0m"
 }
@@ -142,7 +84,7 @@ d_words = ['d', 'down']
 stop = 0
 letter = """The letter reads as follows:
 Dear [The name is smudged out]
-	We have recently heard about your ideas with our company.  We would like to officially meet with you on the fourth [The rest of the paragraph is blacked out].
+	We have recently heard about your ideas with our company. We would like to officially meet with you on the fourth [The rest of the paragraph is blacked out].
 We would also appreciate if you could begin to proceed with your ideas(at least planning) until our meeting.
 
                                                                                Sincerely,
@@ -236,7 +178,7 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 	elif classsc == "3":
 		skills.append("Stealth")
 		silly = 1
-	print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
+	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
 #The line below will be commented out when current version is known to be stable
 #print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
@@ -302,9 +244,9 @@ while stop != 1:
 			encounter = 1
 			encounter_time = 0
 		elif "charm" in words and "mysterious charm" in inventory:
-			print color['magenta'] + "You begin to feel funny.  You suddenly black out..." + color['off']
+			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
 			evolve_count += 1
-			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".  It grants whoever uses it a beautiful voice!" + color['off']
+			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
 		else:
 			print color['magenta'] + "You don't have that item!" + color['off']
 	if list(set(take_words) & set(words)):
@@ -357,7 +299,7 @@ while stop != 1:
 			print color['magenta'] + "You take the mysterious book and wonder what it could be." + color['off']
 		elif "charm" in words and x == 5 and y == 2 and z == 0 and "boss1" in triggers:
 			inventory.append("mysterious charm")
-			print color['magenta'] + "You pick up the strange charm.  It is in the shape of a purple diamond." + color['off']
+			print color['magenta'] + "You pick up the strange charm. It is in the shape of a purple diamond." + color['off']
 		elif "book" in words and x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 			inventory.append("spellbook- Fire")
 			print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
@@ -469,52 +411,52 @@ while stop != 1:
 		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r\nExp: %r/%r" % (damage, hp, defe, mana, len(levels), exp, exp_limit)
 		encounter_time += 1
 	elif act == "credits":
-		print "This game was written by Matthew Knecht in Python 2.7.  It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo.  The game doesn't have much content- but that will be resolved shortly.  Thanks for playing!" % current_version
+		print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
 	if act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -stats (Shows your your stats)" + color['off']
 		if encounter >= 1:
 			encounter_time += 1
 	if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 		encounter = 0
-		roominfo = "You have found yourself in a dimly lit cave.  You have no memory of how you got here or who you are.  There is a path to the north and south.  You see a torch on the ground."
+		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	elif x == 0 and y == 0 and z == 0 and "torch" in triggers:
-		roominfo = "Your torch lights up the walls of the cave.  There is a path to the north and south."
+		roominfo = "Your torch lights up the walls of the cave. There is a path to the north and south."
 	elif x == 0 and y == 1 and z == 0 and "torch" not in triggers:
-		roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly.  You decide to turn back until you find a light source."
+		roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source."
 		y -= 1
 	elif x == 0 and y == 1 and z == 0 and "torch" in triggers:
-		roominfo = "You begin to walk to the north, allowing your torch to light the way.  As you walk you begin to hear a slight howl of wind from ahead of you.  There is a path to the east."
+		roominfo = "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east."
 	elif x == 1 and y == 1 and z == 0 and "outside1" not in triggers:
-		roominfo = "You walk to the east and begin to feel the breeze picking up.  You look ahead of you and see outside a little bit ahead."
+		roominfo = "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead."
 		triggers.append("outside1")
 	elif x == 1 and y == 1 and z == 0 and "outside1" in triggers:
 		roominfo = "The exit to the cave is to the east."
 	elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 		encounter = 0
-		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.  The trees tower over you and you hear the sound of rushing water to the north.  You see a good sized tree branch with a pointed end."
+		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
 		enemy_type = "wolf"
 	elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 		encounter = 0
-		roominfo = "You reach the end of the tunnel and see a forest to the east.  You hear the sound of rushing water to the north."
+		roominfo = "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north."
 		enemy_type = "wolf"
 	elif x == 2 and y == 2 and z == 0:
 		encounter = 1
 		enemy_type = "wolf"
-		roominfo = "There is a swiftly flowing stream here.  To the east is a path to the forest.  You think you see a small cottage far to the north."
+		roominfo = "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north."
 	elif x == 2 and y == 3 and z == 0:
-		roominfo = "You keep walking around the side of the mountain.  There is a cottage far to the north and a cave to the south.  There is a forest to the east."
+		roominfo = "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east."
 		enemy_type = "wolf"
 	elif x == 2 and y == 4 and z == 0:
-		roominfo = "The mountain path seems to be rougher here.  You see that the stream flows from a grate in the mountain.  There is a forest to the east, a cave to the south, and a cottage to the north."
+		roominfo = "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north."
 		enemy_type = "wolf"
 	elif x == 2 and y == 5 and z == 0:
-		roominfo = "You are nearing the cottage.  There is a cave far to the south."
+		roominfo = "You are nearing the cottage. There is a cave far to the south."
 #Forest area follows
 #To prevent a lot of mistakes here, I'm spliting the forest into 3 rows(at least for now)
 #Row 1
 	elif x == 3 and y == 1 and z == 0:
 		encounter = 0
-		roominfo = "The sunlight is slightly filtered by the trees above.  There is a cave to the west."
+		roominfo = "The sunlight is slightly filtered by the trees above. There is a cave to the west."
 	elif x == 4 and y == 1 and z == 0:
 		encounter = 1
 		enemy_type = "elf"
@@ -527,7 +469,7 @@ while stop != 1:
 #Row 2
 	elif x == 3 and y == 2 and z == 0:
 		encounter = 0
-		roominfo = "The sunlight is slightly filtered by the trees above.  There is a stream to the west."
+		roominfo = "The sunlight is slightly filtered by the trees above. There is a stream to the west."
 	elif x == 4 and y == 2 and z == 0:
 		encounter = 1
 		enemy_type = "elf"
@@ -535,11 +477,11 @@ while stop != 1:
 	elif x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 		encounter = 0
 		enemy_type = "slime"
-		roominfo = "There is a mysterious pool of water in the center of this clearing.  Various flowers surround it in a circle.  There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
+		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
 #Row 3
 	elif x == 3 and y == 3 and z == 0:
 		encounter = 0
-		roominfo = "The sunlight is slightly filtered by the trees above.  There is a mountain to the west."
+		roominfo = "The sunlight is slightly filtered by the trees above. There is a mountain to the west."
 	elif x == 4 and y == 3 and z == 0:
 		encounter = 1
 		enemy_type = "elf"
@@ -548,27 +490,27 @@ while stop != 1:
 #House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage.  There appears to be a letter in the mailbox.  There is a cave far to the south and a forest to the east."
+		roominfo = "You stand in front of the mailbox of the cottage. There appears to be a letter in the mailbox. There is a cave far to the south and a forest to the east."
 	elif x == 2 and y == 6 and z == 0 and "letter" in triggers:
 		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage.  There is a cave far to the south and a forest to the east."
+		roominfo = "You stand in front of the mailbox of the cottage. There is a cave far to the south and a forest to the east."
 		enemy_type = "wolf"
 	elif x == 2 and y == 7 and z == 0 and "lights" not in triggers:
 		encounter = 0
-		roominfo = "The inside of the house is cold and dark.  You have an unexplainable feeling of gloom.  There are rooms to the east and the north."
+		roominfo = "The inside of the house is cold and dark. You have an unexplainable feeling of gloom. There are rooms to the east and the north."
 	elif x == 2 and y == 7 and z == 0 and "lights" in triggers:
 		encounter = 0
-		roominfo = "There is a bright red stain on the rug in front of the door.  You have an unexplainable feeling of dread.  The kitchen is to the east and the living room is to the north."
+		roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread. The kitchen is to the east and the living room is to the north."
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
-		roominfo = "The room is lit up slightly by a window.  You can see a switch by the window.  The doorway is to the west."
+		roominfo = "The room is lit up slightly by a window. You can see a switch by the window. The doorway is to the west."
 	elif x == 2 and y == 8 and z == 0 and "lights" not in triggers:
-		roominfo = "It's way too dark in here for you to see anything.  The doorway is to the south."
+		roominfo = "It's way too dark in here for you to see anything. The doorway is to the south."
 	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" not in triggers:
-		roominfo = "The living room is completely barren.  There appears to be a locked trapdoor in the floor.  The doorway is to the south."
+		roominfo = "The living room is completely barren. There appears to be a locked trapdoor in the floor. The doorway is to the south."
 	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
-		roominfo = "The trapdoor in this room has a key inside.  The doorway is to the south."
+		roominfo = "The trapdoor in this room has a key inside. The doorway is to the south."
 	elif x == 2 and y == 8 and z == 0 and "trapdoor" in triggers and "key" in inventory and "trapdoor_lock" not in triggers:
-		roominfo = "The trapdoor in the center of the room is empty except for a little notch.  The doorway is to the south."
+		roominfo = "The trapdoor in the center of the room is empty except for a little notch. The doorway is to the south."
 	elif x == 2 and y == 8 and z == 0 and "trapdoor_lock" in triggers and "old book" not in triggers:
 		roominfo = "There is an old book layered with dust in the safe in the trapdoor."
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
@@ -576,31 +518,31 @@ while stop != 1:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
 		z += 1
 	elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
-		roominfo = "The light shows that there are stairs going down.  The entrance is to the west."
+		roominfo = "The light shows that there are stairs going down. The entrance is to the west."
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and armor < 1 and weapon < 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground.  There is leather armor on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground. There is leather armor on the ground."
 #Player has nothing ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon < 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground.  There is leather armor on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground. There is leather armor on the ground."
 #Player has lamp ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon < 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a dagger on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground."
 #Player has lamp and armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon >= 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is leather armor on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is leather armor on the ground."
 #Player has lamp and dagger ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north."
 #Player has all items ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and weapon < 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is a dagger on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground."
 #Player has leather armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and weapon >= 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground."
 #Player has dagger and armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor < 1 and weapon < 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north.  There is a lamp on the ground.  There is leather armor on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is leather armor on the ground."
 #Player has dagger ^
 	elif x == 3 and y == 8 and z == 1:
 		encounter = 0
@@ -611,18 +553,18 @@ while stop != 1:
 		enemy_type = "orc"
 		roominfo = "There are paths to the north, east, and west."
 	elif x == 2 and y == 9 and z == 1:
-		roominfo = "You hear dripping water in the distance.  There is a path to the west"
+		roominfo = "You hear dripping water in the distance. There is a path to the west"
 	elif x == 1 and y == 9 and z == 1:
-		roominfo = "The strange dripping sound seems a short distance away.  There is a path to the north and east."
+		roominfo = "The strange dripping sound seems a short distance away. There is a path to the north and east."
 	elif x == 1 and y == 10 and z == 1:
-		roominfo = "The dripping sound appears to be just around the corner up ahead.  You hear a deep moaning sound.  There is a path to the west and south."
+		roominfo = "The dripping sound appears to be just around the corner up ahead. You hear a deep moaning sound. There is a path to the west and south."
 	elif x == 0 and y == 10 and z == 1:
-		roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume.  There are paths to the west and east."
+		roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume. There are paths to the west and east."
 	elif x == -1 and y == 10 and z == 1:
 		enemy_type = "wraith"
-		roominfo = "You notice a rapidly dripping spot on the ceiling.  You can hear the moaning sound ahead.  There is a path to the east and north."
+		roominfo = "You notice a rapidly dripping spot on the ceiling. You can hear the moaning sound ahead. There is a path to the east and north."
 	elif x == -1 and y == 11 and z == 1:
-		roominfo = "As you look north, you can't see the end of the passage.  There is a path to the south and north."
+		roominfo = "As you look north, you can't see the end of the passage. There is a path to the south and north."
 	elif x == -1 and y == 12 and z == 1:
 		roominfo = "Something seems off around you..."
 	elif x == -1 and y == 13 and z == 1:
@@ -632,7 +574,7 @@ while stop != 1:
 	elif x == -1 and y == 15 and z == 1 and armor <= 1:
 		roominfo = "You almost trip on the chainmail armor that lays on the ground."
 	elif x == -1 and y == 15 and z == 1 and armor >= 2:
-		roominfo = "The silence here is intense.  The light ahead seems to be getting brighter."
+		roominfo = "The silence here is intense. The light ahead seems to be getting brighter."
 	elif x == -1 and y == 16 and z == 1:
 		roominfo = "The light to the north appears to be a wall of solid light."
 	elif x == -1 and y == 17 and z == 1:
@@ -642,7 +584,7 @@ while stop != 1:
 		z = 1
 #East path split
 	elif x == 4 and y == 9 and z == 1:
-		roominfo = "There is a slight clanking noise in the distance.  There is a path that stretches far ahead of you."
+		roominfo = "There is a slight clanking noise in the distance. There is a path that stretches far ahead of you."
 	elif x == 5 and y == 9 and z == 1:
 		enemy_type = "dwarf"
 		roominfo = "You sense something small nearby."
@@ -669,7 +611,7 @@ while stop != 1:
 	elif x == 3 and y == 11 and z == 1:
 		roominfo = "..."
 	elif x == 3 and y == 12 and z == 1 and "underground_door" not in triggers:
-		roominfo = "There is suddenly a door in front of you.  You can't open it with your hands."
+		roominfo = "There is suddenly a door in front of you. You can't open it with your hands."
 	elif x == 3 and y == 12 and z == 1 and "underground_door" in triggers:
 		roominfo = "The door is open."
 	elif x == 3 and y == 13 and z == 1 and "underground_door" not in triggers:
@@ -1201,12 +1143,12 @@ while stop != 1:
 			print color['blue'] + "Do you want to see your final stats?" + color['off']
 			dead_p = raw_input('y/n ')
 			if dead_p == "y":
-				print color['darkmagenta'] + "You killed these enemies:" + color['off']
+				print color['darkmagenta'] + "You killed these enemies: " + color['off']
 				cnt = Counter()
 				for word in kills:
 					cnt[word] += 1
 				print dict(cnt)
-				print "These are your final stats:"
+				print "These are your final stats: "
 				print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, max_hp, defe, max_mana, level) + color['off']
 				print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
 				quit()
