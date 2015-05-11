@@ -56,7 +56,7 @@
 #Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage
 #Version 0.9.3: -Added more spellbooks- usable but not accessable yet
 
-#Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game, reworked room printing and fixed info not printing during unknown room movement
+#Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game, reworked room printing and fixed info not printing during unknown room movement, will be adding second area soon- not currently sure as to how I will do it
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
