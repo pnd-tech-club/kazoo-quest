@@ -35,8 +35,9 @@ while stop != 1:
 		act = raw_input('> ')
 		os.system('clear')
 	if act == "skip":
-		print "Okay! Let's get right to the game!"
-		import kazooquest
+		os.system('touch game_save.dat')
+		print "Run \"python kazooquest.py\" to continue."
+		quit()
 	else:
 		if "thing" not in triggers:
 			print color['darkblue'] + "Alright!  First we're going to go over basic movement.  You need to go North, so try typing something like \"go north\" (The \"go\" isn't needed)" + color['off']
@@ -88,11 +89,13 @@ while stop != 1:
 			print "These are your final stats:"
 			print color['darkgreen'] + "Damage: 5\nHealth: 10\nDefense: 3\nMana: 5\nLevel:1" + color['off']
 			print color['darkgreen'] + "\nYour final score was 50" + color['off']
-			print color['darkblue'] + "\nThat's it!  I hope you enjoy Kazoo Quest!  Press enter to continue to the game."
+			print color['darkblue'] + "\nThat's it!  I hope you enjoy Kazoo Quest!  Press enter to continue to the game." + color['off']
 			triggers.append("death")
 			y = 100
 		elif y == 100:
-			import kazooquest
+			os.system('touch game_save.dat')
+			print "Run \"python kazooquest.py\" to continue."
+			quit()
 		else:
 			if list(set(n_words) & set(words)):
 				y -= 1

@@ -56,7 +56,7 @@
 #Version 0.9.2: -Added more to the leveled spell system, fixed enemies dealing negative damage
 #Version 0.9.3: -Added more spellbooks- usable but not accessable yet
 
-#Version 1 (TIME TO CELEBRATE!!!!!!!): -Added in a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it
+#Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -179,6 +179,8 @@ exp_limit = 10
 kills = []
 encounter = 0
 history = []
+tut_finished = 0
+loadyload = 0
 class CleanExit(object):
 	def __enter__(self):
 		return self
@@ -192,16 +194,19 @@ z = 0
 import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
-	with open('game_save.dat', 'rb') as f:
-		hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo = pickle.load(f)
-	f.close()
-	os.system('clear')
-	print color['cyan'] + "Game loaded!" + color['off']
-	print roominfo
+	tut_finished = 1
+	if os.stat("game_save.dat").st_size != 0:
+		with open('game_save.dat', 'rb') as f:
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo = pickle.load(f)
+		f.close()
+		loadyload = 1
+		os.system('clear')
+		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 else:
-	autoload == False
+	import Tutorial
 silly = 0
-while silly != 1 and autoload != True:
+while silly != 1 and loadyload != 1 and tut_finished == 1:
 	game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
 	if game_diff == "1":
 		hp = 25
