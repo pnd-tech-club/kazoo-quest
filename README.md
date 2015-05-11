@@ -1,5 +1,5 @@
 # kazoo-quest
-This is the repo for any and all code relating to Kazoo Quest.  It will include any testing code and anything needed for certain tweaks.
+This is the repo for any and all code relating to Kazoo Quest. It will include any testing code and anything needed for certain tweaks.
 
 Instructions for installation/running:
 You will need Python 2.7
