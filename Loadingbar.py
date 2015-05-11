@@ -1,6 +1,8 @@
 # -*- coding: latin-1 -*-
 from __future__ import print_function
-import sys, os
+import sys, os, argparse
+parser = argparse.ArgumentParser(description='Kazoo Quest!')
+args = parser.parse_args()
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 os.system('clear')
 global desu

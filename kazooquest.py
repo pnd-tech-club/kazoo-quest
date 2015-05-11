@@ -57,6 +57,7 @@
 #Version 0.9.3: -Added more spellbooks- usable but not accessable yet
 
 #Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game, reworked room printing and fixed info not printing during unknown room movement, will be adding second area soon- not currently sure as to how I will do it
+#Version 1.0.1: -Possibly fixed a bug that resulted in an insta-kill after running away, removed and condesned random bits of code
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -83,10 +84,8 @@ def update():
 #				os.system('git pull')
 #				print "Done!"
 #				break
-#This code may be severely broken, I really don't have a clue at the time of writing it as I wrote it using online documentation and couldn't test it (yes, yes it is broken)
-#parser = argparse.ArgumentParser(description='Kazoo Quest')
-#parser.add_argument('--update', update = update())
-#args = parser.parse_args()
+parser = argparse.ArgumentParser(description='Kazoo Quest!')
+args = parser.parse_args()
 wait = 0
 color = {
     'white':    "\033[1;37m",
@@ -237,7 +236,7 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 		silly = 1
 	print color['cyan'] + "Welcome to Kazoo Quest!  For help type \"help\"!" + color['off']
 #The line below will be commented out when current version is known to be stable
-print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
+#print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
 words = act.split(" ")
 stop = 0
@@ -294,11 +293,10 @@ while stop != 1:
 			print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
 			spells.append("life steal")
 			spells_thing.append("4. Life Steal" + "\tDamage/Heal: 15 to 30")
-
-#Yeah this thing :3
 		elif "book" in words and "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
 			print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
+			inventory.remove("old book")
 			encounter = 1
 			encounter_time = 0
 		elif "charm" in words and "mysterious charm" in inventory:
@@ -309,69 +307,57 @@ while stop != 1:
 			print color['magenta'] + "You don't have that item!" + color['off']
 	if list(set(take_words) & set(words)):
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
-			items = "torch"
-			inventory.append(items)
-			triggers.append(items)
+			inventory.append("torch")
+			triggers.append("torch")
 			print color['magenta'] + "You pick up the torch and are able to see better." + color['off']
 		elif "shuriken" in words and x == 0 and y == -1 and z == 0 and "shuriken" not in inventory:
-			items = "shuriken"
-			inventory.append(items) * 7
+			inventory.append("shuriken") * 7
 			print color['magenta'] + "You pick up seven shuriken." + color['off']
 		elif "branch" in words and x == 2 and y == 1 and z == 0 and weapon < 1:
-			items = "branch"
-			inventory.append(items)
-			triggers.append(items)
+			inventory.append("branch")
+			triggers.append("branch")
 			weapon = 1
 			var_set = 1
 			print color['magenta'] + "You pick up the branch and hold it like a spear." + color['off']
 		elif "letter" in words and x == 2 and y == 6 and z == 0 and "letter" not in triggers:
-			items = "letter"
-			inventory.append(items)
-			triggers.append(items)
+			inventory.append("letter")
+			triggers.append("letter")
 			print color['magenta'] + "You take the letter out of the mailbox." + color['off']
 			print letter
 		elif "dagger" in words and x == 3 and y == 7 and z == 1 and weapon < 2:
-			items = "dagger"
-			inventory.append(items)
+			inventory.append("dagger")
 			weapon = 2
 			var_set = 1
 			print color['magenta'] + "You wield the dagger and feel stronger." + color['off']
-			items = "branch"
-			inventory.remove(items)
+			inventory.remove("branch")
 		elif "armor" in words and x == 3 and y == 7 and z == 1 and armor < 1:
-			items = "leather armor"
-			inventory.append(items)
+			inventory.append("leather armor")
 			armor = 1
 			print color['magenta'] + "You put on the leather armor." + color['off']
 		elif "lamp" in words and x == 3 and y == 7 and z == 1 and "lamp" not in inventory:
-			items = "lamp"
-			inventory.append(items)
-			triggers.append(items)
-			items = "torch"
-			inventory.remove(items)
+			inventory.append("lamp")
+			triggers.append("lamp")
+			inventory.remove("torch")
 			print color['magenta'] + "Your torch happens to burn out as you pick up the lamp." + color['off']
 		elif "armor" in words and x == -1 and y == 15 and z == 1 and armor <= 1:
-			items = "Chainmail armor"
-			inventory.append(items)
+			inventory.append("Chainmail armor")
 			armor = 2
 			print color['magenta'] + "You put on the chainmail armor." + color['off']
-			items = "leather armor"
-			inventory.remove(items)
+			inventory.remove("leather armor")
 		elif "crowbar" in words and x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
-			items = "crowbar"
-			inventory.append(items)
+			inventory.append("crowbar")
 			print color['magenta'] + "You pick up the crowbar." + color['off']
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdoor" in triggers:
-			items = "key"
-			inventory.append(items)
+			inventory.append("key")
 			print color['magenta'] + "You pick up a mysterious key." + color['off']
 		elif "book" in words and x == 2 and y == 8 and z == 0 and "old book" not in inventory and "trapdoor_lock" in triggers:
-			items = "old book"
-			inventory.append(items)
+			inventory.append("old book")
 			print color['magenta'] + "You take the mysterious book and wonder what it could be." + color['off']
+		elif "charm" in words and x == 5 and y == 2 and z == 0 and "boss1" in triggers:
+			inventory.append("mysterious charm")
+			print color['magenta'] + "You pick up the strange charm.  It is in the shape of a purple diamond." + color['off']
 		elif "book" in words and x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
-			items = "spellbook- Fire"
-			inventory.append(items)
+			inventory.append("spellbook- Fire")
 			print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
