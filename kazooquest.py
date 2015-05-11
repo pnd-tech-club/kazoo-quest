@@ -1096,6 +1096,7 @@ while stop != 1:
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
+				enemy_set = 0
 				encounter_time = random.randint(5, 7)
 				enemy_hp = 0
 				dodges = 0
