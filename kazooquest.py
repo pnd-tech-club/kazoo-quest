@@ -59,6 +59,7 @@
 #Version 1 (TIME TO CELEBRATE!!!!!!!): -Added a boss fight, reworked lots of balancing issues, added a tutorial for the sake of less confusion- expect changes to it, fixed tutorial not properly importing/reimporting main game, reworked room printing and fixed info not printing during unknown room movement, will be adding second area soon- not currently sure as to how I will do it
 #Version 1.0.1: -Possibly fixed a bug that resulted in an insta-kill after running away, removed and condesned random bits of code
 #Version 1.0.2: -Bug fixes, more optimizing, combat now prints much cleaner- maybe a bit too clean
+#Version 1.0.3: -Testing colors a bit more in depth
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
@@ -427,11 +428,11 @@ while stop != 1:
 		spells.append("poison")
 		spells.append("life steal")
 		spells.append("recover")
-		spells_thing.append("1. Firebolt" + "\tDamage: 10 to 25")
-		spells_thing.append("2. Frost")
-		spells_thing.append("3. Poison")
-		spells_thing.append("4. Life Steal")
-		spells_thing.append("5. Recover") #Need an idea for this spell
+		spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
+		spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
+		spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
+		spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30")
+		spells_thing.append("5. Recover") #Need a better idea for this spell
 		skills.append("Stealth")
 		skills.append("Rage")
 		var_set = 1
