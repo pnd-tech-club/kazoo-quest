@@ -521,10 +521,10 @@ while stop != 1:
 #House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage. There appears to be a letter in the mailbox. There is a cave far to the south and a forest to the east."
+		roominfo = "You stand in front of the mailbox of the cottage. There appears to be a letter in the mailbox. There is a cave far to the south."
 	elif x == 2 and y == 6 and z == 0 and "letter" in triggers:
 		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage. There is a cave far to the south and a forest to the east."
+		roominfo = "You stand in front of the mailbox of the cottage. There is a cave far to the south and."
 		enemy_type = "wolf"
 	elif x == 2 and y == 7 and z == 0 and "lights" not in triggers:
 		encounter = 0
