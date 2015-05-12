@@ -74,6 +74,7 @@ points = 0
 thatonething = 0
 triggers = []
 inventory = []
+yes_words = ['yes', 'y', 'true', 'indeed', 'yeah', 'afirmative']
 lights_words = ['switch', 'lights', 'light']
 spellbook_words = ['spellbook', 'book', 'runebook']
 take_words = ['take', 'grab', 'pick', 'get', 'aquire', 'nab', 'steal']
@@ -271,6 +272,15 @@ while stop != 1:
 			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
 			evolve_count += 1
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
+		elif "portal" in words and "boss1" in triggers and evolve_count != 0:
+			os.system('clear')
+			print color['red'] + "You won't be able to come back here after you go through. Are you still sure you want to proceed?" + color['off']
+			portal_p = raw_input('')
+			if list(set(yes_words) & set(words)):
+				print color['darkgreen'] + "Okie dokie, let's gooooooo..." + color['off']
+				x = 0
+				y = 0
+				z = 10
 	if list(set(take_words) & set(words)):
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			inventory.append("torch")
@@ -447,6 +457,7 @@ while stop != 1:
 			encounter_time += 1
 	else:
 		pass #Gotta fix this thing
+#AREA 1 STARTS HERE
 	if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
@@ -509,6 +520,15 @@ while stop != 1:
 		encounter = 0
 		enemy_type = "slime"
 		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
+	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "mysterious charm" not in inventory and evolve_count <= 1:
+		encounter = 0
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange."
+	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
+		encounter = 0
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."
+	elif x == 5 and y == 2 and z == 0 and evolve_count != 0:
+		encounter = 0
+		roominfo = "The pool of water appears to have opened into a strange portal-ish thing.  You know you won't be able to get back if you go in..."
 #Row 3
 	elif x == 3 and y == 3 and z == 0:
 		encounter = 0
@@ -653,6 +673,13 @@ while stop != 1:
 		roominfo = "There is an empty room here."
 	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
+#AREA 1 ENDS HERE
+#AREA 2 STARTS HERE
+	elif x == 0 and y == 0 and z == 10 and "area2" not in triggers:
+		roominfo = "The area around you seems much drier than where you came from. You seem to be in a cave again.  The exit is to the north."
+		triggers.append("area2")
+	elif x == 0 and y == 0 and z == 10 and "area2" in triggers:
+		roominfo = "You are in a cave. The exit is to the north."
 #This is used to undo movement into an unexisting room V
 	else:
 		if list(set(n_words) & set(words)):
