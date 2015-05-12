@@ -182,7 +182,9 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 		silly = 1
 	elif classsc == "4":
 		spells.append("Stun")
-		spells_thing.append(color['darkyellow'] + "10. Stun" + color['yellow'])
+		spells_thing.append(color['darkyellow'] + "10. Stun" + color['yellow'] +"\tDamage: None, but stuns for 6 turns" + color['off'])
+	elif classsc == "5":
+		skills.append("magic boost")
 	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	print roominfo
