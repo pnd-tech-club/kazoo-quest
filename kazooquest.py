@@ -170,7 +170,7 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 		hp = 10
 		defe = 0
 		mana = 0
-	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\n2. Mage\n3. Assassin\n" + color['off'])
+	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the recover spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
 	if classsc == "1":
 		skills.append("Rage")
 		silly = 1
@@ -180,6 +180,9 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 	elif classsc == "3":
 		skills.append("Stealth")
 		silly = 1
+	elif classsc == "4":
+		spells.append("Stun")
+		spells_thing.append(color['darkyellow'] + "10. Stun" + color['yellow'])
 	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	print roominfo
