@@ -151,7 +151,7 @@ def death():
 	elif dead_p == "n":
 		quit()
 	else:
-		pass
+		death()
 x = 0
 y = 0
 z = 0
@@ -232,7 +232,7 @@ while stop != 1:
 	elif list(set(u_words) & set(words)):
 		z -= 1
 #Debugging command
-	if list(set(use_words) & set(words)):
+	elif list(set(use_words) & set(words)):
 		if list(set(lights_words) & set(words)):
 			if x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 				triggers.append("lights")
