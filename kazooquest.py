@@ -224,19 +224,19 @@ while stop != 1:
 		elif "spellbook" in words and "spellbook- Fire" in inventory:
 			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 			spells.append("firebolt")
-			spells_thing.append("1. Firebolt" + "\tDamage: 10 to 25")
+			spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
 		elif "spellbook" in words and "spellbook- Frost" in inventory:
 			print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
 			spells.append("frost")
-			spells_thing.append("2. Frost" + "\tDamage: 25 to 35")
+			spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
 		elif "spellbook" in words and "spellbook- Poison" in inventory:
 			print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
 			spells.append("posion")
-			spells_thing.append("3. Poison" + "\tDamage: 10 to 18")
+			spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
 		elif "spellbook" in words and "spellbook- Life Steal" in inventory:
 			print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
 			spells.append("life steal")
-			spells_thing.append("4. Life Steal" + "\tDamage/Heal: 15 to 30")
+			spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30" + color['off'])
 		elif "book" in words and "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
 			print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
@@ -373,7 +373,7 @@ while stop != 1:
 		spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
 		spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
 		spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
-		spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30")
+		spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30" + color['off'])
 		spells_thing.append("5. Recover") #Need a better idea for this spell
 		skills.append("Stealth")
 		skills.append("Rage")
