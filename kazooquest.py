@@ -73,8 +73,9 @@ evolve_count = 0
 points = 0
 triggers = []
 inventory = []
-take_words = ['take', 'grab', 'pick', 'get', 'aquire']
-use_words = ['use', 'eat', 'read', 'drink']
+lights_words = ['switch', 'lights', 'light']
+take_words = ['take', 'grab', 'pick', 'get', 'aquire', 'nab', 'steal']
+use_words = ['use', 'eat', 'read', 'drink', 'flip', 'turn', 'hit']
 n_words = ['n', 'north']
 s_words = ['s', 'south']
 e_words = ['e', 'east']
@@ -116,7 +117,7 @@ player_debuff_timer = 5
 firebolt_level = 0
 frost_level = 0
 poison_level = 0
-lifedrain_level = 0
+lifesteal_level = 0
 recover_level = 0
 exp_limit = 10
 kills = []
@@ -179,6 +180,8 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 		skills.append("Stealth")
 		silly = 1
 	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
+	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
+	print roominfo
 #The line below will be commented out when current version is known to be stable
 #print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
@@ -209,9 +212,10 @@ while stop != 1:
 		if encounter >= 1:
 			encounter_time += 1
 	if list(set(use_words) & set(words)):
-		if "switch" in words and x == 3 and y == 7 and z == 0:
-			triggers.append("lights")
-			print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
+		if list(set(lights_words) & set(words)):
+			if x == 3 and y == 7 and z == 0:
+				triggers.append("lights")
+				print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
 		elif "switch" in words and x == 3 and y == 7 and z == 0 and "lights" in triggers:
 			print color['magenta'] + "You wiggle the switch but nothing happens." + color['off']
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
