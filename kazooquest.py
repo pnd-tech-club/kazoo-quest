@@ -5,7 +5,7 @@
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-current_version = "v1.0.4"
+current_version = "v1.0.5"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
@@ -74,6 +74,7 @@ points = 0
 triggers = []
 inventory = []
 lights_words = ['switch', 'lights', 'light']
+spellbook_words = ['spellbook', 'book', 'runebook']
 take_words = ['take', 'grab', 'pick', 'get', 'aquire', 'nab', 'steal']
 use_words = ['use', 'eat', 'read', 'drink', 'flip', 'turn', 'hit']
 n_words = ['n', 'north']
@@ -216,8 +217,8 @@ while stop != 1:
 			if x == 3 and y == 7 and z == 0:
 				triggers.append("lights")
 				print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
-		elif "switch" in words and x == 3 and y == 7 and z == 0 and "lights" in triggers:
-			print color['magenta'] + "You wiggle the switch but nothing happens." + color['off']
+			elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
+				print color['magenta'] + "You wiggle the switch but nothing happens." + color['off']
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
 			print color['magenta'] + "You use the crowbar to open the door." + color['off']
 			triggers.append("underground_door")
@@ -225,22 +226,23 @@ while stop != 1:
 			print color['magenta'] + "You use the crowbar to open the trapdoor." + color['off']
 			triggers.append("trapdoor")
 #I know this prioritizes certain spellbooks over others but who actually cares?
-		elif "spellbook" in words and "spellbook- Fire" in inventory:
-			print color['magenta'] + "You read the book and it bursts into flame." + color['off']
-			spells.append("firebolt")
-			spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
-		elif "spellbook" in words and "spellbook- Frost" in inventory:
-			print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
-			spells.append("frost")
-			spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
-		elif "spellbook" in words and "spellbook- Poison" in inventory:
-			print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
-			spells.append("posion")
-			spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
-		elif "spellbook" in words and "spellbook- Life Steal" in inventory:
-			print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
-			spells.append("life steal")
-			spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30" + color['off'])
+		if list(set(spellbook_words) & set(words)):
+			if "spellbook- Fire" in inventory:
+				print color['magenta'] + "You read the book and it bursts into flame." + color['off']
+				spells.append("firebolt")
+				spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
+			elif "spellbook- Frost" in inventory:
+				print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
+				spells.append("frost")
+				spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
+			elif "spellbook- Poison" in inventory:
+				print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
+				spells.append("posion")
+				spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
+			elif "spellbook- Life Steal" in inventory:
+				print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
+				spells.append("life steal")
+				spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30" + color['off'])
 		elif "book" in words and "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
 			print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
@@ -304,9 +306,10 @@ while stop != 1:
 		elif "charm" in words and x == 5 and y == 2 and z == 0 and "boss1" in triggers:
 			inventory.append("mysterious charm")
 			print color['magenta'] + "You pick up the strange charm. It is in the shape of a purple diamond." + color['off']
-		elif "book" in words and x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
-			inventory.append("spellbook- Fire")
-			print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
+		if list(set(spellbook_words) & set(words)):
+			if x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
+				inventory.append("spellbook- Fire")
+				print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
 	if act == "clear":

@@ -56,3 +56,4 @@
 #Version 1.0.2: -Bug fixes, more optimizing, combat now prints much cleaner- maybe a bit too clean
 #Version 1.0.3: -Testing colors a bit more in depth
 #Version 1.0.4: -Made some slight changes and fixed some little bugs
+#Version 1.0.5: -Reworking the input system to be a bit more accepting of different inputs
