@@ -1,16 +1,16 @@
-Yeah
-so
-yeah
-
 Classes:
 Warrior has a passive buff to attack and health
-Mage has a boost to magic attack and mana
+Cleric can largely heal during battle, will probably eventually have active buffs for combat
 Assassin is sneaky and shit(has the "sneak" thingy)
+Ninja starts with the Stun spell (literally the same as frost)
+Wizard will have passive buffs to mana/spells (might recover mana naturally)
+
 
 Fighting mechanics:
 You can attack
 You can wizardry
 You can use items (maybe eventually?)
+You can check the enemies stats more indepth
 You can dodge/parry(25% chance for dodge/parry, 50% for getting hit)
 You can be a chicken and run away
 
@@ -19,5 +19,7 @@ Moving…?:
 "u" goes up, "d" goes down
 
 Interacting:
-"use" uses a thing
-"take" takes a thing
+You can put in a lot of words and it might work
+
+Bosses:
+You have to find a specific place to use a specific item to summon a specific boss
