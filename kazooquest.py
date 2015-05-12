@@ -5,7 +5,7 @@
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-current_version = "v0.9.3"
+current_version = "v1.0.4"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
