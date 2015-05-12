@@ -213,8 +213,6 @@ act = raw_input('> ')
 words = act.split(" ")
 stop = 0
 while stop != 1:
-	if hp <= 0:
-		death()
 #Map info for ease of access while debugging:
 #Variable 'x' is west/east(ex. -1 would be to the west and +1 would be to the east)
 #Variable 'y' is south/north(ex. -1 would be to the south and +1 would be to the north)
@@ -232,7 +230,7 @@ while stop != 1:
 	elif list(set(u_words) & set(words)):
 		z -= 1
 #Debugging command
-	elif list(set(use_words) & set(words)):
+	if list(set(use_words) & set(words)):
 		if list(set(lights_words) & set(words)):
 			if x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 				triggers.append("lights")
@@ -273,7 +271,7 @@ while stop != 1:
 			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
 			evolve_count += 1
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
-	elif list(set(take_words) & set(words)):
+	if list(set(take_words) & set(words)):
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			inventory.append("torch")
 			triggers.append("torch")
@@ -330,7 +328,7 @@ while stop != 1:
 				print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
-	elif act == "num":
+	if act == "num":
 		print x
 		print y
 		print z
@@ -448,8 +446,7 @@ while stop != 1:
 		if encounter >= 1:
 			encounter_time += 1
 	else:
-		thatonething = 0
-		print color['darkred'] + "You can't do that!" + color['off']
+		pass #Gotta fix this thing
 	if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
@@ -657,11 +654,7 @@ while stop != 1:
 	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
 #This is used to undo movement into an unexisting room V
-	if hp <= 0:
-		death()
 	else:
-		if thatonething == 1:
-			print color['darkred'] + "You can't go that way!" + color['off']
 		if list(set(n_words) & set(words)):
 			y -= 1
 		elif list(set(s_words) & set(words)):
