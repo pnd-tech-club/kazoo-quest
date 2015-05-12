@@ -1168,6 +1168,8 @@ while stop != 1:
 				points += 50
 		if hp > max_hp:
 			hp = max_hp
+		if hp <= 0:
+			death()
 		stop = 0
 	if hp > max_hp:
 		hp = max_hp
