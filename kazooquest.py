@@ -5,7 +5,7 @@
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-current_version = "v1.0.5"
+current_version = "v1.0.6"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 import Loadingbar
@@ -71,6 +71,7 @@ spells_thing = []
 exp = 0
 evolve_count = 0
 points = 0
+thatonething = 0
 triggers = []
 inventory = []
 lights_words = ['switch', 'lights', 'light']
@@ -133,6 +134,24 @@ class CleanExit(object):
 		if exc_type is KeyboardInterrupt:
 			return True
 		return exc_type is None
+def death():
+	print color['darkred'] + "You have died!" + color['off']
+	print color['blue'] + "Do you want to see your final stats?" + color['off']
+	dead_p = raw_input('y/n ')
+	if dead_p == "y":
+		print color['darkmagenta'] + "You killed these enemies: " + color['off']
+		cnt = Counter()
+		for word in kills:
+			cnt[word] += 1
+		print dict(cnt)
+		print "These are your final stats: "
+		print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, max_hp, defe, max_mana, level) + color['off']
+		print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
+		quit()
+	elif dead_p == "n":
+		quit()
+	else:
+		pass
 x = 0
 y = 0
 z = 0
@@ -194,6 +213,8 @@ act = raw_input('> ')
 words = act.split(" ")
 stop = 0
 while stop != 1:
+	if hp <= 0:
+		death()
 #Map info for ease of access while debugging:
 #Variable 'x' is west/east(ex. -1 would be to the west and +1 would be to the east)
 #Variable 'y' is south/north(ex. -1 would be to the south and +1 would be to the north)
@@ -211,15 +232,9 @@ while stop != 1:
 	elif list(set(u_words) & set(words)):
 		z -= 1
 #Debugging command
-	if act == "num":
-		print x
-		print y
-		print z
-		if encounter >= 1:
-			encounter_time += 1
 	if list(set(use_words) & set(words)):
 		if list(set(lights_words) & set(words)):
-			if x == 3 and y == 7 and z == 0:
+			if x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 				triggers.append("lights")
 				print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
 			elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
@@ -231,7 +246,7 @@ while stop != 1:
 			print color['magenta'] + "You use the crowbar to open the trapdoor." + color['off']
 			triggers.append("trapdoor")
 #I know this prioritizes certain spellbooks over others but who actually cares?
-		if list(set(spellbook_words) & set(words)):
+		elif list(set(spellbook_words) & set(words)):
 			if "spellbook- Fire" in inventory:
 				print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 				spells.append("firebolt")
@@ -258,9 +273,7 @@ while stop != 1:
 			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
 			evolve_count += 1
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
-		else:
-			print color['magenta'] + "You don't have that item!" + color['off']
-	if list(set(take_words) & set(words)):
+	elif list(set(take_words) & set(words)):
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			inventory.append("torch")
 			triggers.append("torch")
@@ -311,13 +324,19 @@ while stop != 1:
 		elif "charm" in words and x == 5 and y == 2 and z == 0 and "boss1" in triggers:
 			inventory.append("mysterious charm")
 			print color['magenta'] + "You pick up the strange charm. It is in the shape of a purple diamond." + color['off']
-		if list(set(spellbook_words) & set(words)):
+		elif list(set(spellbook_words) & set(words)):
 			if x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 				inventory.append("spellbook- Fire")
 				print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
-	if act == "clear":
+	elif act == "num":
+		print x
+		print y
+		print z
+		if encounter >= 1:
+			encounter_time += 1
+	elif act == "clear":
 		if encounter >= 1:
 			encounter_time += 1
 		os.system('clear')
@@ -424,10 +443,13 @@ while stop != 1:
 		encounter_time += 1
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
-	if act == "help":
+	elif act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -stats (Shows your your stats)" + color['off']
 		if encounter >= 1:
 			encounter_time += 1
+	else:
+		thatonething = 0
+		print color['darkred'] + "You can't do that!" + color['off']
 	if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
@@ -635,7 +657,11 @@ while stop != 1:
 	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
 #This is used to undo movement into an unexisting room V
+	if hp <= 0:
+		death()
 	else:
+		if thatonething == 1:
+			print color['darkred'] + "You can't go that way!" + color['off']
 		if list(set(n_words) & set(words)):
 			y -= 1
 		elif list(set(s_words) & set(words)):
@@ -874,14 +900,13 @@ while stop != 1:
 		damage += 5
 		max_hp += 5
 		max_mana += 5
-#For some reason this code seems to be giving everything strange effects (removed in v0.1.4) (Re-implementation testing beginning in v0.3- testing produced no good results) (Code completely removed in v0.4.1)
 	stop = 1
 	act = ""
 	words = ""
 	act = raw_input('> ')
 	words = act.split(" ")
 	stop = 0
-	while encounter != 0 and encounter_time <= 0:
+	while encounter != 0 and encounter_time <= 0 and "dead" not in triggers:
 		stop = 1
 		while enemy_set != 1:
 #Some enemies have too high/too low of stats- needs to be reworked
@@ -1150,22 +1175,6 @@ while stop != 1:
 				points += 50
 		if hp > max_hp:
 			hp = max_hp
-		if hp <= 0:
-			print color['darkred'] + "You have died!" + color['off']
-			print color['blue'] + "Do you want to see your final stats?" + color['off']
-			dead_p = raw_input('y/n ')
-			if dead_p == "y":
-				print color['darkmagenta'] + "You killed these enemies: " + color['off']
-				cnt = Counter()
-				for word in kills:
-					cnt[word] += 1
-				print dict(cnt)
-				print "These are your final stats: "
-				print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, max_hp, defe, max_mana, level) + color['off']
-				print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
-				quit()
-			elif dead_p == "n":
-				quit()
 		stop = 0
 	if hp > max_hp:
 		hp = max_hp
@@ -1173,3 +1182,5 @@ while stop != 1:
 		mana = max_mana
 	if skill_energy > max_energy:
 		skill_energy = max_energy
+	if hp <= 0:
+		death()
