@@ -177,19 +177,25 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 		hp = 25
 		defe = 2
 		mana = 8
+		damage = 2
+		weapon = 0
 	elif game_diff == "2":
 		hp = 20
 		defe = 1
 		mana = 5
+		damage = 1
+		weapon = 0
 	elif game_diff == "3":
 		hp = 15
 		defe = 1
 		mana = 5
+		weapon = 0
 	elif game_diff == "4":
 		print color['red'] + "I hope you know what you're doing..." + color['off']
 		hp = 10
 		defe = 0
 		mana = 0
+		damage = 2
 	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the recover spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
 	if classsc == "1":
 		skills.append("Rage")
@@ -697,7 +703,7 @@ while stop != 1:
 	print roominfo
 	if encounter != 0:
 		encounter_time -= 1
-	while var_set == 1:
+	if var_set == 1:
 		if weapon == 0:
 			damage += 3
 		elif weapon == 1:
@@ -883,43 +889,43 @@ while stop != 1:
 #Levels OP, pls nurf?- needs to be reworked
 		levels += "!"
 		points += 10
-	if len(levels) == 1:
-		damage += 2
-		max_hp += 5
-		max_mana += 2
-	elif len(levels) == 2:
-		damage += 3
-		max_hp += 5
-		max_mana += 3
-	elif len(levels) == 3:
-		damage += 3
-		max_hp += 8
-		max_mana += 5
-	elif len(levels) == 4:
-		damage += 5
-		max_hp += 10
-		max_mana += 5
-	elif len(levels) == 5:
-		damage += 8
-		max_hp += 10
-		max_mana += 7
+		if len(levels) == 1:
+			damage += 2
+			max_hp += 5
+			max_mana += 2
+		elif len(levels) == 2:
+			damage += 3
+			max_hp += 5
+			max_mana += 3
+		elif len(levels) == 3:
+			damage += 3
+			max_hp += 8
+			max_mana += 5
+		elif len(levels) == 4:
+			damage += 5
+			max_hp += 10
+			max_mana += 5
+		elif len(levels) == 5:
+			damage += 8
+			max_hp += 10
+			max_mana += 7
 #Limits level until certain item is used, I think
-	elif len(levels) == 6 and evolve_count >= 1:
-		damage += 10
-		max_hp += 10
-		max_mana += 8
-	elif len(levels) == 7:
-		damage += 10
-		max_hp += 15
-		max_mana += 9
-	elif len(levels) == 8:
-		damage += 10
-		max_hp += 15
-		max_mana += 10
-	elif len(levels) >= 9:
-		damage += 5
-		max_hp += 5
-		max_mana += 5
+		elif len(levels) == 6 and evolve_count >= 1:
+			damage += 10
+			max_hp += 10
+			max_mana += 8
+		elif len(levels) == 7:
+			damage += 10
+			max_hp += 15
+			max_mana += 9
+		elif len(levels) == 8:
+			damage += 10
+			max_hp += 15
+			max_mana += 10
+		elif len(levels) >= 9:
+			damage += 5
+			max_hp += 5
+			max_mana += 5
 	stop = 1
 	act = ""
 	words = ""
