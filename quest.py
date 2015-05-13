@@ -1,4 +1,4 @@
-#A fun, dumb adventure remake in Python 2.7
+#A fun, dumb adventure remake in Python 2.7 
 #Written by Matthew Knecht
 #NOTE: THIS IS NOT THE ACTUAL GAME, THIS IS ONLY THE ORIGINAL FAILURE
 import random
