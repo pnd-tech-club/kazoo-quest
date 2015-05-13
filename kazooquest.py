@@ -64,6 +64,7 @@ max_mana = 5
 level = 0
 levels = ""
 skills = []
+skills_thing = []
 skill_energy = 5
 max_energy = 5
 spells = []
@@ -135,6 +136,8 @@ class CleanExit(object):
 		if exc_type is KeyboardInterrupt:
 			return True
 		return exc_type is None
+def spellsorder():
+	spell1 = 1
 def death():
 	print color['darkred'] + "You have died!" + color['off']
 	print color['blue'] + "Do you want to see your final stats?" + color['off']
@@ -199,16 +202,19 @@ while silly != 1 and loadyload != 1 and tut_finished == 1:
 	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the recover spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
 	if classsc == "1":
 		skills.append("Rage")
+		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
 		silly = 1
 	elif classsc == "2":
 		spells.append("recover")
+		spells_thing.append("%r. Recover" % (len(spells_thing) + 1))
 		silly = 1
 	elif classsc == "3":
 		skills.append("Stealth")
+		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
 		silly = 1
 	elif classsc == "4":
 		spells.append("Stun")
-		spells_thing.append(color['darkyellow'] + "10. Stun" + color['yellow'] +"\tDamage: None, but stuns for 6 turns" + color['off'])
+		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
 	elif classsc == "5":
 		skills.append("magic boost")
 	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
@@ -374,9 +380,12 @@ while stop != 1:
 		skip = 0
 		if encounter >= 1:
 			encounter_time += 1
-	elif act == "sneak" and "Stealth" in skills and skill_energy >= 5:
-		encounter_time += 6
-		skill_energy -= 5
+	elif act == "skills":
+		print '\n'.join(skills_thing)
+		skill_act = raw_input('What skill do you want to use?\n> ')
+		if act == "sneak" and "Stealth" in skills and skill_energy >= 5:
+			encounter_time += 6
+			skill_energy -= 5
 #Debugging commands
 	elif act == "debug.update":
 		update()
@@ -410,17 +419,20 @@ while stop != 1:
 		armor = 7
 		spells = []
 		spells_thing = []
+		skills = []
+		skills_thing = []
 		spells.append("firebolt")
 		spells.append("frost")
 		spells.append("poison")
 		spells.append("life steal")
 		spells.append("recover")
-		spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
-		spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
-		spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
-		spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30" + color['off'])
-		spells_thing.append("5. Recover") #Need a better idea for this spell
+		spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
+		spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
+		spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
+		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
+		spells_thing.append("%s. Recover" % str(len(spells_thing) + 1))
 		skills.append("Stealth")
+		skills_thing.append("%s. Stealth" % str(len(skills_thing)))
 		skills.append("Rage")
 		var_set = 1
 #Debugging command
@@ -430,7 +442,7 @@ while stop != 1:
 		if encounter >= 1:
 			encounter_time += 1
 	elif act == "spells":
-		print '\n'.join(spells)
+		print '\n'.join(spells_thing)
 		if encounter >= 1:
 			encounter_time += 1
 	elif act == "heal":
