@@ -208,6 +208,8 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		spells.append("heal")
 		spells_thing.append("%r. Heal" % (len(spells_thing) + 1))
 		silly = 1
+		max_mana = 10
+		mana = 10
 	elif classsc == "3":
 		skills.append("Stealth")
 		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
@@ -1140,7 +1142,6 @@ while stop != 1:
 				print color['darkyellow'] + "You ran away!" + color['off']
 		else:
 			os.system('clear')
-			print color['darkyellow'] + "You can't do that!" + color['off']
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and fight_act != "":
 #It seems like some enemies deal too much damage while some don't deal enough- needs to be reworked
 			if enemy_type == "wolf":
