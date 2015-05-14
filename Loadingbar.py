@@ -5,7 +5,6 @@ parser = argparse.ArgumentParser(description='Kazoo Quest!')
 args = parser.parse_args()
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 os.system('clear')
-global desu
 desu = []
 color = {
     'white':    "\033[1;37m",

@@ -122,7 +122,8 @@ firebolt_level = 0
 frost_level = 0
 poison_level = 0
 lifesteal_level = 0
-recover_level = 0
+heal_level = 0
+stun_level = 0
 exp_limit = 10
 kills = []
 encounter = 0
@@ -165,7 +166,7 @@ if autoload == True:
 	tut_finished = 1
 	if os.stat("game_save.dat").st_size != 0:
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		f.close()
 		loadyload = 1
 		os.system('clear')
@@ -201,7 +202,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		damage = 2
 	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the heal spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
 	if classsc == "1":
-		skills.append("Rage")
+		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
 		silly = 1
 	elif classsc == "2":
@@ -211,11 +212,11 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		max_mana = 10
 		mana = 10
 	elif classsc == "3":
-		skills.append("Stealth")
+		skills.append("stealth")
 		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
 		silly = 1
 	elif classsc == "4":
-		spells.append("Stun")
+		spells.append("stun")
 		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
 	elif classsc == "5":
 		skills.append("magic boost")
@@ -402,14 +403,14 @@ while stop != 1:
 		print skills_thing
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo], f, protocol = 2)
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
 		if encounter >= 1:
 			encounter_time += 1
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
@@ -438,9 +439,9 @@ while stop != 1:
 		spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
-		skills.append("Stealth")
+		skills.append("stealth")
 		skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
-		skills.append("Rage")
+		skills.append("rage")
 		var_set = 1
 #Debugging command
 	elif act == "etime":
@@ -631,16 +632,16 @@ while stop != 1:
 	elif x == 2 and y == 9 and z == 1:
 		roominfo = "You hear dripping water in the distance. There is a path to the west"
 	elif x == 1 and y == 9 and z == 1:
-		roominfo = "The strange dripping sound seems a short distance away. There is a path to the north and east."
+		roominfo = "The strange dripping sound seems a short distance away. The path continues to the north."
 	elif x == 1 and y == 10 and z == 1:
-		roominfo = "The dripping sound appears to be just around the corner up ahead. You hear a deep moaning sound. There is a path to the west and south."
+		roominfo = "The dripping sound appears to be just around the corner up ahead. You hear a deep moaning sound. The path continues to the west."
 	elif x == 0 and y == 10 and z == 1:
-		roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume. There are paths to the west and east."
+		roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume. The path continues to the west."
 	elif x == -1 and y == 10 and z == 1:
 		enemy_type = "wraith"
-		roominfo = "You notice a rapidly dripping spot on the ceiling. You can hear the moaning sound ahead. There is a path to the east and north."
+		roominfo = "You notice a rapidly dripping spot on the ceiling. You can hear the moaning sound ahead. The path continues to the north."
 	elif x == -1 and y == 11 and z == 1:
-		roominfo = "As you look north, you can't see the end of the passage. There is a path to the south and north."
+		roominfo = "As you look north, you can't see the end of the passage. The path continues to the north."
 	elif x == -1 and y == 12 and z == 1:
 		roominfo = "Something seems off around you..."
 	elif x == -1 and y == 13 and z == 1:
@@ -669,7 +670,7 @@ while stop != 1:
 	elif x == 7 and y == 9 and z == 1:
 		roominfo = "This passage seems absurdly long..."
 	elif x == 8 and y == 9 and z == 1:
-		roominfo = "There seems to be something far ahead of you in."
+		roominfo = "There seems to be something far ahead of you."
 	elif x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
 		roominfo = "There appears to be a crowbar on the ground."
 	elif x == 9 and y == 9 and z == 1 and "crowbar" in inventory:
@@ -880,8 +881,11 @@ while stop != 1:
 			max_hp = 9001
 			max_mana = 6.9e+42
 	if exp >= exp_limit:
+		exp_extra = exp - exp_limit
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
+		exp += exp_extra
+		levels += "!"
 #EXP limits are weird- needs to be reworked
 		if evolve_count >= 0:
 			if len(levels) == 1:
@@ -906,7 +910,6 @@ while stop != 1:
 			elif len(levels) == 10:
 				exp_limit = 325
 #Levels OP, pls nurf?- needs to be reworked
-		levels += "!"
 		points += 10
 		if len(levels) == 1:
 			damage += 2
@@ -1116,6 +1119,16 @@ while stop != 1:
 					print "You healed %r health!" % hp_heal
 			except ValueError:
 				skip = 0
+			try:
+				if magic_attack == str(spells.index('stun') + 1) and "stun" in spells and mana >= 5:
+					if stun_level == 0:
+						stun_time = 5
+					mana -= 5
+					enemy_debuffs.append("Stunned")
+					enemy_debuff_timer = stun_time
+					print color['yellow'] + "You stunned the enemy!" + color['off']
+			except ValueError:
+				skip = 0
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
@@ -1142,7 +1155,7 @@ while stop != 1:
 				print color['darkyellow'] + "You ran away!" + color['off']
 		else:
 			os.system('clear')
-		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and fight_act != "":
+		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and "Stunned" not in enemy_debuffs and fight_act != "":
 #It seems like some enemies deal too much damage while some don't deal enough- needs to be reworked
 			if enemy_type == "wolf":
 				enemy_dam = random.randint(2, 4)
@@ -1194,6 +1207,8 @@ while stop != 1:
 				print "The enemy took %r damage from poison!" % poison_dam
 			if "Frozen" in enemy_debuffs:
 				print "The enemy can't attack because it is frozen!"
+			if "Stunned" in enemy_debuffs:
+				print "The enemy can't attack because it is stunned!"
 			enemy_debuff_timer -= 1
 #Clears the enemy's debuffs after 5 turns of not using a spell
 			if enemy_debuff_timer <= 0:
