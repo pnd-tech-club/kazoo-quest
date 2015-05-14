@@ -174,7 +174,7 @@ if autoload == True:
 else:
 	import Tutorial
 silly = 0
-while silly != 1 and loadyload != 1 and tut_finished == 1:
+if silly != 1 and loadyload != 1 and tut_finished == 1:
 	game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
 	if game_diff == "1":
 		hp = 25
@@ -261,19 +261,19 @@ while stop != 1:
 			if "spellbook- Fire" in inventory:
 				print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 				spells.append("firebolt")
-				spells_thing.append(color['darkred'] + "1. Firebolt" + color['red'] + "\tDamage: 10 to 25" + color['off'])
+				spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Frost" in inventory:
 				print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
 				spells.append("frost")
-				spells_thing.append(color['darkblue'] + "2. Frost" + color['blue'] + "\tDamage: 25 to 35" + color['off'])
+				spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Poison" in inventory:
 				print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
 				spells.append("posion")
-				spells_thing.append(color['darkgreen'] + "3. Poison" + color['green'] + "\tDamage: 10 to 18" + color['off'])
+				spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Life Steal" in inventory:
 				print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
 				spells.append("life steal")
-				spells_thing.append(color['darkmagenta'] + "4. Life Steal" + color['magenta'] + "\tDamage: 15 to 30" + color['off'])
+				spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
 		elif "book" in words and "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
 			print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
@@ -1013,7 +1013,7 @@ while stop != 1:
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
 #Magic is(as usual) OP- needs to be reworked
-			if magic_attack == "1" and "firebolt" in spells and mana >= 5:
+			if magic_attack == str(spells_thing.index("%s. Firebolt" + 1)) and "firebolt" in spells and mana >= 5:
 				if firebolt_level == 0:
 					magic_dam = random.randint(10, 25)
 				elif firebolt_level == 1:
