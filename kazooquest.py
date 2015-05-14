@@ -393,6 +393,11 @@ while stop != 1:
 		print triggers
 	elif act == "debug.evolveitem":
 		inventory.append("mysterious charm")
+	elif act == "debug.sp":
+		print spells
+		print spells_thing
+		print skills
+		print skills_thing
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
 			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, recover_level, game_diff, roominfo], f, protocol = 2)
@@ -1013,91 +1018,102 @@ while stop != 1:
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
 #Magic is(as usual) OP- needs to be reworked
-			#if magic_attack == spells_thing.index(filter(lambda x: 'Firebolt' in x, spells_thing)) and "firebolt" in spells and mana >= 5:
-			if magic_attack == str(spells.index('firebolt')) and "firebolt" in spells and mana >= 5:
-				if firebolt_level == 0:
-					magic_dam = random.randint(10, 25)
-				elif firebolt_level == 1:
-					magic_dam = random.randint(15, 30)
-				elif firebolt_level == 2:
-					magic_dam = random.randint(20, 35)
-				elif firebolt_level == 3:
-					magic_dam = random.randint(25, 40)
-				elif firebolt_level == 4:
-					magic_dam = random.randint(30, 45)
-				elif firebolt_level == 5:
-					magic_dam = random.randint(35, 50)
-				mana -= 5
-				enemy_hp -= magic_dam
-				enemy_debuffs.append("Burning")
-				enemy_debuff_timer = 5
-				os.system('clear')
-				print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
-			elif magic_attack == str(spells.index("frost")) and "frost" in spells and mana >= 8:
-				if frost_level == 0:
-					magic_dam = random.randint(25, 35)
-				elif frost_level == 1:
-					magic_dam = random.randint(30, 40)
-				elif frost_level == 2:
-					magic_dam = random.randint(35, 45)
-				elif frost_level == 3:
-					magic_dam = random.randint(40, 50)
-				elif frost_level == 4:
-					magic_dam = random.randint(45, 55)
-				elif frost_level == 5:
-					magic_dam = random.randint(50, 60)
-				mana -= 8
-				enemy_hp -= magic_dam
-				enemy_debuffs.append("Frozen")
-				enemy_debuff_timer = 5
-				os.system('clear')
-				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
-			elif magic_attack == str(spells.index("poison")) and "poison" in spells and mana >= 13:
-				if poison_level == 0:
-					magic_dam = random.randint(10, 18)
-				elif poison_level == 1:
-					magic_dam = random.randint(12, 20)
-				elif poison_level == 2:
-					magic_dam = random.randint(14, 22)
-				elif poison_level == 3:
-					magic_dam = random.randint(16, 24)
-				elif poison_level == 4:
-					magic_dam = random.randint(18, 26)
-				elif poison_level == 5:
-					magic_dam = random.randint(20, 28)
-				mana -= 13
-				enemy_hp -= magic_dam
-				enemy_debuffs.append("Poisoned")
-				enemy_debuff_timer = 8
-				os.system('clear')
-				print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
-			elif magic_attack == str(spells.index("life steal")) and "life steal" in spells and mana >= 20:
-				if lifedrain_level == 0:
-					drain_dam = random.randint(15, 30)
-				elif lifedrain_level == 1:
-					drain_dam = random.randint(18, 33)
-				elif lifedrain_level == 2:
-					drain_dam = random.randint(20, 35)
-				elif lifedrain_dam == 3:
-					drain_dam = random.randint(23, 38)
-				elif lifedrain_level == 4:
-					drain_dam = random.randint(25, 40)
-				elif lifedrain_level == 5:
-					drain_dam = random.randint(28, 43)
-				mana -= 20
-				enemy_hp -= drain_dam
-				hp += drain_dam
-				os.system('clear')
-				print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
-			elif magic_attack == str(spells.index("heal")) and "heal" in spells and mana >= 8:
-				mana -= 8
-				hp_heal = random.randint(10, 30)
-				hp += hp_heal
-				os.system('clear')
-				print "You healed %r health!" % hp_heal
-			else:
-				os.system('clear')
-				print color['darkyellow'] + "You can't do that!" + color['off']
+			try:
+				if magic_attack == str(spells.index('firebolt') + 1) and "firebolt" in spells and mana >= 5:
+					if firebolt_level == 0:
+						magic_dam = random.randint(10, 25)
+					elif firebolt_level == 1:
+						magic_dam = random.randint(15, 30)
+					elif firebolt_level == 2:
+						magic_dam = random.randint(20, 35)
+					elif firebolt_level == 3:
+						magic_dam = random.randint(25, 40)
+					elif firebolt_level == 4:
+						magic_dam = random.randint(30, 45)
+					elif firebolt_level == 5:
+						magic_dam = random.randint(35, 50)
+					mana -= 5
+					enemy_hp -= magic_dam
+					enemy_debuffs.append("Burning")
+					enemy_debuff_timer = 5
+					os.system('clear')
+					print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
+			except ValueError:
+				skip = 0
+			try:
+				if magic_attack == str(spells.index('frost') + 1) and "frost" in spells and mana >= 8:
+					if frost_level == 0:
+						magic_dam = random.randint(25, 35)
+					elif frost_level == 1:
+						magic_dam = random.randint(30, 40)
+					elif frost_level == 2:
+						magic_dam = random.randint(35, 45)
+					elif frost_level == 3:
+						magic_dam = random.randint(40, 50)
+					elif frost_level == 4:
+						magic_dam = random.randint(45, 55)
+					elif frost_level == 5:
+						magic_dam = random.randint(50, 60)
+					mana -= 8
+					enemy_hp -= magic_dam
+					enemy_debuffs.append("Frozen")
+					enemy_debuff_timer = 5
+					os.system('clear')
+					print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
+			except ValueError:
+				skip = 0
+			try:
+				if magic_attack == str(spells.index('poison') + 1) and "poison" in spells and mana >= 13:
+					if poison_level == 0:
+						magic_dam = random.randint(10, 18)
+					elif poison_level == 1:
+						magic_dam = random.randint(12, 20)
+					elif poison_level == 2:
+						magic_dam = random.randint(14, 22)
+					elif poison_level == 3:
+						magic_dam = random.randint(16, 24)
+					elif poison_level == 4:
+						magic_dam = random.randint(18, 26)
+					elif poison_level == 5:
+						magic_dam = random.randint(20, 28)
+					mana -= 13
+					enemy_hp -= magic_dam
+					enemy_debuffs.append("Poisoned")
+					enemy_debuff_timer = 8
+					os.system('clear')
+					print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
+			except ValueError:
+				skip = 0
+			try:
+				if magic_attack == str(spells.index("life steal") + 1) and "life steal" in spells and mana >= 20:
+					if lifesteal_level == 0:
+						drain_dam = random.randint(15, 30)
+					elif lifesteal_level == 1:
+						drain_dam = random.randint(18, 33)
+					elif lifesteal_level == 2:
+						drain_dam = random.randint(20, 35)
+					elif lifesteal_level == 3:
+						drain_dam = random.randint(23, 38)
+					elif lifesteal_level == 4:
+						drain_dam = random.randint(25, 40)
+					elif lifesteal_level == 5:
+						drain_dam = random.randint(28, 43)
+					mana -= 20
+					enemy_hp -= drain_dam
+					hp += drain_dam
+					os.system('clear')
+					print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
+			except ValueError:
+				skip = 0
+			try:
+				if magic_attack == str(spells.index('heal') + 1) and "heal" in spells and mana >= 8:
+					mana -= 8
+					hp_heal = random.randint(10, 30)
+					hp += hp_heal
+					os.system('clear')
+					print "You healed %r health!" % hp_heal
+			except ValueError:
+				skip = 0
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
