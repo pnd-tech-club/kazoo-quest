@@ -283,6 +283,9 @@ while stop != 1:
 			inventory.remove("old book")
 			encounter = 1
 			encounter_time = 0
+		elif "key" in words and x == 2 and y == 8 and z == 0 and "trapdoor" in triggers and "trapdoor_lock" not in triggers:
+			print color['magenta'] + "You use the key to open the lock." + color['off']
+			triggers.append("trapdoor_lock")
 		elif "charm" in words and "mysterious charm" in inventory:
 			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
 			evolve_count += 1
@@ -341,8 +344,9 @@ while stop != 1:
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdoor" in triggers:
 			inventory.append("key")
 			print color['magenta'] + "You pick up a mysterious key." + color['off']
-		elif "book" in words and x == 2 and y == 8 and z == 0 and "old book" not in inventory and "trapdoor_lock" in triggers:
+		elif "book" in words and x == 2 and y == 8 and z == 0 and "old book" not in inventory and "trapdoor_lock" in triggers and "boss1" not in triggers:
 			inventory.append("old book")
+			triggers.append("old_book")
 			print color['magenta'] + "You take the mysterious book and wonder what it could be." + color['off']
 		elif "charm" in words and x == 5 and y == 2 and z == 0 and "boss1" in triggers:
 			inventory.append("mysterious charm")
@@ -576,6 +580,7 @@ while stop != 1:
 		encounter = 0
 		roominfo = "The inside of the house is cold and dark. You have an unexplainable feeling of gloom. There are rooms to the east and the north."
 	elif x == 2 and y == 7 and z == 0 and "lights" in triggers:
+		enemy_type = "wolf"
 		encounter = 0
 		roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread. The kitchen is to the east and the living room is to the north."
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
@@ -584,12 +589,14 @@ while stop != 1:
 		roominfo = "It's way too dark in here for you to see anything. The doorway is to the south."
 	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" not in triggers:
 		roominfo = "The living room is completely barren. There appears to be a locked trapdoor in the floor. The doorway is to the south."
-	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory:
+	elif x == 2 and y == 8 and z == 0 and "lights" in triggers and "trapdoor" in triggers and "key" not in inventory and "trapdoor_lock" not in triggers:
 		roominfo = "The trapdoor in this room has a key inside. The doorway is to the south."
 	elif x == 2 and y == 8 and z == 0 and "trapdoor" in triggers and "key" in inventory and "trapdoor_lock" not in triggers:
 		roominfo = "The trapdoor in the center of the room is empty except for a little notch. The doorway is to the south."
-	elif x == 2 and y == 8 and z == 0 and "trapdoor_lock" in triggers and "old book" not in triggers:
+	elif x == 2 and y == 8 and z == 0 and "trapdoor_lock" in triggers and "old_book" not in triggers:
 		roominfo = "There is an old book layered with dust in the safe in the trapdoor."
+	elif x == 2 and y == 8 and z == 0 and "old_book" in triggers:
+		roominfo = "The room inf completely empty."
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
 	elif x == 3 and y == 7 and z == 0 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
@@ -1216,7 +1223,6 @@ while stop != 1:
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			enemy_debuffs = []
-			os.system('clear')
 			print color['blue'] + "You killed the " + enemy_type +"!" + color['off']
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
