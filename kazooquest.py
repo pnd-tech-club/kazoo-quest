@@ -432,7 +432,7 @@ while stop != 1:
 		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append("%s. Recover" % str(len(spells_thing) + 1))
 		skills.append("Stealth")
-		skills_thing.append("%s. Stealth" % str(len(skills_thing)))
+		skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
 		skills.append("Rage")
 		var_set = 1
 #Debugging command
