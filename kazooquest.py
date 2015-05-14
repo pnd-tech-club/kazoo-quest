@@ -199,14 +199,14 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		defe = 0
 		mana = 0
 		damage = 2
-	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the recover spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
+	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the heal spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
 	if classsc == "1":
 		skills.append("Rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
 		silly = 1
 	elif classsc == "2":
-		spells.append("recover")
-		spells_thing.append("%r. Recover" % (len(spells_thing) + 1))
+		spells.append("heal")
+		spells_thing.append("%r. Heal" % (len(spells_thing) + 1))
 		silly = 1
 	elif classsc == "3":
 		skills.append("Stealth")
@@ -425,12 +425,12 @@ while stop != 1:
 		spells.append("frost")
 		spells.append("poison")
 		spells.append("life steal")
-		spells.append("recover")
+		spells.append("heal")
 		spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
-		spells_thing.append("%s. Recover" % str(len(spells_thing) + 1))
+		spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
 		skills.append("Stealth")
 		skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
 		skills.append("Rage")
@@ -1013,7 +1013,8 @@ while stop != 1:
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			magic_attack = raw_input('> ')
 #Magic is(as usual) OP- needs to be reworked
-			if magic_attack == str(spells_thing.index("%s. Firebolt" + 1)) and "firebolt" in spells and mana >= 5:
+			#if magic_attack == spells_thing.index(filter(lambda x: 'Firebolt' in x, spells_thing)) and "firebolt" in spells and mana >= 5:
+			if magic_attack == "firebolt" and "firebolt" in spells and mana >= 5:
 				if firebolt_level == 0:
 					magic_dam = random.randint(10, 25)
 				elif firebolt_level == 1:
@@ -1032,7 +1033,7 @@ while stop != 1:
 				enemy_debuff_timer = 5
 				os.system('clear')
 				print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
-			elif magic_attack == "2" and "frost" in spells and mana >= 8:
+			elif magic_attack == "frost" and "frost" in spells and mana >= 8:
 				if frost_level == 0:
 					magic_dam = random.randint(25, 35)
 				elif frost_level == 1:
@@ -1051,7 +1052,7 @@ while stop != 1:
 				enemy_debuff_timer = 5
 				os.system('clear')
 				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
-			elif magic_attack == "3" and "poison" in spells and mana >= 13:
+			elif magic_attack == "poison" and "poison" in spells and mana >= 13:
 				if poison_level == 0:
 					magic_dam = random.randint(10, 18)
 				elif poison_level == 1:
@@ -1070,7 +1071,7 @@ while stop != 1:
 				enemy_debuff_timer = 8
 				os.system('clear')
 				print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
-			elif magic_attack == "4" and "life steal" in spells and mana >= 20:
+			elif magic_attack == "life steal" and "life steal" in spells and mana >= 20:
 				if lifedrain_level == 0:
 					drain_dam = random.randint(15, 30)
 				elif lifedrain_level == 1:
@@ -1088,7 +1089,7 @@ while stop != 1:
 				hp += drain_dam
 				os.system('clear')
 				print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
-			elif magic_attack == "5" and "recover" in spells and mana >= 8:
+			elif magic_attack == "heal" and "heal" in spells and mana >= 8:
 				mana -= 8
 				hp_heal = random.randint(10, 30)
 				hp += hp_heal
