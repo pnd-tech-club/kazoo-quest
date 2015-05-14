@@ -449,7 +449,7 @@ while stop != 1:
 #Reminder to redo this- needs to be reworked
 		hp_heal = max_hp / 2
 		mana_heal = max_mana / 4 * random.randint(1, 2)
-		skill_heal = max_energy / 4 * random.randint(1, 2)
+		skill_heal = max_energy / 4 * random.randint(0, 2)
 		hp += hp_heal
 		mana += mana_heal
 		skill_energy += skill_heal
@@ -468,7 +468,7 @@ while stop != 1:
 		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r\nExp: %r/%r" % (damage, hp, defe, mana, len(levels), exp, exp_limit)
 		encounter_time += 1
 	elif act == "credits":
-		print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r  The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
+		print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r. The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
 	elif act == "help":
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -stats (Shows your your stats)" + color['off']
 		if encounter >= 1:
@@ -1014,7 +1014,7 @@ while stop != 1:
 			magic_attack = raw_input('> ')
 #Magic is(as usual) OP- needs to be reworked
 			#if magic_attack == spells_thing.index(filter(lambda x: 'Firebolt' in x, spells_thing)) and "firebolt" in spells and mana >= 5:
-			if magic_attack == "firebolt" and "firebolt" in spells and mana >= 5:
+			if magic_attack == str(spells.index('firebolt')) and "firebolt" in spells and mana >= 5:
 				if firebolt_level == 0:
 					magic_dam = random.randint(10, 25)
 				elif firebolt_level == 1:
@@ -1033,7 +1033,7 @@ while stop != 1:
 				enemy_debuff_timer = 5
 				os.system('clear')
 				print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
-			elif magic_attack == "frost" and "frost" in spells and mana >= 8:
+			elif magic_attack == str(spells.index("frost")) and "frost" in spells and mana >= 8:
 				if frost_level == 0:
 					magic_dam = random.randint(25, 35)
 				elif frost_level == 1:
@@ -1052,7 +1052,7 @@ while stop != 1:
 				enemy_debuff_timer = 5
 				os.system('clear')
 				print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
-			elif magic_attack == "poison" and "poison" in spells and mana >= 13:
+			elif magic_attack == str(spells.index("poison")) and "poison" in spells and mana >= 13:
 				if poison_level == 0:
 					magic_dam = random.randint(10, 18)
 				elif poison_level == 1:
@@ -1071,7 +1071,7 @@ while stop != 1:
 				enemy_debuff_timer = 8
 				os.system('clear')
 				print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
-			elif magic_attack == "life steal" and "life steal" in spells and mana >= 20:
+			elif magic_attack == str(spells.index("life steal")) and "life steal" in spells and mana >= 20:
 				if lifedrain_level == 0:
 					drain_dam = random.randint(15, 30)
 				elif lifedrain_level == 1:
@@ -1089,7 +1089,7 @@ while stop != 1:
 				hp += drain_dam
 				os.system('clear')
 				print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
-			elif magic_attack == "heal" and "heal" in spells and mana >= 8:
+			elif magic_attack == str(spells.index("heal")) and "heal" in spells and mana >= 8:
 				mana -= 8
 				hp_heal = random.randint(10, 30)
 				hp += hp_heal
