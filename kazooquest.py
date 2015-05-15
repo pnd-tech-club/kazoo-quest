@@ -388,7 +388,8 @@ while stop != 1:
 			if response == "y":
 				print "Okay, deleting your save and restarting..."
 				os.system('rm game_save.dat')
-				os.system('exit')
+				os.system('touch game_save.dat')
+				quit()
 				os.system('python kazooquest.py')
 				wait = 1
 			elif response == "n":
@@ -458,6 +459,7 @@ while stop != 1:
 		skills.append("stealth")
 		skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
 		skills.append("rage")
+		skills_thing.append("%s. Rage" % str(len(skills_thing) + 1))
 		var_set = 1
 #Debugging command
 	elif act == "etime":
