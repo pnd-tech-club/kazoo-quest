@@ -548,7 +548,7 @@ while stop != 1:
 		enemy_type = "elf"
 		roominfo = "The trees here are denser than around the edge of the forest."
 	elif x == 5 and y == 1 and z == 0:
-		roominfo = "The forest seems to only get darker further to the east."
+		roominfo = "The forest seems to only get darker further to the east. There is a clearing to the north."
 	elif x == 6 and y == 1 and z == 0:
 		roominfo = "The trees here are wat too thick to even get by, you turn around and go back."
 		x -= 1
@@ -576,8 +576,12 @@ while stop != 1:
 	elif x == 5 and y == 2 and z == 0 and evolve_count != 0:
 		encounter = 0
 		roominfo = "The pool of water appears to have opened into a strange portal-ish thing.  You know you won't be able to get back if you go in..."
+	elif x == 6 and y == 2 and z == 0:
+		encounter = 1
+		roominfo = "The trees are too dense for you to go east.  There is a clearing to the west."
 #Row 3
 	elif x == 3 and y == 3 and z == 0:
+		enemy_type = "elf"
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above. There is a mountain to the west."
 	elif x == 4 and y == 3 and z == 0:
@@ -588,6 +592,10 @@ while stop != 1:
 		enemy_type = "elf"
 		encounter = 1
 		roominfo = "There is a clearing in the trees to the south."
+	elif x == 6 and y == 3 and z == 0:
+		enemy_type = "elf"
+		encounter = 1
+		roominfo = "The trees here block your way to the east and north."
 #House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
@@ -733,6 +741,8 @@ while stop != 1:
 		triggers.append("area2")
 	elif x == 0 and y == 0 and z == 10 and "area2" in triggers:
 		roominfo = "You are in a cave. The exit is to the north."
+	elif x == 1 and y == 0 and z == 10:
+		roominfo = "The area around you seems vastly different from before, but something also seems familiar..."
 #This is used to undo movement into an unexisting room V
 	else:
 		if list(set(n_words) & set(words)):
@@ -984,6 +994,7 @@ while stop != 1:
 		stop = 1
 		while enemy_set != 1:
 #Some enemies have too high/too low of stats- needs to be reworked
+#Area 1 enemies
 			if enemy_type == "wolf":
 				enemy_hp = 15
 				enemy_dam = random.randint(2, 4)
@@ -1017,13 +1028,6 @@ while stop != 1:
 				max_dam = 10 - defe
 				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 1
-			elif enemy_type == "spirit":
-				enemy_hp = 40
-				enemy_dam = random.randint(8, 11)
-				min_dam = 8 - defe
-				max_dam = 11 - defe
-				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
-				enemy_dodge = 0
 			elif enemy_type == "slime":
 				enemy_hp = 150
 				enemy_dam = random.randint(10, 25)
@@ -1031,6 +1035,7 @@ while stop != 1:
 				max_dam = 25 - defe
 				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 0
+#Area 2 enemies
 			elif enemy_type == "vulture":
 				enemy_hp = 40
 				enemy_dam = random.randint(12, 15)
@@ -1042,6 +1047,19 @@ while stop != 1:
 				enemy_dam = random.randint(11, 14)
 				min_dam = 11 - defe
 				max_dam = 14 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
+			elif enemy_type == "spirit":
+				enemy_hp = 40
+				enemy_dam = random.randint(13, 16)
+				min_dam = 8 - defe
+				max_dam = 11 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
+				enemy_dodge = 0
+			elif enemy_type == "golem":
+				enemy_hp = 400
+				enemy_dam = random.randint(25, 40)
+				min_dam = 25 - defe
+				max_dam = 40 - defe
 				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 			if min_dam < 0:
 				min_dam = 0

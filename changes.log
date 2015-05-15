@@ -61,3 +61,5 @@
 #Version 1.0.7: -Fixed undead bug, fixed level bug, added first room for area 2, reworking skills/spell ordering
 #Version 1.0.8: -Got spells working again (even though without a little but of stuff, I probably could make some more little changes to improve it), lots of other minor tweaks and bugfixes
 #Version 1.0.9: -More bugfixing, reworked levels a bit
+
+#Version 1.1.0: -Added in some area 2 enemies, added some more rooms in area 2
