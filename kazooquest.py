@@ -62,7 +62,7 @@ damage = 0
 max_hp = 20
 max_mana = 5
 level = 0
-levels = ""
+max_level = 5
 skills = []
 skills_thing = []
 skill_energy = 5
@@ -73,6 +73,7 @@ exp = 0
 evolve_count = 0
 points = 0
 thatonething = 0
+boss = 0
 triggers = []
 inventory = []
 yes_words = ['yes', 'y', 'true', 'indeed', 'yeah', 'afirmative']
@@ -150,7 +151,7 @@ def death():
 			cnt[word] += 1
 		print dict(cnt)
 		print "These are your final stats: "
-		print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r" % (damage, max_hp, defe, max_mana, level) + color['off']
+		print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level) + color['off']
 		print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
 		quit()
 	elif dead_p == "n":
@@ -166,7 +167,7 @@ if autoload == True:
 	tut_finished = 1
 	if os.stat("game_save.dat").st_size != 0:
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		f.close()
 		loadyload = 1
 		os.system('clear')
@@ -281,23 +282,26 @@ while stop != 1:
 				spells.append("life steal")
 				inventory.remove("spellbook- Life Steal")
 				spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
-		elif "book" in words and "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
-			print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
-			print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
-			inventory.remove("old book")
-			encounter = 1
-			encounter_time = 0
+			elif "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
+				print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
+				print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
+				inventory.remove("old book")
+				encounter = 1
+				encounter_time = 0
+				boss = 1
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "trapdoor" in triggers and "trapdoor_lock" not in triggers:
 			print color['magenta'] + "You use the key to open the lock." + color['off']
 			triggers.append("trapdoor_lock")
 		elif "charm" in words and "mysterious charm" in inventory:
+			os.system('clear')
 			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
-			evolve_count += 1
+			max_level = 10
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
-		elif "portal" in words and "boss1" in triggers and evolve_count != 0:
+		elif "portal" in words and "boss1" in triggers and max_level != 5:
 			os.system('clear')
 			print color['red'] + "You won't be able to come back here after you go through. Are you still sure you want to proceed?" + color['off']
-			portal_p = raw_input('')
+			portal_p = raw_input('> ')
+			words = portal_p.split(' ')
 			if list(set(yes_words) & set(words)):
 				print color['darkgreen'] + "Okie dokie, let's gooooooo..." + color['off']
 				x = 0
@@ -367,6 +371,8 @@ while stop != 1:
 		print z
 		if encounter >= 1:
 			encounter_time += 1
+	elif act == "debug.addt":
+		triggers.append(raw_input(''))
 	elif act == "clear":
 		if encounter >= 1:
 			encounter_time += 1
@@ -409,16 +415,18 @@ while stop != 1:
 		print spells_thing
 		print skills
 		print skills_thing
+	elif act == "debug.xp":
+		exp += 100
 	elif act == "save":
 		with open('game_save.dat', 'wb') as f:
-			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 		f.close()
 		print color['cyan'] + "Save successful!" + color['off']
 		if encounter >= 1:
 			encounter_time += 1
 	elif act == "load":
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, levels, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
@@ -481,7 +489,7 @@ while stop != 1:
 		y = int(raw_input('> '))
 		z = int(raw_input('> '))
 	elif act == "stats":
-		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r\nExp: %r/%r" % (damage, hp, defe, mana, len(levels), exp, exp_limit)
+		print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r/%r\nExp: %r/%r" % (damage, hp, defe, mana, level, max_level, exp, exp_limit)
 		encounter_time += 1
 	elif act == "credits":
 		print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r. The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
@@ -551,12 +559,15 @@ while stop != 1:
 		enemy_type = "elf"
 		roominfo = "There appears to be an opening in the trees to the east."
 	elif x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
-		encounter = 0
+		if boss == 0:
+			encounter = 0
+		if boss == 1:
+			encounter = 1
 		enemy_type = "slime"
 		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
-	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "mysterious charm" not in inventory and evolve_count <= 1:
+	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "mysterious charm" not in inventory and evolve_count != 1:
 		encounter = 0
-		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange."
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime has killed."
 	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
 		encounter = 0
 		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."
@@ -571,7 +582,10 @@ while stop != 1:
 		encounter = 1
 		enemy_type = "elf"
 		roominfo = "The trees here are denser than around the edge of the forest."
-
+	elif x == 5 and y == 3 and z == 0:
+		enemy_type = "elf"
+		encounter = 1
+		roominfo = "There is a clearing in the trees to the south."
 #House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
@@ -600,7 +614,7 @@ while stop != 1:
 	elif x == 2 and y == 8 and z == 0 and "trapdoor_lock" in triggers and "old_book" not in triggers:
 		roominfo = "There is an old book layered with dust in the safe in the trapdoor."
 	elif x == 2 and y == 8 and z == 0 and "old_book" in triggers:
-		roominfo = "The room inf completely empty."
+		roominfo = "This room is completely empty."
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
 	elif x == 3 and y == 7 and z == 0 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
@@ -891,71 +905,70 @@ while stop != 1:
 			defe = 420
 			max_hp = 9001
 			max_mana = 6.9e+42
-	if exp >= exp_limit:
+	if exp >= exp_limit and level != max_level:
 		exp_extra = exp - exp_limit
 		print color['blue'] + "Level up!" + color['off']
 		exp = 0
 		exp += exp_extra
-		levels += "!"
 #EXP limits are weird- needs to be reworked
-		if evolve_count >= 0:
-			if len(levels) == 1:
+		if level != max_level:
+			if level == 1:
 				exp_limit = 25
-			elif len(levels) == 2:
+			elif level == 2:
 				exp_limit = 50
-			elif len(levels) == 3:
+			elif level == 3:
 				exp_limit = 85
-			elif len(levels) == 4:
+			elif level == 4:
 				exp_limit = 125
-			elif len(levels) == 5:
+			elif level == 5:
 				exp_limit = 150
-		if evolve_count >= 1:
-			if len(levels) == 6:
+			elif level == 6 and max_level > 5:
 				exp_limit = 180
-			elif len(levels) == 7:
+			elif level == 7:
 				exp_limit = 210
-			elif len(levels) == 8:
+			elif level == 8:
 				exp_limit = 245
-			elif len(levels) == 9:
+			elif level == 9:
 				exp_limit = 275
-			elif len(levels) == 10:
+			elif level == 10:
 				exp_limit = 325
+		level += 1
 #Levels OP, pls nurf?- needs to be reworked
 		points += 10
-		if len(levels) == 1:
+		if level == 1:
 			damage += 2
 			max_hp += 5
 			max_mana += 2
-		elif len(levels) == 2:
+		elif level == 2:
 			damage += 3
 			max_hp += 5
 			max_mana += 3
-		elif len(levels) == 3:
+		elif level == 3:
 			damage += 3
 			max_hp += 8
 			max_mana += 5
-		elif len(levels) == 4:
+		elif level == 4:
 			damage += 5
 			max_hp += 10
 			max_mana += 5
-		elif len(levels) == 5:
+		elif level == 5:
 			damage += 8
 			max_hp += 10
 			max_mana += 7
 #Limits level until certain item is used, I think
-		elif len(levels) == 6 and evolve_count >= 1:
+		elif level == 6 and max_level > 5:
 			damage += 10
 			max_hp += 10
 			max_mana += 8
-		elif len(levels) == 7:
+		elif level == 7:
 			damage += 10
 			max_hp += 15
 			max_mana += 9
-		elif len(levels) == 8:
+		elif level == 8:
 			damage += 10
 			max_hp += 15
 			max_mana += 10
-		elif len(levels) >= 9:
+		elif level >= 9:
 			damage += 5
 			max_hp += 5
 			max_mana += 5
@@ -1254,6 +1267,7 @@ while stop != 1:
 			elif enemy_type == "slime":
 				exp += 30
 				points += 50
+				triggers.append("boss1")
 		if hp > max_hp:
 			hp = max_hp
 		if hp <= 0:
