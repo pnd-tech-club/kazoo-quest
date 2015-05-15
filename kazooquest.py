@@ -264,18 +264,22 @@ while stop != 1:
 			if "spellbook- Fire" in inventory:
 				print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 				spells.append("firebolt")
+				inventory.remove("spellbook- Fire")
 				spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Frost" in inventory:
 				print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
 				spells.append("frost")
+				inventory.remove("spellbook- Frost")
 				spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Poison" in inventory:
 				print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
 				spells.append("posion")
+				inventory.remove("spellbook- Poison")
 				spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Life Steal" in inventory:
 				print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
 				spells.append("life steal")
+				inventory.remove("spellbook- Life Steal")
 				spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
 		elif "book" in words and "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
