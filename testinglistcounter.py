@@ -1,3 +1,4 @@
+#Yes this is stupid, but it works how it should
 things = ['item1', 'item2', 'aitem3']
 numb = things.index('item1')
 things.remove('item1')
