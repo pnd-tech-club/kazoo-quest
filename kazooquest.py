@@ -455,7 +455,7 @@ while stop != 1:
 		spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
-		spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
+		spells_thing.append(color['magenta'] + "%s. Heal" % str(len(spells_thing) + 1) + color['off'])
 		skills.append("stealth")
 		skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
 		skills.append("rage")
@@ -1031,6 +1031,18 @@ while stop != 1:
 				max_dam = 25 - defe
 				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				enemy_dodge = 0
+			elif enemy_type == "vulture":
+				enemy_hp = 40
+				enemy_dam = random.randint(12, 15)
+				min_dam = 12 - defe
+				max_dam = 15 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
+			elif enemy_type == "sand rat":
+				enemy_hp = 35
+				enemy_dam = random.randint(11, 14)
+				min_dam = 11 - defe
+				max_dam = 14 - defe
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 			if min_dam < 0:
 				min_dam = 0
 			if max_dam < 0:
