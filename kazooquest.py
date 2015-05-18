@@ -77,6 +77,12 @@ thatonething = 0
 boss = 0
 triggers = []
 inventory = []
+n_words = ['n', 'north']
+s_words = ['s', 'south']
+e_words = ['e', 'east']
+w_words = ['w', 'west']
+u_words = ['u', 'up']
+d_words = ['d', 'down']
 yes_words = ['yes', 'y', 'true', 'indeed', 'yeah', 'afirmative']
 lights_words = ['switch', 'lights', 'light']
 spellbook_words = ['spellbook', 'book', 'runebook']
@@ -165,7 +171,6 @@ if autoload == True:
 		loadyload = 1
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
-		room()
 else:
 	import Tutorial
 silly = 0
@@ -227,6 +232,18 @@ while stop != 1:
 #Variable 'y' is south/north(ex. -1 would be to the south and +1 would be to the north)
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
 #Debugging command
+	if list(set(n_words) & set(words)):
+			y += 1
+	elif list(set(s_words) & set(words)):
+			y -= 1
+	elif list(set(e_words) & set(words)):
+			x += 1
+	elif list(set(w_words) & set(words)):
+			x -= 1
+	elif list(set(d_words) & set(words)):
+			z += 1
+	elif list(set(u_words) & set(words)):
+			z -= 1
 	if list(set(use_words) & set(words)):
 		if list(set(lights_words) & set(words)):
 			if x == 3 and y == 7 and z == 0 and "lights" not in triggers:
@@ -481,7 +498,6 @@ while stop != 1:
 		print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -stats (Shows your your stats)" + color['off']
 		if encounter >= 1:
 			encounter_time += 1
-
 	else:
 		pass
 	room()
