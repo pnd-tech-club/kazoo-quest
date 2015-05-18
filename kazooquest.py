@@ -9,6 +9,7 @@ current_version = "v1.0.6"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 #import Loadingbar
+from room import room
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -32,23 +33,23 @@ parser = argparse.ArgumentParser(description='Kazoo Quest!')
 args = parser.parse_args()
 wait = 0
 color = {
-	'white':	"\033[1;37m",
-	'yellow':   "\033[1;33m",
-	'green':	"\033[1;32m",
-	'blue':	 "\033[1;34m",
-	'cyan':	 "\033[1;36m",
-	'red':	  "\033[1;31m",
-	'magenta':  "\033[1;35m",
-	'black':	  "\033[1;30m",
-	'darkwhite':  "\033[0;37m",
-	'darkyellow': "\033[0;33m",
-	'darkgreen':  "\033[0;32m",
-	'darkblue':   "\033[0;34m",
-	'darkcyan':   "\033[0;36m",
-	'darkred':	"\033[0;31m",
-	'darkmagenta': "\033[0;35m",
-	'darkblack':  "\033[0;30m",
-	'off':		"\033[0;0m"
+    'white':    "\033[1;37m",
+    'yellow':   "\033[1;33m",
+    'green':    "\033[1;32m",
+    'blue':     "\033[1;34m",
+    'cyan':     "\033[1;36m",
+    'red':      "\033[1;31m",
+    'magenta':  "\033[1;35m",
+    'black':      "\033[1;30m",
+    'darkwhite':  "\033[0;37m",
+    'darkyellow': "\033[0;33m",
+    'darkgreen':  "\033[0;32m",
+    'darkblue':   "\033[0;34m",
+    'darkcyan':   "\033[0;36m",
+    'darkred':    "\033[0;31m",
+    'darkmagenta': "\033[0;35m",
+    'darkblack':  "\033[0;30m",
+    'off':        "\033[0;0m"
 }
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -93,8 +94,8 @@ Dear [The name is smudged out]
 	We have recently heard about your ideas with our company. We would like to officially meet with you on the fourth [The rest of the paragraph is blacked out].
 We would also appreciate if you could begin to proceed with your ideas(at least planning) until our meeting.
 
-																			   Sincerely,
-																					A.L.
+                                                                               Sincerely,
+                                                                                    A.L.
 [There appears to be a large chunk of the page torn out]
 """
 enemy_set = 0
@@ -501,7 +502,7 @@ while stop != 1:
 		if encounter >= 1:
 			encounter_time += 1
 	else:
-		pass
+		pass #Will eventually fix this
 	if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 		encounter = 0
 		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
@@ -537,9 +538,9 @@ while stop != 1:
 		enemy_type = "wolf"
 	elif x == 2 and y == 5 and z == 0:
 		roominfo = "You are nearing the cottage. There is a cave far to the south."
-	#Forest area follows
-	#To prevent a lot of mistakes here, I'm spliting the forest into 3 rows(at least for now)
-	#Row 1
+#Forest area follows
+#To prevent a lot of mistakes here, I'm spliting the forest into 3 rows(at least for now)
+#Row 1
 	elif x == 3 and y == 1 and z == 0:
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above. There is a cave to the west."
@@ -552,7 +553,7 @@ while stop != 1:
 	elif x == 6 and y == 1 and z == 0:
 		roominfo = "The trees here are wat too thick to even get by, you turn around and go back."
 		x -= 1
-	#Row 2
+#Row 2
 	elif x == 3 and y == 2 and z == 0:
 		encounter = 0
 		roominfo = "The sunlight is slightly filtered by the trees above. There is a stream to the west."
@@ -567,9 +568,9 @@ while stop != 1:
 			encounter = 1
 		enemy_type = "slime"
 		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
-	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "mysterious charm" not in inventory and max_level != 5:
+	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
 		encounter = 0
-		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime has killed."
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed."
 	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
 		encounter = 0
 		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."
@@ -579,7 +580,7 @@ while stop != 1:
 	elif x == 6 and y == 2 and z == 0:
 		encounter = 1
 		roominfo = "The trees are too dense for you to go east.  There is a clearing to the west."
-	#Row 3
+#Row 3
 	elif x == 3 and y == 3 and z == 0:
 		enemy_type = "elf"
 		encounter = 0
@@ -596,7 +597,7 @@ while stop != 1:
 		enemy_type = "elf"
 		encounter = 1
 		roominfo = "The trees here block your way to the east and north."
-	#House area follows
+#House area follows
 	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage. There appears to be a letter in the mailbox. There is a cave far to the south."
@@ -625,37 +626,37 @@ while stop != 1:
 		roominfo = "There is an old book layered with dust in the safe in the trapdoor."
 	elif x == 2 and y == 8 and z == 0 and "old_book" in triggers:
 		roominfo = "This room is completely empty."
-	#Variable "z" is an inverted height (+1 would be down and -1 would be up)
+#Variable "z" is an inverted height (+1 would be down and -1 would be up)
 	elif x == 3 and y == 7 and z == 0 and z == 1 and "lights" not in triggers:
 		roominfo = "Your torch isn't enough to let you see down the stairs."
 		z += 1
 	elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
 		roominfo = "The light shows that there are stairs going down. The entrance is to the west."
-	#I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
+#I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground. There is leather armor on the ground."
-	#Player has nothing ^
+#Player has nothing ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground. There is leather armor on the ground."
-	#Player has lamp ^
+#Player has lamp ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground."
-	#Player has lamp and armor ^
+#Player has lamp and armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is leather armor on the ground."
-	#Player has lamp and dagger ^
+#Player has lamp and dagger ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor >= 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north."
-	#Player has all items ^
+#Player has all items ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground."
-	#Player has leather armor ^
+#Player has leather armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor >= 1 and weapon >= 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground."
-	#Player has dagger and armor ^
+#Player has dagger and armor ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" not in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is leather armor on the ground."
-	#Player has dagger ^
+#Player has dagger ^
 	elif x == 3 and y == 8 and z == 1:
 		encounter = 0
 		enemy_type = "orc"
@@ -694,7 +695,7 @@ while stop != 1:
 		x = 3
 		y = 8
 		z = 1
-	#East path split
+#East path split
 	elif x == 4 and y == 9 and z == 1:
 		roominfo = "There is a slight clanking noise in the distance. There is a path that stretches far ahead of you."
 	elif x == 5 and y == 9 and z == 1:
@@ -717,7 +718,7 @@ while stop != 1:
 		x = 3
 		y = 8
 		z = 1
-	#North path split
+#North path split
 	elif x == 3 and y == 10 and z == 1:
 		roominfo = "All you see to the north is darkness."
 	elif x == 3 and y == 11 and z == 1:
@@ -734,8 +735,8 @@ while stop != 1:
 		roominfo = "There is an empty room here."
 	elif x == 3 and y == 13 and z == 1 and "firebolt" in spells:
 		roominfo = "There is an empty room here."
-	#AREA 1 ENDS HERE
-	#AREA 2 STARTS HERE
+#AREA 1 ENDS HERE
+#AREA 2 STARTS HERE
 	elif x == 0 and y == 0 and z == 10 and "area2" not in triggers:
 		roominfo = "The area around you seems much drier than where you came from. You seem to be in a cave again.  The exit is to the north."
 		triggers.append("area2")
@@ -743,6 +744,7 @@ while stop != 1:
 		roominfo = "You are in a cave. The exit is to the north."
 	elif x == 0 and y == 1 and z == 10:
 		roominfo = "The area around you seems vastly different from before, but something also seems familiar..."
+#This is used to undo movement into an unexisting room V
 	else:
 		if list(set(n_words) & set(words)):
 			y -= 1
@@ -1065,6 +1067,7 @@ while stop != 1:
 			if max_dam < 0:
 				max_dam = 0
 #Remember to fix this silly grammar thingy here
+			os.system('clear')
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
