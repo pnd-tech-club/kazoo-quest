@@ -9,6 +9,7 @@ current_version = "v1.0.6"
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 #import Loadingbar
+from room import room
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -125,7 +126,6 @@ encounter = 0
 history = []
 tut_finished = 0
 loadyload = 0
-imported = 0
 class CleanExit(object):
 	def __enter__(self):
 		return self
@@ -133,8 +133,6 @@ class CleanExit(object):
 		if exc_type is KeyboardInterrupt:
 			return True
 		return exc_type is None
-def spellsorder():
-	spell1 = 1
 def death():
 	print color['darkred'] + "You have died!" + color['off']
 	print color['blue'] + "Do you want to see your final stats?" + color['off']
@@ -160,14 +158,14 @@ import os.path
 autoload = os.path.isfile('game_save.dat')
 if autoload == True:
 	tut_finished = 1
-	if os.stat("game_save.dat").st_size != 0 and imported != 1:
+	if os.stat("game_save.dat").st_size != 0:
 		with open('game_save.dat', 'rb') as f:
 			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		f.close()
 		loadyload = 1
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
-		print roominfo
+		room()
 else:
 	import Tutorial
 silly = 0
@@ -217,9 +215,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	elif classsc == "5":
 		skills.append("magic boost")
 	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
-	if imported != 1:
-		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
-		print roominfo
+	print "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 #The line below will be commented out when current version is known to be stable
 #print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
@@ -488,10 +484,7 @@ while stop != 1:
 
 	else:
 		pass
-	from roominfo import room
-	imported = 1
 	room()
-#This is used to undo movement into an unexisting room V
 	if encounter != 0:
 		encounter_time -= 1
 	if var_set == 1:
