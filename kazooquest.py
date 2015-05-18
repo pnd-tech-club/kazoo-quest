@@ -170,6 +170,7 @@ if autoload == True:
 		loadyload = 1
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 else:
 	import Tutorial
 silly = 0
@@ -220,6 +221,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		skills.append("magic boost")
 	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
+	print roominfo
 #The line below will be commented out when current version is known to be stable
 #print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
@@ -429,6 +431,7 @@ while stop != 1:
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 	elif act == "quit":
 		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
