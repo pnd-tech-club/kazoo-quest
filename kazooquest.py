@@ -71,7 +71,6 @@ max_energy = 5
 spells = []
 spells_thing = []
 exp = 0
-evolve_count = 0
 points = 0
 thatonething = 0
 boss = 0
@@ -568,7 +567,7 @@ while stop != 1:
 			encounter = 1
 		enemy_type = "slime"
 		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
-	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
+	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and max_level != 10:
 		encounter = 0
 		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed."
 	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
