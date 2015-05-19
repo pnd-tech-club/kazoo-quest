@@ -420,7 +420,7 @@ while stop != 1:
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
 		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/2), dothing)
-		screen1.draw(w)
+		acted = 1
 	if act == "num":
 		print x
 		print y
@@ -813,12 +813,14 @@ while stop != 1:
 			z -= 1
 		elif list(set(u_words) & set(words)):
 			z += 1
-	#if acted == 1:
-	#	screen.undraw()
-	try:
-		screen1.undraw()
-	except:
-		pass
+	if acted == 1:
+		screen1.draw(w)
+		acted = 0
+	if acted == 0:
+		try:
+			screen1.undraw()
+		except:
+			pass
 	screen.setText(roominfo)
 	if encounter != 0:
 		encounter_time -= 1
