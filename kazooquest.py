@@ -2,13 +2,16 @@
 #Written by Matthew Knecht
 #Written in Python 2.7
 #Storyline help by Ethan Copeland
+from Tkinter import *
+from ttk import *
+from graphics import *
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
-sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 #import Loadingbar
+w = GraphWin('Kazoo Quest', 1000, 200)
 from room import room
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
@@ -171,11 +174,28 @@ if autoload == True:
 		loadyload = 1
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 else:
 	import Tutorial
 silly = 0
 if silly != 1 and loadyload != 1 and tut_finished == 1:
-	game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
+#Gah, this is gross
+	screen = Text(Point(w.getWidth()/2, 100), "What difficulty do you want to play on?")
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 115), "1. Easy")
+	screen.setTextColor('green')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
+	screen.setTextColor('yellow3')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 145), "3. Hard")
+	screen.setTextColor('orange')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
+	screen.setTextColor('red')
+	screen.draw(w)
+	#game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
+	game_diff = raw_input('> ')
 	if game_diff == "1":
 		hp = 25
 		defe = 2
@@ -199,7 +219,27 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		defe = 0
 		mana = 0
 		damage = 2
-	classsc = raw_input(color['blue'] + "What class would you like to be?" + color['yellow'] + "\n1. Warrior\tHas the Rage skill\n2. Cleric\tHas the heal spell\n3. Assassin\tHas the Sneak skill\n4. Ninja\tHas the Stun spell\n5. Wizard\tHas higher spell damage\n" + color['off'])
+	w.close()
+	w = GraphWin('Kazoo Quest', 1000, 200)
+	screen = Text(Point(w.getWidth()/2, 85), "What class would you like to be?")
+	screen.setTextColor('yellow3')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 100), "1. Warrior-   Has the Rage skill")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 115), "2. Cleric-   Has the heal spell")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 130), "3. Assassin-   Has the Sneak skill")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 145), "4. Ninja-   Has the Stun spell")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	classsc = raw_input('> ')
 	if classsc == "1":
 		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
@@ -219,8 +259,11 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
 	elif classsc == "5":
 		skills.append("magic boost")
-	print color['cyan'] + "Welcome to Kazoo Quest! For help type \"help\"!" + color['off']
-	print "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
+	w.close()
+	w = GraphWin('Kazoo Quest', 1000, 200)
+	screen = Text(Point(w.getWidth()/2, w.getHeight()/2 + w.getHeight()),"Welcome to Kazoo Quest! For help type \"help\"!")
+	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
+	print roominfo
 #The line below will be commented out when current version is known to be stable
 #print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
@@ -430,6 +473,7 @@ while stop != 1:
 		f.close()
 		os.system('clear')
 		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 	elif act == "quit":
 		print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
 		quit_response = raw_input('> ')
@@ -1064,6 +1108,7 @@ while stop != 1:
 			if max_dam < 0:
 				max_dam = 0
 #Remember to fix this silly grammar thingy here
+			os.system('clear')
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
