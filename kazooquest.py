@@ -115,6 +115,7 @@ enemy_buff_timer = 5
 enemy_debuff_timer = 5
 enemy_info = ""
 enemy_dam_info = ""
+resetrimer = 10
 hp = 20
 defe = 1
 mana = 5
@@ -135,6 +136,9 @@ encounter = 0
 history = []
 tut_finished = 0
 loadyload = 0
+dothing = ""
+acted = 0
+global screen1
 class CleanExit(object):
 	def __enter__(self):
 		return self
@@ -173,8 +177,12 @@ if autoload == True:
 		f.close()
 		loadyload = 1
 		os.system('clear')
-		print color['cyan'] + "Game loaded!" + color['off']
-		print roominfo
+		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
+		screen1.setTextColor("cyan4")
+		screen1.draw(w)
+		screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
+		screen.setTextColor("black")
+		screen.draw(w)
 else:
 	import Tutorial
 silly = 0
@@ -261,9 +269,13 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		skills.append("magic boost")
 	w.close()
 	w = GraphWin('Kazoo Quest', 1000, 200)
-	screen = Text(Point(w.getWidth()/2, w.getHeight()/2 + w.getHeight()),"Welcome to Kazoo Quest! For help type \"help\"!")
+	screen = Text(Point(w.getWidth()/2, w.getHeight()/4),"Welcome to Kazoo Quest! For help type \"help\"! Click to continue!")
+	screen.setTextColor('cyan3')
+	screen.draw(w)
+	screen.setTextColor('black')
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
-	print roominfo
+	w.getMouse()
+	screen.setText(roominfo)
 #The line below will be commented out when current version is known to be stable
 #print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
 act = raw_input('> ')
@@ -291,19 +303,19 @@ while stop != 1:
 		if list(set(lights_words) & set(words)):
 			if x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 				triggers.append("lights")
-				print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
+				dothing = "You flip the switch and the lights in the house suddenly turn on."
 			elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
-				print color['magenta'] + "You wiggle the switch but nothing happens." + color['off']
+				dothing = "You wiggle the switch but nothing happens."
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
-			print color['magenta'] + "You use the crowbar to open the door." + color['off']
+			dothing = "You use the crowbar to open the door."
 			triggers.append("underground_door")
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
-			print color['magenta'] + "You use the crowbar to open the trapdoor." + color['off']
+			dothing = "You use the crowbar to open the trapdoor."
 			triggers.append("trapdoor")
 #I know this prioritizes certain spellbooks over others but who actually cares?
 		elif list(set(spellbook_words) & set(words)):
 			if "spellbook- Fire" in inventory:
-				print color['magenta'] + "You read the book and it bursts into flame." + color['off']
+				dothing = "You read the book and it bursts into flame."
 				spells.append("firebolt")
 				inventory.remove("spellbook- Fire")
 				spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
@@ -330,17 +342,17 @@ while stop != 1:
 				encounter_time = 0
 				boss = 1
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "trapdoor" in triggers and "trapdoor_lock" not in triggers:
-			print color['magenta'] + "You use the key to open the lock." + color['off']
+			dothing = "You use the key to open the lock."
 			triggers.append("trapdoor_lock")
 		elif "charm" in words and "mysterious charm" in inventory:
 			os.system('clear')
 			inventory.remove("mysterious charm")
-			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
+			dothing = "You begin to feel funny. You suddenly black out..."
 			max_level = 10
 			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
 		elif "portal" in words and "boss1" in triggers and max_level != 5:
 			os.system('clear')
-			print color['red'] + "You won't be able to come back here after you go through. Are you still sure you want to proceed?" + color['off']
+			dothing = "You won't be able to come back here after you go through. Are you still sure you want to proceed?"
 			portal_p = raw_input('> ')
 			words = portal_p.split(' ')
 			if list(set(yes_words) & set(words)):
@@ -352,7 +364,7 @@ while stop != 1:
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			inventory.append("torch")
 			triggers.append("torch")
-			print color['magenta'] + "You pick up the torch and are able to see better." + color['off']
+			dothing = "You pick up the torch and are able to see better."
 		elif "shuriken" in words and x == 0 and y == -1 and z == 0 and "shuriken" not in inventory:
 			inventory.append("shuriken") * 7
 			print color['magenta'] + "You pick up seven shuriken." + color['off']
@@ -407,6 +419,8 @@ while stop != 1:
 				print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
 			print color['magenta'] + "You don't see that here." + color['off']
+		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/2), dothing)
+		screen1.draw(w)
 	if act == "num":
 		print x
 		print y
@@ -494,7 +508,7 @@ while stop != 1:
 		spells.append("poison")
 		spells.append("life steal")
 		spells.append("heal")
-		spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
+		spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
 		spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
@@ -561,7 +575,7 @@ while stop != 1:
 		roominfo = "The exit to the cave is to the east."
 	elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 		encounter = 0
-		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
+		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.\nThe trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
 		enemy_type = "wolf"
 	elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 		encounter = 0
@@ -799,7 +813,13 @@ while stop != 1:
 			z -= 1
 		elif list(set(u_words) & set(words)):
 			z += 1
-	print roominfo
+	#if acted == 1:
+	#	screen.undraw()
+	try:
+		screen1.undraw()
+	except:
+		pass
+	screen.setText(roominfo)
 	if encounter != 0:
 		encounter_time -= 1
 	if var_set == 1:
