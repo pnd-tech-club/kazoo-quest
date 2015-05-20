@@ -10,8 +10,12 @@ import argparse
 from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
+<<<<<<< HEAD
 import Loadingbar
 global w
+=======
+#import Loadingbar
+>>>>>>> master
 w = GraphWin('Kazoo Quest', 1000, 200)
 from room import room
 def update():
@@ -204,19 +208,33 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen = Text(Point(w.getWidth()/2, 100), "What difficulty do you want to play on?")
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 115), "1. Easy")
+<<<<<<< HEAD
 	screen.setTextColor('green3')
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
 	screen.setTextColor('yellow')
+=======
+	screen.setTextColor('green')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
+	screen.setTextColor('yellow3')
+>>>>>>> master
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 145), "3. Hard")
 	screen.setTextColor('orange')
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
+<<<<<<< HEAD
 	screen.setTextColor('red4')
 	screen.draw(w)
 	#game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
 	game_diff = prompt('game_diff')
+=======
+	screen.setTextColor('red')
+	screen.draw(w)
+	#game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
+	game_diff = raw_input('> ')
+>>>>>>> master
 	if game_diff == "1":
 		hp = 25
 		defe = 2
@@ -260,7 +278,11 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
 	screen.setTextColor('blue2')
 	screen.draw(w)
+<<<<<<< HEAD
 	classsc = prompt('classsc')
+=======
+	classsc = raw_input('> ')
+>>>>>>> master
 	if classsc == "1":
 		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
@@ -282,10 +304,14 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		skills.append("magic boost")
 	w.close()
 	w = GraphWin('Kazoo Quest', 1000, 200)
+<<<<<<< HEAD
 	screen = Text(Point(w.getWidth()/2, w.getHeight()/4),"Welcome to Kazoo Quest! For help type \"help\"! Click to continue!")
 	screen.setTextColor('cyan3')
 	screen.draw(w)
 	screen.setTextColor('black')
+=======
+	screen = Text(Point(w.getWidth()/2, w.getHeight()/2 + w.getHeight()),"Welcome to Kazoo Quest! For help type \"help\"!")
+>>>>>>> master
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	w.getMouse()
 	screen.setText(roominfo)
@@ -655,10 +681,17 @@ while stop != 1:
 		if boss == 1:
 			encounter = 1
 		enemy_type = "slime"
+<<<<<<< HEAD
 		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle.\nThere are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
 	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
 		encounter = 0
 		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange.\nYou see a purple charm where the slime was killed."
+=======
+		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
+	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
+		encounter = 0
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed."
+>>>>>>> master
 	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
 		encounter = 0
 		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange.\nThe strange charm you have is also glowing orange..."
@@ -722,7 +755,11 @@ while stop != 1:
 		roominfo = "The light shows that there are stairs going down. The entrance is to the west."
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and armor < 1 and weapon < 2:
+<<<<<<< HEAD
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground.\nThere is a dagger on the ground. There is leather armor on the ground."
+=======
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground. There is leather armor on the ground."
+>>>>>>> master
 #Player has nothing ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground. There is leather armor on the ground."
