@@ -10,12 +10,7 @@ import argparse
 from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
-<<<<<<< HEAD
-import Loadingbar
-global w
-=======
 #import Loadingbar
->>>>>>> master
 w = GraphWin('Kazoo Quest', 1000, 200)
 from room import room
 def update():
@@ -120,7 +115,6 @@ enemy_buff_timer = 5
 enemy_debuff_timer = 5
 enemy_info = ""
 enemy_dam_info = ""
-resetrimer = 10
 hp = 20
 defe = 1
 mana = 5
@@ -141,21 +135,6 @@ encounter = 0
 history = []
 tut_finished = 0
 loadyload = 0
-dothing = ""
-acted = 0
-global screen1
-global words
-words = ""
-def prompt(i):
-	global words
-	acte = Entry(Point(w.getWidth()/6, 100), 15)
-	acte.setText("")
-	acte.draw(w)
-	boop = Rectangle(Point(w.getWidth()/4, 90), Point(w.getWidth()/3.5, 110))
-	boop.draw(w)
-	w.getMouse()
-	i = acte.getText()
-	words = i.split(" ")
 class CleanExit(object):
 	def __enter__(self):
 		return self
@@ -194,12 +173,8 @@ if autoload == True:
 		f.close()
 		loadyload = 1
 		os.system('clear')
-		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
-		screen1.setTextColor("cyan4")
-		screen1.draw(w)
-		screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
-		screen.setTextColor("black")
-		screen.draw(w)
+		print color['cyan'] + "Game loaded!" + color['off']
+		print roominfo
 else:
 	import Tutorial
 silly = 0
@@ -208,33 +183,19 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen = Text(Point(w.getWidth()/2, 100), "What difficulty do you want to play on?")
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 115), "1. Easy")
-<<<<<<< HEAD
-	screen.setTextColor('green3')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
-	screen.setTextColor('yellow')
-=======
 	screen.setTextColor('green')
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
 	screen.setTextColor('yellow3')
->>>>>>> master
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 145), "3. Hard")
 	screen.setTextColor('orange')
 	screen.draw(w)
 	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
-<<<<<<< HEAD
-	screen.setTextColor('red4')
-	screen.draw(w)
-	#game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
-	game_diff = prompt('game_diff')
-=======
 	screen.setTextColor('red')
 	screen.draw(w)
 	#game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
 	game_diff = raw_input('> ')
->>>>>>> master
 	if game_diff == "1":
 		hp = 25
 		defe = 2
@@ -278,11 +239,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
 	screen.setTextColor('blue2')
 	screen.draw(w)
-<<<<<<< HEAD
-	classsc = prompt('classsc')
-=======
 	classsc = raw_input('> ')
->>>>>>> master
 	if classsc == "1":
 		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
@@ -304,18 +261,13 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 		skills.append("magic boost")
 	w.close()
 	w = GraphWin('Kazoo Quest', 1000, 200)
-<<<<<<< HEAD
-	screen = Text(Point(w.getWidth()/2, w.getHeight()/4),"Welcome to Kazoo Quest! For help type \"help\"! Click to continue!")
-	screen.setTextColor('cyan3')
-	screen.draw(w)
-	screen.setTextColor('black')
-=======
 	screen = Text(Point(w.getWidth()/2, w.getHeight()/2 + w.getHeight()),"Welcome to Kazoo Quest! For help type \"help\"!")
->>>>>>> master
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
-	w.getMouse()
-	screen.setText(roominfo)
-	act = prompt('act')
+	print roominfo
+#The line below will be commented out when current version is known to be stable
+#print color['red'] + "THIS VERSION IS IN DEVELOPMENT. PLEASE REPORT ANY AND ALL POSSIBLE BUGS!" + color['off']
+act = raw_input('> ')
+words = act.split(" ")
 stop = 0
 while stop != 1:
 #Map info for ease of access while debugging:
@@ -339,73 +291,60 @@ while stop != 1:
 		if list(set(lights_words) & set(words)):
 			if x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 				triggers.append("lights")
-				dothing = "You flip the switch and the lights in the house suddenly turn on."
-				acted = 1
+				print color['magenta'] + "You flip the switch and the lights in the house suddenly turn on." + color['off']
 			elif x == 3 and y == 7 and z == 0 and "lights" in triggers:
-				dothing = "You wiggle the switch but nothing happens."
-				acted = 1
+				print color['magenta'] + "You wiggle the switch but nothing happens." + color['off']
 		elif "crowbar" in words and x == 3 and y == 12 and z == 1:
-			dothing = "You use the crowbar to open the door."
+			print color['magenta'] + "You use the crowbar to open the door." + color['off']
 			triggers.append("underground_door")
-			acted = 1
 		elif "crowbar" in words and x == 2 and y == 8 and z == 0:
-			dothing = "You use the crowbar to open the trapdoor."
+			print color['magenta'] + "You use the crowbar to open the trapdoor." + color['off']
 			triggers.append("trapdoor")
-			acted = 1
 #I know this prioritizes certain spellbooks over others but who actually cares?
 		elif list(set(spellbook_words) & set(words)):
 			if "spellbook- Fire" in inventory:
-				dothing = "You read the book and it bursts into flame."
+				print color['magenta'] + "You read the book and it bursts into flame." + color['off']
 				spells.append("firebolt")
 				inventory.remove("spellbook- Fire")
-				spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
-				acted = 1
+				spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Frost" in inventory:
-				dothing = "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments."
+				print color['magenta'] + "As you finish reading the mysterious runes, the book freezes over and shatters into ice fragments." + color['off']
 				spells.append("frost")
 				inventory.remove("spellbook- Frost")
-				spells_thing.append("%s. Frost" % str(len(spells_thing) + 1))
-				acted = 1
+				spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Poison" in inventory:
-				dothing = "As you read the book, it suddenly sprouts poison ivy and you drop it."
+				print color['magenta'] + "As you read the book, it suddenly sprouts poison ivy and you drop it." + color['off']
 				spells.append("posion")
 				inventory.remove("spellbook- Poison")
-				spells_thing.append("%s. Poison" % str(len(spells_thing) + 1))
-				acted = 1
+				spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 			elif "spellbook- Life Steal" in inventory:
-				dothing = "As you finish reading the runes, the spellbook glows pink and vanishes."
+				print color['magenta'] + "As you finish reading the runes, the spellbook glows pink and vanishes." + color['off']
 				spells.append("life steal")
 				inventory.remove("spellbook- Life Steal")
-				spells_thing.append("%s. Life Steal" % str(len(spells_thing) + 1))
-				acted = 1
+				spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
 			elif "old book" in inventory and x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
-				dothing = "As you read the old book, the runes by the pool of water begin to glow orange."
-				dothing = "Suddenly, a strange looking blob comes out of the pool!"
-				acted = 1
+				print color['magenta'] + "As you read the old book, the runes by the pool of water begin to glow orange." + color['off']
+				print color['red'] + "Suddenly, a strange looking blob comes out of the pool!" + color['off']
 				inventory.remove("old book")
 				encounter = 1
 				encounter_time = 0
 				boss = 1
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "trapdoor" in triggers and "trapdoor_lock" not in triggers:
-			dothing = "You use the key to open the lock."
+			print color['magenta'] + "You use the key to open the lock." + color['off']
 			triggers.append("trapdoor_lock")
-			acted = 1
 		elif "charm" in words and "mysterious charm" in inventory:
 			os.system('clear')
 			inventory.remove("mysterious charm")
-			dothing = "You begin to feel funny. You suddenly black out..."
+			print color['magenta'] + "You begin to feel funny. You suddenly black out..." + color['off']
 			max_level = 10
-			dothing = "You wake up and realize that the charm must have been the legendary \"Element of Harmony\".\nIt grants whoever uses it a beautiful voice!"
-			acted = 1
+			print color['green'] + "You wake up and realize that the charm must have been the legendary \"Element of Harmony\". It grants whoever uses it a beautiful voice!" + color['off']
 		elif "portal" in words and "boss1" in triggers and max_level != 5:
 			os.system('clear')
-			acted = 1 #GAHGAHGAHGAHAGHAGAHHGAHGAHGAHGAHGAHGAHGAHGAHGAHGAH
-			dothing = "You won't be able to come back here after you go through. Are you still sure you want to proceed?"
+			print color['red'] + "You won't be able to come back here after you go through. Are you still sure you want to proceed?" + color['off']
 			portal_p = raw_input('> ')
 			words = portal_p.split(' ')
 			if list(set(yes_words) & set(words)):
-				dothing = "Okie dokie, let's gooooooo..."
-				acted = 1
+				print color['darkgreen'] + "Okie dokie, let's gooooooo..." + color['off']
 				x = 0
 				y = 0
 				z = 10
@@ -413,71 +352,61 @@ while stop != 1:
 		if "torch" in words and x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			inventory.append("torch")
 			triggers.append("torch")
-			dothing = "You pick up the torch and are able to see better."
-			acted = 1
+			print color['magenta'] + "You pick up the torch and are able to see better." + color['off']
+		elif "shuriken" in words and x == 0 and y == -1 and z == 0 and "shuriken" not in inventory:
+			inventory.append("shuriken") * 7
+			print color['magenta'] + "You pick up seven shuriken." + color['off']
 		elif "branch" in words and x == 2 and y == 1 and z == 0 and weapon < 1:
 			inventory.append("branch")
 			triggers.append("branch")
 			weapon = 1
 			var_set = 1
-			dothing = "You pick up the branch and hold it like a spear."
-			acted = 1
+			print color['magenta'] + "You pick up the branch and hold it like a spear." + color['off']
 		elif "letter" in words and x == 2 and y == 6 and z == 0 and "letter" not in triggers:
 			inventory.append("letter")
 			triggers.append("letter")
-			dothing = "You take the letter out of the mailbox."
-			acted = 1
+			print color['magenta'] + "You take the letter out of the mailbox." + color['off']
 			print letter
 		elif "dagger" in words and x == 3 and y == 7 and z == 1 and weapon < 2:
 			inventory.append("dagger")
 			weapon = 2
 			var_set = 1
-			dothing = "You wield the dagger and feel stronger."
-			acted = 1
+			print color['magenta'] + "You wield the dagger and feel stronger." + color['off']
 			inventory.remove("branch")
 		elif "armor" in words and x == 3 and y == 7 and z == 1 and armor < 1:
 			inventory.append("leather armor")
 			armor = 1
-			dothing = "You put on the leather armor."
-			acted = 1
+			print color['magenta'] + "You put on the leather armor." + color['off']
 		elif "lamp" in words and x == 3 and y == 7 and z == 1 and "lamp" not in inventory:
 			inventory.append("lamp")
 			triggers.append("lamp")
 			inventory.remove("torch")
-			dothing = "Your torch happens to burn out as you pick up the lamp."
-			acted = 1
+			print color['magenta'] + "Your torch happens to burn out as you pick up the lamp." + color['off']
 		elif "armor" in words and x == -1 and y == 15 and z == 1 and armor <= 1:
 			inventory.append("Chainmail armor")
 			armor = 2
-			dothing = "You put on the chainmail armor."
-			acted = 1
+			print color['magenta'] + "You put on the chainmail armor." + color['off']
 			inventory.remove("leather armor")
 		elif "crowbar" in words and x == 9 and y == 9 and z == 1 and "crowbar" not in inventory:
 			inventory.append("crowbar")
-			dothing = "You pick up the crowbar."
-			acted = 1
+			print color['magenta'] + "You pick up the crowbar." + color['off']
 		elif "key" in words and x == 2 and y == 8 and z == 0 and "key" not in inventory and "trapdoor" in triggers:
 			inventory.append("key")
-			dothing = "You pick up a mysterious key."
-			acted = 1
+			print color['magenta'] + "You pick up a mysterious key." + color['off']
 		elif "book" in words and x == 2 and y == 8 and z == 0 and "old book" not in inventory and "trapdoor_lock" in triggers and "boss1" not in triggers:
 			inventory.append("old book")
 			triggers.append("old_book")
-			dothing = "You take the mysterious book and wonder what it could be."
-			acted = 1
+			print color['magenta'] + "You take the mysterious book and wonder what it could be." + color['off']
 		elif "charm" in words and x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers:
 			inventory.append("mysterious charm")
 			triggers.append("charm")
-			dothing = "You pick up the strange charm. It is in the shape of a purple diamond."
-			acted = 1
+			print color['magenta'] + "You pick up the strange charm. It is in the shape of a purple diamond." + color['off']
 		elif list(set(spellbook_words) & set(words)):
 			if x == 3 and y == 13 and z == 1 and "spellbook- Fire" not in inventory and "firebolt" not in spells:
 				inventory.append("spellbook- Fire")
-				dothing = "You pick up the mysterious spellbook."
-			acted = 1
+				print color['magenta'] + "You pick up the mysterious spellbook." + color['off']
 		else:
-			dothing = "You don't see that here."
-		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/2), dothing)
+			print color['magenta'] + "You don't see that here." + color['off']
 	if act == "num":
 		print x
 		print y
@@ -535,9 +464,7 @@ while stop != 1:
 		with open('game_save.dat', 'wb') as f:
 			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 		f.close()
-		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game saved!")
-		screen1.setTextColor('cyan4')
-		screen1.draw(w)
+		print color['cyan'] + "Save successful!" + color['off']
 		if encounter >= 1:
 			encounter_time += 1
 	elif act == "load":
@@ -567,7 +494,7 @@ while stop != 1:
 		spells.append("poison")
 		spells.append("life steal")
 		spells.append("heal")
-		spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
+		spells_thing.append(color['darkred'] + "%s. Firebolt" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
 		spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
@@ -634,7 +561,7 @@ while stop != 1:
 		roominfo = "The exit to the cave is to the east."
 	elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 		encounter = 0
-		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.\nThe trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
+		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
 		enemy_type = "wolf"
 	elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 		encounter = 0
@@ -681,20 +608,13 @@ while stop != 1:
 		if boss == 1:
 			encounter = 1
 		enemy_type = "slime"
-<<<<<<< HEAD
-		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle.\nThere are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
-	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
-		encounter = 0
-		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange.\nYou see a purple charm where the slime was killed."
-=======
 		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
 	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
 		encounter = 0
 		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed."
->>>>>>> master
 	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
 		encounter = 0
-		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange.\nThe strange charm you have is also glowing orange..."
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."
 	elif x == 5 and y == 2 and z == 0 and max_level != 5:
 		encounter = 0
 		roominfo = "The pool of water appears to have opened into a strange portal-ish thing.  You know you won't be able to get back if you go in..."
@@ -732,7 +652,7 @@ while stop != 1:
 	elif x == 2 and y == 7 and z == 0 and "lights" in triggers:
 		enemy_type = "wolf"
 		encounter = 0
-		roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread.\nThe kitchen is to the east and the living room is to the north."
+		roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread. The kitchen is to the east and the living room is to the north."
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 		roominfo = "The room is lit up slightly by a window. You can see a switch by the window. The doorway is to the west."
 	elif x == 2 and y == 8 and z == 0 and "lights" not in triggers:
@@ -755,11 +675,7 @@ while stop != 1:
 		roominfo = "The light shows that there are stairs going down. The entrance is to the west."
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and armor < 1 and weapon < 2:
-<<<<<<< HEAD
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground.\nThere is a dagger on the ground. There is leather armor on the ground."
-=======
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground. There is leather armor on the ground."
->>>>>>> master
 #Player has nothing ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground. There is leather armor on the ground."
@@ -883,15 +799,7 @@ while stop != 1:
 			z -= 1
 		elif list(set(u_words) & set(words)):
 			z += 1
-	if acted == 1:
-		acted = 0
-		screen1.draw(w)
-	if acted == 0:
-		try:
-			screen1.undraw()
-		except:
-			pass
-		screen.setText(roominfo)
+	print roominfo
 	if encounter != 0:
 		encounter_time -= 1
 	if var_set == 1:
@@ -1119,7 +1027,10 @@ while stop != 1:
 			max_hp += 5
 			max_mana += 5
 	stop = 1
-	act = prompt('act')
+	act = ""
+	words = ""
+	act = raw_input('> ')
+	words = act.split(" ")
 	stop = 0
 	while encounter != 0 and encounter_time <= 0 and "dead" not in triggers:
 		stop = 1
