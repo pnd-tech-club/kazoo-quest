@@ -451,44 +451,48 @@ while stop != 1:
 			dothing = "You don't see that here."
 		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/2), dothing)
 	if act == "num":
-	  print x
-	  print y
-	  print z
-	  if encounter >= 1:
-	    encounter_time += 1
+		print x
+		print y
+		print z
+		if encounter >= 1:
+			encounter_time += 1
 	elif act == "debug.addt":
-	  triggers.append(raw_input(''))
+		triggers.append(raw_input(''))
 	elif act == "clear":
-	  if encounter >= 1:
-	    encounter_time += 1
-	  os.system('clear')
+		if encounter >= 1:
+			encounter_time += 1
+		os.system('clear')
 	elif act == "inv":
-	  print '\n'.join(inventory)
-	  if encounter >= 1:
-	    encounter_time += 1
-	elif act == "restart":
-	  while wait == 0:
-	    print color['red'] + "Are you sure you want to delete your save and restart all progress?" + color['off']
-	    response = raw_input('(y/n) >')
-	    if response == "y":
-	      print "Okay, deleting your save and restarting..."
-	      os.system('rm game_save.dat')
-	      os.system('touch game_save.dat')
-	      quit()
-	      os.system('python kazooquest.py')
-	      wait = 1
-	    elif response == "n":
-	      wait = 1
+		invs = GraphWin(200, 1000, 'inventory')
+		for i in range(len(inventory)):
+			i += 10
+			screen2 = Text(Point(w.getWidth()/2, 300 + i), inventory)
+		#print '\n'.join(inventory)
+	  	if encounter >= 1:
+			encounter_time += 1
+		elif act == "restart":
+			while wait == 0:
+				print color['red'] + "Are you sure you want to delete your save and restart all progress?" + color['off']
+				response = raw_input('(y/n) >')
+				if response == "y":
+					print "Okay, deleting your save and restarting..."
+					os.system('rm game_save.dat')
+					os.system('touch game_save.dat')
+					quit()
+					os.system('python kazooquest.py')
+					wait = 1
+				elif response == "n":
+					wait = 1
 	elif act == "look":
-	  skip = 0
-	  if encounter >= 1:
-	    encounter_time += 1
+	  	skip = 0
+	  	if encounter >= 1:
+			encounter_time += 1
 	elif act == "skills":
-	  print '\n'.join(skills_thing)
-	  skill_act = raw_input('What skill do you want to use?\n> ')
-	  if act == "sneak" and "Stealth" in skills and skill_energy >= 5:
-	    encounter_time += 6
-	    skill_energy -= 5
+		print '\n'.join(skills_thing)
+		skill_act = raw_input('What skill do you want to use?\n> ')
+		if act == "sneak" and "Stealth" in skills and skill_energy >= 5:
+			encounter_time += 6
+			skill_energy -= 5
 	#Debugging commands
 	elif act == "debug.update":
 	  update()
@@ -1164,7 +1168,7 @@ while stop != 1:
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
-		fight_act = prompt()
+		#fight_act = prompt()
 		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack" + color['green'] + "\tHealth: %r" % hp + color['red'] + "\tEnemy Health: %r" % enemy_hp + color['yellow'] + "\n2: Magic" + color['green'] + "\tMana: %r" % mana + color['red'] + "\t\tEnemy Damage: %s" % enemy_dam_info + color['yellow'] + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
 		dodges = 0
 		if fight_act == "1":
