@@ -10,7 +10,7 @@ import argparse
 from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
-#import Loadingbar
+import Loadingbar
 global w
 w = GraphWin('Kazoo Quest', 1000, 200)
 from room import room
