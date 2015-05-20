@@ -10,7 +10,7 @@ import argparse
 from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
-import Loadingbar
+#import Loadingbar
 global w
 w = GraphWin('Kazoo Quest', 1000, 200)
 from room import room
@@ -142,16 +142,18 @@ acted = 0
 global screen1
 global words
 words = ""
-def prompt(i):
+def prompt():
+	global act
 	acte = Entry(Point(w.getWidth()/6, 100), 15)
 	acte.setText("")
 	acte.draw(w)
 	boop = Rectangle(Point(w.getWidth()/4, 90), Point(w.getWidth()/3.5, 110))
 	boop.draw(w)
 	w.getMouse()
-	i = acte.getText()
-	return i
-	words = i.split(" ")
+	act = acte.getText()
+	print act
+	words = act.split(" ")
+	print words
 def death():
 	print color['darkred'] + "You have died!" + color['off']
 	print color['blue'] + "Do you want to see your final stats?" + color['off']
@@ -189,7 +191,6 @@ if autoload == True:
 		screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
 		screen.setTextColor("black")
 		screen.draw(w)
-		act = prompt('act')
 else:
 	import Tutorial
 silly = 0
@@ -209,26 +210,26 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
 	screen.setTextColor('red4')
 	screen.draw(w)
-	#game_diff = raw_input(color['blue'] + "What difficulty do you want to play on?" + color['green'] + "\n1. Easy" + color['yellow'] + "\n2. Normal" + color['red'] + "\n3. Hard" + color['darkmagenta'] + "\n4. Actually insane" + color['off'] + "\n> ")
-	prompt(i = game_diff)
-	if game_diff == "1":
+	#prompt()
+	act = raw_input('> ')
+	if act == "1":
 		hp = 25
 		defe = 2
 		mana = 8
 		damage = 2
 		weapon = 0
-	elif game_diff == "2":
+	elif act == "2":
 		hp = 20
 		defe = 1
 		mana = 5
 		damage = 1
 		weapon = 0
-	elif game_diff == "3":
+	elif act == "3":
 		hp = 15
 		defe = 1
 		mana = 5
 		weapon = 0
-	elif game_diff == "4":
+	elif act == "4":
 		print color['red'] + "I hope you know what you're doing..." + color['off']
 		hp = 10
 		defe = 0
@@ -254,25 +255,26 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
 	screen.setTextColor('blue2')
 	screen.draw(w)
-	prompt(i = classsc)
-	if classsc == "1":
+	#prompt()
+	act = raw_input('> ')
+	if act == "1":
 		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
 		silly = 1
-	elif classsc == "2":
+	elif act == "2":
 		spells.append("heal")
 		spells_thing.append("%r. Heal" % (len(spells_thing) + 1))
 		silly = 1
 		max_mana = 10
 		mana = 10
-	elif classsc == "3":
+	elif act == "3":
 		skills.append("stealth")
 		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
 		silly = 1
-	elif classsc == "4":
+	elif act == "4":
 		spells.append("stun")
 		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
-	elif classsc == "5":
+	elif act == "5":
 		skills.append("magic boost")
 	w.close()
 	w = GraphWin('Kazoo Quest', 1000, 200)
@@ -283,7 +285,9 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	w.getMouse()
 	screen.setText(roominfo)
-	prompt(i = 'act')
+#prompt()
+act = raw_input('> ')
+words = act.split(' ')
 stop = 0
 while stop != 1:
 #Map info for ease of access while debugging:
@@ -446,7 +450,7 @@ while stop != 1:
 		else:
 			dothing = "You don't see that here."
 		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/2), dothing)
-	elif act == "num":
+	if act == "num":
 	  print x
 	  print y
 	  print z
@@ -1076,7 +1080,9 @@ while stop != 1:
 			max_hp += 5
 			max_mana += 5
 	stop = 1
-	prompt(i = 'act')
+	#prompt()
+	act = raw_input('> ')
+	words = act.split(' ')
 	stop = 0
 	while encounter != 0 and encounter_time <= 0 and "dead" not in triggers:
 		stop = 1
@@ -1158,7 +1164,7 @@ while stop != 1:
 			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
 			print enemy_info
 			enemy_set = 1
-		prompt(i = fight_act)
+		fight_act = prompt()
 		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack" + color['green'] + "\tHealth: %r" % hp + color['red'] + "\tEnemy Health: %r" % enemy_hp + color['yellow'] + "\n2: Magic" + color['green'] + "\tMana: %r" % mana + color['red'] + "\t\tEnemy Damage: %s" % enemy_dam_info + color['yellow'] + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
 		dodges = 0
 		if fight_act == "1":
@@ -1167,7 +1173,7 @@ while stop != 1:
 			print color['green'] + "You dealt %d damage to the %s!" % (damage, enemy_type) + color['off']
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells_thing)
-			prompt(magic_attack)
+			magic_attack = prompt()
 #Magic is(as usual) OP- needs to be reworked
 			try:
 				if magic_attack == str(spells.index('firebolt') + 1) and "firebolt" in spells and mana >= 5:
