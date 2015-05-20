@@ -1,41 +1,30 @@
 # -*- coding: latin-1 -*-
-from __future__ import print_function
 import sys, os, argparse
+from Tkinter import *
+from ttk import *
+from graphics import *
 parser = argparse.ArgumentParser(description='Kazoo Quest!')
 args = parser.parse_args()
-sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
+strtpnt= 195
+l = 0
+w = GraphWin('Kazoo Quest', 1000, 200)
 os.system('clear')
-desu = []
-color = {
-    'white':    "\033[1;37m",
-    'yellow':   "\033[1;33m",
-    'green':    "\033[1;32m",
-    'blue':     "\033[1;34m",
-    'cyan':     "\033[1;36m",
-    'red':      "\033[1;31m",
-    'magenta':  "\033[1;35m",
-    'black':      "\033[1;30m",
-    'darkwhite':  "\033[0;37m",
-    'darkyellow': "\033[0;33m",
-    'darkgreen':  "\033[0;32m",
-    'darkblue':   "\033[0;34m",
-    'darkcyan':   "\033[0;36m",
-    'darkred':    "\033[0;31m",
-    'darkmagenta':"\033[0;35m",
-    'darkblack':  "\033[0;30m",
-    'off':        "\033[0;0m"
-}
-global wait
+desu = ""
 wait = 0
 os.system('clear')
-print(color['yellow'] + """
+outline = Text(Point(500, 100), """
  _________________________________________LOADING GAME__________________________________________
-|												|""" + color['off'], end = '\r')
-while len(desu) < 289:
-	wait += 1
-	if wait >= 6000:
-		desu.extend('◼')
-		wait = 0
-	print(color['cyan'] + ''.join(desu), end = '\r' + color['off'])
-print('\n')
+|											|""")
+outline.setTextColor('yellow3')
+outline.draw(w)
+while len(desu) < 123:
+    wait += 1
+    if wait >= 90000:
+        wait = 0
+        desu += '|'
+        bar = Text(Point(strtpnt + 5, 115), "|")
+        bar.setTextColor('green3')
+        bar.draw(w)
+        strtpnt += 5
+w.close()
 import kazooquest
