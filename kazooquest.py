@@ -142,6 +142,10 @@ acted = 0
 global screen1
 global words
 words = ""
+def click():
+	pos = w.checkMouse()
+	if pos == Rectangle(Point(900, 100), Point(1000, 200)):
+		print "kek"
 def prompt():
 	global act
 	acte = Entry(Point(w.getWidth()/6, 100), 15)
@@ -211,30 +215,30 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen.setTextColor('red4')
 	screen.draw(w)
 	#prompt()
-	act = raw_input('> ')
-	if act == "1":
-		hp = 25
-		defe = 2
-		mana = 8
-		damage = 2
-		weapon = 0
-	elif act == "2":
-		hp = 20
-		defe = 1
-		mana = 5
-		damage = 1
-		weapon = 0
-	elif act == "3":
-		hp = 15
-		defe = 1
-		mana = 5
-		weapon = 0
-	elif act == "4":
-		print color['red'] + "I hope you know what you're doing..." + color['off']
-		hp = 10
-		defe = 0
-		mana = 0
-		damage = 2
+	game_diff = raw_input('> ')
+	if game_diff == "1":
+	  hp = 25
+	  defe = 2
+	  mana = 8
+	  damage = 2
+	  weapon = 0
+	elif game_diff == "2":
+	  hp = 20
+	  defe = 1
+	  mana = 5
+	  damage = 1
+	  weapon = 0
+	elif game_diff == "3":
+	  hp = 15
+	  defe = 1
+	  mana = 5
+	  weapon = 0
+	elif game_diff == "4":
+	  print color['red'] + "I hope you know what you're doing..." + color['off']
+	  hp = 10
+	  defe = 0
+	  mana = 0
+	  damage = 2
 	w.close()
 	w = GraphWin('Kazoo Quest', 1000, 200)
 	screen = Text(Point(w.getWidth()/2, 85), "What class would you like to be?")
@@ -256,26 +260,28 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	screen.setTextColor('blue2')
 	screen.draw(w)
 	#prompt()
-	act = raw_input('> ')
-	if act == "1":
+	classsc = raw_input('> ')
+	if classsc == "1":
 		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
 		silly = 1
-	elif act == "2":
+	elif classsc == "2":
 		spells.append("heal")
 		spells_thing.append("%r. Heal" % (len(spells_thing) + 1))
 		silly = 1
 		max_mana = 10
 		mana = 10
-	elif act == "3":
+	elif classsc == "3":
 		skills.append("stealth")
 		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
 		silly = 1
-	elif act == "4":
+	elif classsc == "4":
 		spells.append("stun")
 		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
-	elif act == "5":
+		silly = 1
+	elif classsc == "5":
 		skills.append("magic boost")
+		silly = 1
 	w.close()
 	w = GraphWin('Kazoo Quest', 1000, 200)
 	screen = Text(Point(w.getWidth()/2, w.getHeight()/4),"Welcome to Kazoo Quest! For help type \"help\"! Click to continue!")
@@ -286,6 +292,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	w.getMouse()
 	screen.setText(roominfo)
 #prompt()
+click()
 act = raw_input('> ')
 words = act.split(' ')
 stop = 0
@@ -463,10 +470,18 @@ while stop != 1:
 			encounter_time += 1
 		os.system('clear')
 	elif act == "inv":
-		invs = GraphWin(200, 1000, 'inventory')
-		for i in range(len(inventory)):
-			i += 10
-			screen2 = Text(Point(w.getWidth()/2, 300 + i), inventory)
+		i = 0
+		try:
+			for i in range(len(inventory)):
+				screen2.undraw()
+				screen2 = Text(Point(invs.getWidth()/2, invs.getWidth()/2), '\n'.join(inventory))
+				screen2.setText('\n'.join(inventory))
+				screen2.draw(invs)
+		except:
+			invs = GraphWin('inventory', 100, 300)
+			for i in range(len(inventory)):
+				screen2 = Text(Point(invs.getWidth()/2, invs.getWidth()/2), '\n'.join(inventory))
+				screen2.draw(invs)
 		#print '\n'.join(inventory)
 	  	if encounter >= 1:
 			encounter_time += 1
@@ -1085,6 +1100,9 @@ while stop != 1:
 			max_mana += 5
 	stop = 1
 	#prompt()
+	screen3 = Rectangle(Point(900, 100), Point(1000, 200))
+	screen3.draw(w)
+	click()
 	act = raw_input('> ')
 	words = act.split(' ')
 	stop = 0
@@ -1177,7 +1195,8 @@ while stop != 1:
 			print color['green'] + "You dealt %d damage to the %s!" % (damage, enemy_type) + color['off']
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells_thing)
-			magic_attack = prompt()
+			#prompt()
+			magic_attack = raw_input('> ')
 #Magic is(as usual) OP- needs to be reworked
 			try:
 				if magic_attack == str(spells.index('firebolt') + 1) and "firebolt" in spells and mana >= 5:
