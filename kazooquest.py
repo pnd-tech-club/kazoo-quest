@@ -1,19 +1,33 @@
 #Credits:
 #Written by Matthew Knecht
 #Written in Python 2.7
-#Storyline help by Ethan Copeland
 from Tkinter import *
 from ttk import *
-from graphics import *
+import ttk
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
 #import Loadingbar
-global w
-w = GraphWin('Kazoo Quest', 1000, 200)
-from room import room
+act = ""
+def prompt()
+root = Tk()
+root.title("Testing")
+mainframe = ttk.Frame(root, padding="50 50 200 200")
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+mainframe.columnconfigure(0, weight=1)
+mainframe.rowconfigure(0, weight=1)
+act = StringVar()
+act_entry = ttk.Entry(mainframe, width=70, textvariable=act)
+act_entry.grid(column=2, row=1, sticky=(W, E))
+ttk.Label(mainframe, textvariable=roominfo).grid(column=2, row=2, sticky=(W, E))
+ttk.Button(mainframe, text="Boop?").grid(column=3, row=3, sticky=W)
+ttk.Label(mainframe, text="thing").grid(column=3, row=1, sticky=W)
+for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
+act_entry.focus()
+root.bind('<Return>', texted)
+root.mainloop()
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -142,10 +156,6 @@ acted = 0
 global screen1
 global words
 words = ""
-def click():
-	pos = w.checkMouse()
-	if pos == Rectangle(Point(900, 100), Point(1000, 200)):
-		print "kek"
 def prompt():
 	global act
 	acte = Entry(Point(w.getWidth()/6, 100), 15)
@@ -176,6 +186,104 @@ def death():
 		quit()
 	else:
 		death()
+def selectdiff():
+	screen = Text(Point(w.getWidth()/2, 100), "What difficulty do you want to play on?")
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 115), "1. Easy")
+	screen.setTextColor('green3')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
+	screen.setTextColor('yellow')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 145), "3. Hard")
+	screen.setTextColor('orange')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
+	screen.setTextColor('red4')
+	screen.draw(w)
+	#prompt()
+	game_diff = raw_input('> ')
+	if game_diff == "1":
+		hp = 25
+		defe = 2
+		mana = 8
+		damage = 2
+		weapon = 0
+		w.close()
+	elif game_diff == "2":
+		hp = 20
+		defe = 1
+		mana = 5
+		damage = 1
+		weapon = 0
+		w.close()
+	elif game_diff == "3":
+		hp = 15
+		defe = 1
+		mana = 5
+		weapon = 0
+		w.close()
+	elif game_diff == "4":
+		print color['red'] + "I hope you know what you're doing..." + color['off']
+		hp = 10
+		defe = 0
+		mana = 0
+		damage = 2
+		w.close()
+	else:
+		print "lolnope"
+		selectdiff()
+def selectclass():
+	w = GraphWin('Kazoo Quest', 1000, 200)
+	screen = Text(Point(w.getWidth()/2, 85), "What class would you like to be?")
+	screen.setTextColor('yellow3')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 100), "1. Warrior-   Has the Rage skill")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 115), "2. Cleric-   Has the heal spell")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 130), "3. Assassin-   Has the Sneak skill")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 145), "4. Ninja-   Has the Stun spell")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
+	screen.setTextColor('blue2')
+	screen.draw(w)
+	#prompt()
+	classsc = raw_input('> ')
+	if classsc == "1":
+		skills.append("rage")
+		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
+		silly = 1
+		w.close()
+	elif classsc == "2":
+		spells.append("heal")
+		spells_thing.append("%r. Heal" % (len(spells_thing) + 1))
+		silly = 1
+		max_mana = 10
+		mana = 10
+		w.close()
+	elif classsc == "3":
+		skills.append("stealth")
+		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
+		silly = 1
+		w.close()
+	elif classsc == "4":
+		spells.append("stun")
+		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
+		silly = 1
+		w.close()
+	elif classsc == "5":
+		skills.append("magic boost")
+		silly = 1
+		w.close()
+	else:
+		print "lolnope"
+		selectclass()
 x = 0
 y = 0
 z = 0
@@ -200,46 +308,7 @@ else:
 silly = 0
 if silly != 1 and loadyload != 1 and tut_finished == 1:
 #Gah, this is gross
-	screen = Text(Point(w.getWidth()/2, 100), "What difficulty do you want to play on?")
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 115), "1. Easy")
-	screen.setTextColor('green3')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
-	screen.setTextColor('yellow')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 145), "3. Hard")
-	screen.setTextColor('orange')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
-	screen.setTextColor('red4')
-	screen.draw(w)
-	#prompt()
-	game_diff = raw_input('> ')
-	if game_diff == "1":
-	  hp = 25
-	  defe = 2
-	  mana = 8
-	  damage = 2
-	  weapon = 0
-	elif game_diff == "2":
-	  hp = 20
-	  defe = 1
-	  mana = 5
-	  damage = 1
-	  weapon = 0
-	elif game_diff == "3":
-	  hp = 15
-	  defe = 1
-	  mana = 5
-	  weapon = 0
-	elif game_diff == "4":
-	  print color['red'] + "I hope you know what you're doing..." + color['off']
-	  hp = 10
-	  defe = 0
-	  mana = 0
-	  damage = 2
-	w.close()
+	selectdiff()
 	w = GraphWin('Kazoo Quest', 1000, 200)
 	screen = Text(Point(w.getWidth()/2, 85), "What class would you like to be?")
 	screen.setTextColor('yellow3')
