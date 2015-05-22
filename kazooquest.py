@@ -10,24 +10,13 @@ from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
 #import Loadingbar
-act = ""
-def prompt()
 root = Tk()
-root.title("Testing")
-mainframe = ttk.Frame(root, padding="50 50 200 200")
-mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-mainframe.columnconfigure(0, weight=1)
-mainframe.rowconfigure(0, weight=1)
-act = StringVar()
-act_entry = ttk.Entry(mainframe, width=70, textvariable=act)
-act_entry.grid(column=2, row=1, sticky=(W, E))
-ttk.Label(mainframe, textvariable=roominfo).grid(column=2, row=2, sticky=(W, E))
-ttk.Button(mainframe, text="Boop?").grid(column=3, row=3, sticky=W)
-ttk.Label(mainframe, text="thing").grid(column=3, row=1, sticky=W)
-for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
-act_entry.focus()
-root.bind('<Return>', texted)
-root.mainloop()
+root.title("Kazoo Quest")
+i = StringVar()
+mainframe = ttk.Frame(root)
+input_entry = ttk.Entry(mainframe, width = 50)
+t = Label(root, width = 75, height = 25, text = "")
+act = ""
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -153,21 +142,8 @@ tut_finished = 0
 loadyload = 0
 dothing = ""
 acted = 0
-global screen1
 global words
 words = ""
-def prompt():
-	global act
-	acte = Entry(Point(w.getWidth()/6, 100), 15)
-	acte.setText("")
-	acte.draw(w)
-	boop = Rectangle(Point(w.getWidth()/4, 90), Point(w.getWidth()/3.5, 110))
-	boop.draw(w)
-	w.getMouse()
-	act = acte.getText()
-	print act
-	words = act.split(" ")
-	print words
 def death():
 	print color['darkred'] + "You have died!" + color['off']
 	print color['blue'] + "Do you want to see your final stats?" + color['off']
@@ -187,22 +163,13 @@ def death():
 	else:
 		death()
 def selectdiff():
-	screen = Text(Point(w.getWidth()/2, 100), "What difficulty do you want to play on?")
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 115), "1. Easy")
-	screen.setTextColor('green3')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 130), "2. Normal")
-	screen.setTextColor('yellow')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 145), "3. Hard")
-	screen.setTextColor('orange')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 160), "4. Actually insane")
-	screen.setTextColor('red4')
-	screen.draw(w)
-	#prompt()
-	game_diff = raw_input('> ')
+	game_diff = prompt()
+	text = Text(parent, width=40, height=10)
+	text.insert('1.0', "What difficulty do you want to play on?")
+	text.insert('1.0', "1. Easy")
+	text.insert('1.0', "2. Normal")
+	text.insert('1.0', "3. Hard")
+	text.insert('1.0', "4. Actually insane")
 	if game_diff == "1":
 		hp = 25
 		defe = 2
@@ -234,27 +201,14 @@ def selectdiff():
 		print "lolnope"
 		selectdiff()
 def selectclass():
-	w = GraphWin('Kazoo Quest', 1000, 200)
-	screen = Text(Point(w.getWidth()/2, 85), "What class would you like to be?")
-	screen.setTextColor('yellow3')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 100), "1. Warrior-   Has the Rage skill")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 115), "2. Cleric-   Has the heal spell")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 130), "3. Assassin-   Has the Sneak skill")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 145), "4. Ninja-   Has the Stun spell")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	#prompt()
-	classsc = raw_input('> ')
+	text = Text(parent, width=40, height=10)
+	text.insert('1.0', "What class would you like to be?")
+	text.insert('2.0', "1. Warrior-   Has the Rage skill")
+	text.insert('3.0', "2. Cleric-   Has the heal spell")
+	text.insert('4.0', "3. Assassin-   Has the Sneak skill")
+	text.insert('5.0', "4. Ninja-   Has the Stun spell")
+	text.insert('6.0', "5. Wizard-   Has higher spell damage")
+	classsc = prompt()
 	if classsc == "1":
 		skills.append("rage")
 		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
@@ -297,12 +251,8 @@ if autoload == True:
 		f.close()
 		loadyload = 1
 		os.system('clear')
-		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
-		screen1.setTextColor("cyan4")
-		screen1.draw(w)
-		screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
-		screen.setTextColor("black")
-		screen.draw(w)
+		#screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
+		#screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
 else:
 	import Tutorial
 silly = 0
@@ -361,7 +311,6 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	w.getMouse()
 	screen.setText(roominfo)
 #prompt()
-click()
 act = raw_input('> ')
 words = act.split(' ')
 stop = 0
@@ -539,9 +488,9 @@ while stop != 1:
 			encounter_time += 1
 		os.system('clear')
 	elif act == "inv":
-		i = 0
+		o = 0
 		try:
-			for i in range(len(inventory)):
+			for o in range(len(inventory)):
 				screen2.undraw()
 				screen2 = Text(Point(invs.getWidth()/2, invs.getWidth()/2), '\n'.join(inventory))
 				screen2.setText('\n'.join(inventory))
@@ -932,15 +881,7 @@ while stop != 1:
 			z -= 1
 		elif list(set(u_words) & set(words)):
 			z += 1
-	if acted == 1:
-		acted = 0
-		screen1.draw(w)
-	if acted == 0:
-		try:
-			screen1.undraw()
-		except:
-			pass
-		screen.setText(roominfo)
+		text.insert('1.0', roominfo)
 	if encounter != 0:
 		encounter_time -= 1
 	if var_set == 1:
@@ -1169,9 +1110,6 @@ while stop != 1:
 			max_mana += 5
 	stop = 1
 	#prompt()
-	screen3 = Rectangle(Point(900, 100), Point(1000, 200))
-	screen3.draw(w)
-	click()
 	act = raw_input('> ')
 	words = act.split(' ')
 	stop = 0
