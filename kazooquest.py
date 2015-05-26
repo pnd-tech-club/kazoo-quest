@@ -15,7 +15,7 @@ root.title("Kazoo Quest")
 i = StringVar()
 mainframe = ttk.Frame(root)
 input_entry = ttk.Entry(mainframe, width = 50)
-t = Label(root, width = 75, height = 25, text = "")
+t = Text(root)
 act = ""
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
@@ -163,122 +163,44 @@ def death():
 	else:
 		death()
 def selectdiff():
-	game_diff = prompt()
-	text = Text(parent, width=40, height=10)
-	text.insert('1.0', "What difficulty do you want to play on?")
-	text.insert('1.0', "1. Easy")
-	text.insert('1.0', "2. Normal")
-	text.insert('1.0', "3. Hard")
-	text.insert('1.0', "4. Actually insane")
+	mt = "What difficulty do you want to play on?\n1. Easy\n2. Normal\n3. Hard\n4. Actually insane"
+	t.insert(INSERT, mt)
+	t.pack()
+	game_diff = raw_input('> ')
 	if game_diff == "1":
 		hp = 25
 		defe = 2
 		mana = 8
 		damage = 2
 		weapon = 0
-		w.close()
+		t.pack_forget()
 	elif game_diff == "2":
 		hp = 20
 		defe = 1
 		mana = 5
 		damage = 1
 		weapon = 0
-		w.close()
+		t.pack_forget()
 	elif game_diff == "3":
 		hp = 15
 		defe = 1
 		mana = 5
 		weapon = 0
-		w.close()
+		t.pack_forget()
 	elif game_diff == "4":
 		print color['red'] + "I hope you know what you're doing..." + color['off']
 		hp = 10
 		defe = 0
 		mana = 0
 		damage = 2
-		w.close()
+		t.pack_forget()
 	else:
-		print "lolnope"
+		t.pack_forget()
 		selectdiff()
 def selectclass():
-	text = Text(parent, width=40, height=10)
-	text.insert('1.0', "What class would you like to be?")
-	text.insert('2.0', "1. Warrior-   Has the Rage skill")
-	text.insert('3.0', "2. Cleric-   Has the heal spell")
-	text.insert('4.0', "3. Assassin-   Has the Sneak skill")
-	text.insert('5.0', "4. Ninja-   Has the Stun spell")
-	text.insert('6.0', "5. Wizard-   Has higher spell damage")
-	classsc = prompt()
-	if classsc == "1":
-		skills.append("rage")
-		skills_thing.append("%r. Rage" % (len(skills_thing) + 1))
-		silly = 1
-		w.close()
-	elif classsc == "2":
-		spells.append("heal")
-		spells_thing.append("%r. Heal" % (len(spells_thing) + 1))
-		silly = 1
-		max_mana = 10
-		mana = 10
-		w.close()
-	elif classsc == "3":
-		skills.append("stealth")
-		skills_thing.append("%r. Stealth" % (len(skills_thing) + 1))
-		silly = 1
-		w.close()
-	elif classsc == "4":
-		spells.append("stun")
-		spells_thing.append("%r. Stun" % (len(spells_thing) + 1))
-		silly = 1
-		w.close()
-	elif classsc == "5":
-		skills.append("magic boost")
-		silly = 1
-		w.close()
-	else:
-		print "lolnope"
-		selectclass()
-x = 0
-y = 0
-z = 0
-import os.path
-autoload = os.path.isfile('game_save.dat')
-if autoload == True:
-	tut_finished = 1
-	if os.stat("game_save.dat").st_size != 0:
-		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
-		f.close()
-		loadyload = 1
-		os.system('clear')
-		#screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
-		#screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
-else:
-	import Tutorial
-silly = 0
-if silly != 1 and loadyload != 1 and tut_finished == 1:
-#Gah, this is gross
-	selectdiff()
-	w = GraphWin('Kazoo Quest', 1000, 200)
-	screen = Text(Point(w.getWidth()/2, 85), "What class would you like to be?")
-	screen.setTextColor('yellow3')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 100), "1. Warrior-   Has the Rage skill")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 115), "2. Cleric-   Has the heal spell")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 130), "3. Assassin-   Has the Sneak skill")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 145), "4. Ninja-   Has the Stun spell")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	screen = Text(Point(w.getWidth()/2, 160), "5. Wizard-   Has higher spell damage")
-	screen.setTextColor('blue2')
-	screen.draw(w)
-	#prompt()
+	mt = "What class would you like to be?\n1. Warrior- Has the Rage skill\n2. Cleric- Has the heal spell\n3. Assassin- Has the Sneak skill\n4. Ninja- Has the Stun spell\n5. Wizard- Has higher spell damage"
+	t.insert(INSERT, mt)
+	t.pack()
 	classsc = raw_input('> ')
 	if classsc == "1":
 		skills.append("rage")
@@ -301,8 +223,30 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	elif classsc == "5":
 		skills.append("magic boost")
 		silly = 1
-	w.close()
-	w = GraphWin('Kazoo Quest', 1000, 200)
+	else:
+		selectclass()
+x = 0
+y = 0
+z = 0
+import os.path
+autoload = os.path.isfile('game_save.dat')
+if autoload == True:
+	tut_finished = 1
+	if os.stat("game_save.dat").st_size != 0:
+		with open('game_save.dat', 'rb') as f:
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
+		f.close()
+		loadyload = 1
+		os.system('clear')
+		#screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
+		#screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
+else:
+	import Tutorial
+silly = 0
+if silly != 1 and loadyload != 1 and tut_finished == 1:
+#Gah, this is gross
+	selectdiff()
+	selectclass()
 	screen = Text(Point(w.getWidth()/2, w.getHeight()/4),"Welcome to Kazoo Quest! For help type \"help\"! Click to continue!")
 	screen.setTextColor('cyan3')
 	screen.draw(w)
