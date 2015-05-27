@@ -26,7 +26,7 @@ y = 0
 triggers = []
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
 take_words = ['take', 'grab', 'pick', 'get', 'aquire']
-use_words = ['use', 'throw', 'toss']
+use_words = ['use', 'throw', 'toss', 'drop', 'eat', 'kick', 'drink', 'puree', 'skip', 'travel']
 n_words = ['n', 'north']
 while stop != 1:
 	if "started" not in triggers:

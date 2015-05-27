@@ -1,7 +1,7 @@
 #Credits:
 #Written by Matthew Knecht
 #Written in Python 2.7
-from Tkinter import *
+import Tkinter as tk
 from ttk import *
 import ttk
 import os, random, time, pickle, sys, signal
@@ -10,54 +10,77 @@ from collections import Counter
 current_version = "v1.0.6"
 os.system('clear')
 #import Loadingbar
-root = Tk()
+root = tk.Tk()
 root.title("Kazoo Quest")
-i = StringVar()
-mainframe = ttk.Frame(root)
-input_entry = ttk.Entry(mainframe, width = 50)
-t = Text(root)
+i1 = tk.StringVar()
+i2 = tk.StringVar()
+i3 = tk.StringVar()
+i4 = tk.StringVar()
+i5 = tk.StringVar()
+i6 = tk.StringVar()
+global fgc1
+global fgc2
+global fgc3
+global fgc4
+global fgc5
+global fgc6
+fgc1 = 'red'
+fgc2 = 'black'
+fgc3 = 'black'
+fgc4 = 'black'
+fgc5 = 'black'
+fgc6 = 'black'
+mainframe = tk.Frame(root)
+input_entry = tk.Entry(mainframe, width = 50)
+t = tk.Text(root)
+l1 = tk.Label(root, textvariable=i1, fg = fgc1)
+l1.pack()
+l2 = tk.Label(root, textvariable=i2, fg = fgc2)
+l2.pack()
+l3 = tk.Label(root, textvariable=i3, fg = fgc3)
+l3.pack()
+l4 = tk.Label(root, textvariable=i4, fg = fgc4)
+l4.pack()
+l5 = tk.Label(root, textvariable=i5, fg = fgc5)
+l5.pack()
+l6 = tk.Label(root, textvariable=i6, fg = fgc6)
+l6.pack()
 act = ""
+def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='white'):
+	fgc1 = f1
+	fgc2 = f2
+	fgc3 = f3
+	fgc4 = f4
+	fgc5 = f5
+	fgc6 = f6
+	l1.config(fg = fgc1)
+	l2.config(fg = fgc2)
+	l3.config(fg = fgc3)
+	l4.config(fg = fgc4)
+	l5.config(fg = fgc5)
+	l6.config(fg = fgc6)
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
 		pstatus = "Connection to Github available. Downloading update."
 	else:
 		print "Connection failed. Check your internet connection and try again."
-#		try:
-#			os.system('git pull')
-#			if False:
-#				print "Would you like to clone the game to your current directory?"
-#				thing = raw_input('y/n ')
-#				if thing == "y":
-#					os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
-#					print "Done!"
-#				break
-#			elif True:
-#				os.system('git pull')
-#				print "Done!"
-#				break
+		try:
+			os.system('git pull')
+			if False:
+				print "Would you like to clone the game to your current directory?"
+				thing = raw_input('y/n ')
+				if thing == "y":
+					os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
+					print "Done!"
+			elif True:
+				os.system('git pull')
+				print "Done!"
+		except:
+			pass
 parser = argparse.ArgumentParser(description='Kazoo Quest!')
 args = parser.parse_args()
 wait = 0
-color = {
-    'white':    "\033[1;37m",
-    'yellow':   "\033[1;33m",
-    'green':    "\033[1;32m",
-    'blue':     "\033[1;34m",
-    'cyan':     "\033[1;36m",
-    'red':      "\033[1;31m",
-    'magenta':  "\033[1;35m",
-    'black':      "\033[1;30m",
-    'darkwhite':  "\033[0;37m",
-    'darkyellow': "\033[0;33m",
-    'darkgreen':  "\033[0;32m",
-    'darkblue':   "\033[0;34m",
-    'darkcyan':   "\033[0;36m",
-    'darkred':    "\033[0;31m",
-    'darkmagenta': "\033[0;35m",
-    'darkblack':  "\033[0;30m",
-    'off':        "\033[0;0m"
-}
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
 armor = 0
@@ -81,6 +104,8 @@ exp = 0
 evolve_count = 0
 points = 0
 thatonething = 0
+game_diff = 0
+classsc = 0
 boss = 0
 triggers = []
 inventory = []
@@ -145,8 +170,9 @@ acted = 0
 global words
 words = ""
 def death():
-	print color['darkred'] + "You have died!" + color['off']
-	print color['blue'] + "Do you want to see your final stats?" + color['off']
+	i1.set("You have died!") #red
+	i2.set("Do you want to see your final stats?") #black
+	colorupdate('firebrick1','black','white'*4)
 	dead_p = raw_input('y/n ')
 	if dead_p == "y":
 		print color['darkmagenta'] + "You killed these enemies: " + color['off']
@@ -163,9 +189,13 @@ def death():
 	else:
 		death()
 def selectdiff():
-	mt = "What difficulty do you want to play on?\n1. Easy\n2. Normal\n3. Hard\n4. Actually insane"
-	t.insert(INSERT, mt)
-	t.pack()
+	i1.set("What difficulty do you want to play on?")
+	i2.set("1. Easy")
+	i3.set("2. Normal")
+	i4.set("3. Hard")
+	i5.set("4. Actually insane")
+	i6.set("")
+	colorupdate(f1='black', f2='green2', f3='gold2', f4='orange2', f5='red3')
 	game_diff = raw_input('> ')
 	if game_diff == "1":
 		hp = 25
@@ -173,34 +203,32 @@ def selectdiff():
 		mana = 8
 		damage = 2
 		weapon = 0
-		t.pack_forget()
 	elif game_diff == "2":
 		hp = 20
 		defe = 1
 		mana = 5
 		damage = 1
 		weapon = 0
-		t.pack_forget()
 	elif game_diff == "3":
 		hp = 15
 		defe = 1
 		mana = 5
 		weapon = 0
-		t.pack_forget()
 	elif game_diff == "4":
-		print color['red'] + "I hope you know what you're doing..." + color['off']
 		hp = 10
 		defe = 0
 		mana = 0
 		damage = 2
-		t.pack_forget()
 	else:
-		t.pack_forget()
 		selectdiff()
 def selectclass():
-	mt = "What class would you like to be?\n1. Warrior- Has the Rage skill\n2. Cleric- Has the heal spell\n3. Assassin- Has the Sneak skill\n4. Ninja- Has the Stun spell\n5. Wizard- Has higher spell damage"
-	t.insert(INSERT, mt)
-	t.pack()
+	i1.set("What class would you like to be?")
+	i2.set("1. Warrior- Has the Rage skill")
+	i3.set("2. Cleric- Has the heal spell")
+	i4.set("3. Assassin- Has the Sneak skill")
+	i5.set("4. Ninja- Has the Stun spell")
+	i6.set("5. Wizard- Has higher spell damage")
+	colorupdate(f1='black', f2='black', f3='black', f4='black', f5='black', f6='black')
 	classsc = raw_input('> ')
 	if classsc == "1":
 		skills.append("rage")
@@ -238,8 +266,8 @@ if autoload == True:
 		f.close()
 		loadyload = 1
 		os.system('clear')
-		#screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game loaded!")
-		#screen = Text(Point(w.getWidth()/2, w.getHeight()/4), roominfo)
+		i1.set("Game loaded!")
+		i5.set(roominfo)
 else:
 	import Tutorial
 silly = 0
@@ -247,14 +275,14 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 #Gah, this is gross
 	selectdiff()
 	selectclass()
-	screen = Text(Point(w.getWidth()/2, w.getHeight()/4),"Welcome to Kazoo Quest! For help type \"help\"! Click to continue!")
-	screen.setTextColor('cyan3')
-	screen.draw(w)
-	screen.setTextColor('black')
+	i1.set("Welcome to Kazoo Quest! For help type \"help\"!")
+	i2.set("")
+	i3.set("")
+	i4.set("")
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
-	w.getMouse()
-	screen.setText(roominfo)
-#prompt()
+	i5.set(roominfo)
+	i6.set("")
+	colorupdate(f1='DeepSkyBlue2', f5='black')
 act = raw_input('> ')
 words = act.split(' ')
 stop = 0
@@ -418,7 +446,7 @@ while stop != 1:
 			acted = 1
 		else:
 			dothing = "You don't see that here."
-		screen1 = Text(Point(w.getWidth()/2, w.getHeight()/2), dothing)
+		i4.set(dothing)
 	if act == "num":
 		print x
 		print y
@@ -435,24 +463,19 @@ while stop != 1:
 		o = 0
 		try:
 			for o in range(len(inventory)):
-				screen2.undraw()
-				screen2 = Text(Point(invs.getWidth()/2, invs.getWidth()/2), '\n'.join(inventory))
-				screen2.setText('\n'.join(inventory))
-				screen2.draw(invs)
+				t = Text(master, '\n'.join(inventory))
 		except:
-			invs = GraphWin('inventory', 100, 300)
+			master = Tk()
 			for i in range(len(inventory)):
-				screen2 = Text(Point(invs.getWidth()/2, invs.getWidth()/2), '\n'.join(inventory))
-				screen2.draw(invs)
-		#print '\n'.join(inventory)
+				t = Text(master, '\n'.join(inventory))
 	  	if encounter >= 1:
 			encounter_time += 1
 		elif act == "restart":
 			while wait == 0:
-				print color['red'] + "Are you sure you want to delete your save and restart all progress?" + color['off']
+				i3.set("Are you sure you want to delete your save and restart all progress?")
 				response = raw_input('(y/n) >')
 				if response == "y":
-					print "Okay, deleting your save and restarting..."
+					i3.set("Okay, deleting your save and restarting...")
 					os.system('rm game_save.dat')
 					os.system('touch game_save.dat')
 					quit()
@@ -465,7 +488,13 @@ while stop != 1:
 	  	if encounter >= 1:
 			encounter_time += 1
 	elif act == "skills":
-		print '\n'.join(skills_thing)
+		try:
+			sk.get()
+		except:
+			master = tk.Tk()
+			sk = tk.StringVar()
+			sk1 = tk.Label(master, textvariable = sk).pack()
+			sk.set('\n'.join(skills_thing))
 		skill_act = raw_input('What skill do you want to use?\n> ')
 		if act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 			encounter_time += 6
@@ -488,9 +517,7 @@ while stop != 1:
 	  with open('game_save.dat', 'wb') as f:
 	    pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 	  f.close()
-	  screen1 = Text(Point(w.getWidth()/2, w.getHeight()/6), "Game saved!")
-	  screen1.setTextColor('cyan4')
-	  screen1.draw(w)
+	  i3.set("Game Saved!")
 	  if encounter >= 1:
 	    encounter_time += 1
 	elif act == "load":
@@ -498,10 +525,10 @@ while stop != 1:
 	    hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 	  f.close()
 	  os.system('clear')
-	  print color['cyan'] + "Game loaded!" + color['off']
-	  print roominfo
+	  i3.set('Game Loaded!')
+	  i5.set(roominfo)
 	elif act == "quit":
-	  print color['blue'] + "Are you sure you want to quit? (yes/no)" + color['off']
+	  print "Are you sure you want to quit? (yes/no)"
 	  quit_response = raw_input('> ')
 	  if quit_response == "yes":
 	    quit()
@@ -521,10 +548,10 @@ while stop != 1:
 	  spells.append("life steal")
 	  spells.append("heal")
 	  spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
-	  spells_thing.append(color['darkblue'] + "%s. Frost" % str(len(spells_thing) + 1) + color['off'])
-	  spells_thing.append(color['darkgreen'] + "%s. Poison" % str(len(spells_thing) + 1) + color['off'])
-	  spells_thing.append(color['darkmagenta'] + "%s. Life Steal" % str(len(spells_thing) + 1) + color['off'])
-	  spells_thing.append(color['magenta'] + "%s. Heal" % str(len(spells_thing) + 1) + color['off'])
+	  spells_thing.append("%s. Frost" % str(len(spells_thing) + 1))
+	  spells_thing.append("%s. Poison" % str(len(spells_thing) + 1))
+	  spells_thing.append("%s. Life Steal" % str(len(spells_thing) + 1))
+	  spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
 	  skills.append("stealth")
 	  skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
 	  skills.append("rage")
@@ -552,8 +579,6 @@ while stop != 1:
 	  if hp > max_hp:
 	    hp = max_hp
 	  encounter_time -= 3
-	#	elif act == "time":
-	#		skip = 0
 	#Debugging command
 	elif act == "tp":
 	  x = int(raw_input('> '))
@@ -587,7 +612,7 @@ while stop != 1:
 		roominfo = "The exit to the cave is to the east."
 	elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 		encounter = 0
-		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you.\nThe trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
+		roominfo = "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
 		enemy_type = "wolf"
 	elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 		encounter = 0
@@ -634,13 +659,13 @@ while stop != 1:
 		if boss == 1:
 			encounter = 1
 		enemy_type = "slime"
-		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle.\nThere are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
+		roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
 	elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
 		encounter = 0
-		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange.\nYou see a purple charm where the slime was killed."
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed."
 	elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
 		encounter = 0
-		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange.\nThe strange charm you have is also glowing orange..."
+		roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."
 	elif x == 5 and y == 2 and z == 0 and max_level != 5:
 		encounter = 0
 		roominfo = "The pool of water appears to have opened into a strange portal-ish thing.  You know you won't be able to get back if you go in..."
@@ -678,7 +703,7 @@ while stop != 1:
 	elif x == 2 and y == 7 and z == 0 and "lights" in triggers:
 		enemy_type = "wolf"
 		encounter = 0
-		roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread.\nThe kitchen is to the east and the living room is to the north."
+		roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread. The kitchen is to the east and the living room is to the north."
 	elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
 		roominfo = "The room is lit up slightly by a window. You can see a switch by the window. The doorway is to the west."
 	elif x == 2 and y == 8 and z == 0 and "lights" not in triggers:
@@ -701,7 +726,7 @@ while stop != 1:
 		roominfo = "The light shows that there are stairs going down. The entrance is to the west."
 #I know there is someway to make this more efficient, but oh well I don't have time for thinking right now :^ )
 	elif x == 3 and y == 7 and z == 1 and "lights" in triggers and "lamp" not in inventory and armor < 1 and weapon < 2:
-		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground.\nThere is a dagger on the ground. There is leather armor on the ground."
+		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a lamp on the ground. There is a dagger on the ground. There is leather armor on the ground."
 #Player has nothing ^
 	elif x == 3 and y == 7 and z == 1 and "lamp" in inventory and armor < 1 and weapon < 2:
 		roominfo = "You reach the bottom of the stairs and see a path leading to the north. There is a dagger on the ground. There is leather armor on the ground."
@@ -825,7 +850,7 @@ while stop != 1:
 			z -= 1
 		elif list(set(u_words) & set(words)):
 			z += 1
-		text.insert('1.0', roominfo)
+		i5.set(roominfo)
 	if encounter != 0:
 		encounter_time -= 1
 	if var_set == 1:
@@ -1053,8 +1078,22 @@ while stop != 1:
 			max_hp += 5
 			max_mana += 5
 	stop = 1
-	#prompt()
+	i5.set(roominfo)
 	act = raw_input('> ')
+	try:
+		if i4.get() == "":
+			pass
+		else:
+			i4.set("")
+	except:
+		print "wat"
+	try:
+		if i1.get() == "":
+			pass
+		else:
+			i1.set("")
+	except:
+		print "wat"
 	words = act.split(' ')
 	stop = 0
 	while encounter != 0 and encounter_time <= 0 and "dead" not in triggers:
@@ -1134,16 +1173,16 @@ while stop != 1:
 				max_dam = 0
 #Remember to fix this silly grammar thingy here
 			os.system('clear')
-			enemy_info = color['red'] + "A "+enemy_type+" suddenly appears!." + color['off']
+			enemy_info = "A "+enemy_type+" suddenly appears!."#red
 			print enemy_info
 			enemy_set = 1
 		#fight_act = prompt()
-		fight_act = raw_input(color['blue'] + "What do you want to do?" + color['yellow'] + "\n1: Attack" + color['green'] + "\tHealth: %r" % hp + color['red'] + "\tEnemy Health: %r" % enemy_hp + color['yellow'] + "\n2: Magic" + color['green'] + "\tMana: %r" % mana + color['red'] + "\t\tEnemy Damage: %s" % enemy_dam_info + color['yellow'] + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n" + color['off'])
+		fight_act = raw_input("What do you want to do?\n1: Attack\tHealth: %r" % hp + "\tEnemy Health: %r" % enemy_hp + "\n2: Magic\tMana: %r" % mana + "\t\tEnemy Damage: %s" % enemy_dam_info + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n")
 		dodges = 0
 		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
 			os.system('clear')
-			print color['green'] + "You dealt %d damage to the %s!" % (damage, enemy_type) + color['off']
+			print "You dealt %d damage to the %s!" % (damage, enemy_type)
 		elif fight_act == "2":
 			print "Available spells:\n" + '\n'.join(spells_thing)
 			#prompt()
@@ -1259,7 +1298,7 @@ while stop != 1:
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
 				os.system('clear')
-				print color['green'] + "You dodged the attack!" + color['off']
+				print "You dodged the attack!"
 				dodges = 1
 			if dodge_act >= 75:
 				parrypowa = damage * 2
@@ -1278,7 +1317,7 @@ while stop != 1:
 				dodges = 0
 				enemy_debuffs = []
 				os.system('clear')
-				print color['darkyellow'] + "You ran away!" + color['off']
+				print "You ran away!"
 		else:
 			os.system('clear')
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and "Stunned" not in enemy_debuffs and fight_act != "":
@@ -1302,7 +1341,7 @@ while stop != 1:
 			else:
 				hp = hp - enemy_dam + defe
 				dodges = 0
-				print color['magenta'] + "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe) + color['off']
+				print "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe)#magenta
 		if len(enemy_debuffs) > 0:
 #Randomly gets the amount of damage to deal to the enemy while specific debuff is active
 			if "Burning" in enemy_debuffs:
