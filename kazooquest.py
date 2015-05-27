@@ -282,7 +282,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	i5.set(roominfo)
 	i6.set("")
-	colorupdate(f1='DeepSkyBlue2', f5='black')
+	colorupdate(f1='DeepSkyBlue2', f4='black', f5='black')
 act = raw_input('> ')
 words = act.split(' ')
 stop = 0
@@ -446,7 +446,7 @@ while stop != 1:
 			acted = 1
 		else:
 			dothing = "You don't see that here."
-		i4.set(dothing)
+			i4.set(dothing)
 	if act == "num":
 		print x
 		print y
