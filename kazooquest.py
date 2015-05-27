@@ -175,14 +175,14 @@ def death():
 	colorupdate('firebrick1','black','white'*4)
 	dead_p = raw_input('y/n ')
 	if dead_p == "y":
-		print color['darkmagenta'] + "You killed these enemies: " + color['off']
+		print "You killed these enemies: "
 		cnt = Counter()
 		for word in kills:
 			cnt[word] += 1
 		print dict(cnt)
 		print "These are your final stats: "
-		print color['darkgreen'] + "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level) + color['off']
-		print color['darkgreen'] + "\nYour final score was %r" % points + color['off']
+		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level)
+		print "\nYour final score was %r" % points
 		quit()
 	elif dead_p == "n":
 		quit()
@@ -575,7 +575,7 @@ while stop != 1:
 	  hp += hp_heal
 	  mana += mana_heal
 	  skill_energy += skill_heal
-	  print color['darkblue'] + "You have healed %r health, %r mana and %r energy!" % (hp_heal, mana_heal, skill_heal) + color['off']
+	  print "You have healed %r health, %r mana and %r energy!" % (hp_heal, mana_heal, skill_heal)
 	  if hp > max_hp:
 	    hp = max_hp
 	  encounter_time -= 3
@@ -590,7 +590,7 @@ while stop != 1:
 	elif act == "credits":
 	  print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r. The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
 	elif act == "help":
-	  print color['darkwhite']+ " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -stats (Shows your your stats)" + color['off']
+	  print " -help (Shows this screen) \n -look (Shows you your surroundings) \n -heal (Heals you but draws monsters nearby) \n -use (Uses an item or object) \n -take (Takes an item)\n -n, s, e, w, u, d (Moves you in its respective direction)\n -clear (Clears the screen)\n -stats (Shows your your stats)"
 	  if encounter >= 1:
 		encounter_time += 1
 	else:
@@ -1012,7 +1012,7 @@ while stop != 1:
 			max_mana = 6.9e+42
 	if exp >= exp_limit and level != max_level:
 		exp_extra = exp - exp_limit
-		print color['blue'] + "Level up!" + color['off']
+		print "Level up!"
 		exp = 0
 		exp += exp_extra
 #EXP limits are weird- needs to be reworked
@@ -1207,7 +1207,7 @@ while stop != 1:
 					enemy_debuffs.append("Burning")
 					enemy_debuff_timer = 5
 					os.system('clear')
-					print color['red'] + "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam + color['off']
+					print "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam
 			except ValueError:
 				skip = 0
 			try:
@@ -1229,7 +1229,7 @@ while stop != 1:
 					enemy_debuffs.append("Frozen")
 					enemy_debuff_timer = 5
 					os.system('clear')
-					print color['blue'] + "You dealt %r magic damage and froze the enemy!" % magic_dam + color['off']
+					print "You dealt %r magic damage and froze the enemy!" % magic_dam
 			except ValueError:
 				skip = 0
 			try:
@@ -1251,7 +1251,7 @@ while stop != 1:
 					enemy_debuffs.append("Poisoned")
 					enemy_debuff_timer = 8
 					os.system('clear')
-					print color['green'] + "You dealt %r magic damage and poisoned the enemy!" % magic_dam + color['off']
+					print "You dealt %r magic damage and poisoned the enemy!" % magic_dam
 			except ValueError:
 				skip = 0
 			try:
@@ -1272,7 +1272,7 @@ while stop != 1:
 					enemy_hp -= drain_dam
 					hp += drain_dam
 					os.system('clear')
-					print color['green'] + "You stole %r health from the %r!" % (drain_dam, enemy_type) + color['off']
+					print "You stole %r health from the %r!" % (drain_dam, enemy_type)
 			except ValueError:
 				skip = 0
 			try:
@@ -1291,7 +1291,7 @@ while stop != 1:
 					mana -= 5
 					enemy_debuffs.append("Stunned")
 					enemy_debuff_timer = stun_time
-					print color['yellow'] + "You stunned the enemy!" + color['off']
+					print "You stunned the enemy!"
 			except ValueError:
 				skip = 0
 		elif fight_act == "3":
@@ -1303,11 +1303,11 @@ while stop != 1:
 			if dodge_act >= 75:
 				parrypowa = damage * 2
 				enemy_hp -= parrypowa
-				print color['green'] + "You parried the attack and dealt %d damage!" % parrypowa  + color['off']
+				print "You parried the attack and dealt %d damage!" % parrypowa
 				dodges = 1
 		elif fight_act == "4":
 			os.system('clear')
-			print color['darkgreen'] + "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info) + color['off']
+			print "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info)
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
@@ -1337,7 +1337,7 @@ while stop != 1:
 			if enemy_dam - defe <= 0:
 				if fight_act == "3":
 					os.system('clear')
-				print color['magenta'] + "The enemy missed!" + color['off']
+				print "The enemy missed!"
 			else:
 				hp = hp - enemy_dam + defe
 				dodges = 0
@@ -1381,7 +1381,7 @@ while stop != 1:
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			enemy_debuffs = []
-			print color['blue'] + "You killed the " + enemy_type +"!" + color['off']
+			print "You killed the " + enemy_type +"!"
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
 			skill_energy += 1
