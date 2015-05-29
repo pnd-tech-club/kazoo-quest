@@ -7,6 +7,8 @@ import ttk
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
+#Global variables
+global e
 current_version = "v1.0.6"
 os.system('clear')
 #import Loadingbar
@@ -31,7 +33,6 @@ f6 = 'black'
 f7 = 'black'
 f8 = 'black'
 mainframe = tk.Frame(root)
-input_entry = tk.Entry(mainframe, width = 50)
 t = tk.Text(root)
 l1 = tk.Label(root, textvariable=i1, fg = f1)
 l1.pack()
@@ -50,7 +51,11 @@ l7.pack()
 l8 = tk.Label(root, textvariable=i8, fg = f8)
 l8.pack()
 act = ""
-def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white,' w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000):
+def getentry(cv):
+	cv = e.get()
+e = tk.Entry(root, width=50)
+e.bind('<Return>', getentry)
+def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000):
 	l1.config(fg = f1, wrap = w1)
 	l2.config(fg = f2, wrap = w2)
 	l3.config(fg = f3, wrap = w3)
@@ -187,6 +192,9 @@ def selectdiff():
 	i5.set("4. Actually insane")
 	i6.set("")
 	colorupdate(f1='black', f2='green2', f3='gold2', f4='orange2', f5='red3')
+#	e = tk.Entry(root, width=50)
+#	e.bind('<Return>', getentry(game_diff))
+#	e.pack()
 	game_diff = raw_input('> ')
 	if game_diff == "1":
 		hp = 25
@@ -1345,7 +1353,7 @@ while stop != 1:
 			else:
 				hp = hp - enemy_dam + defe
 				dodges = 0
-				i1.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe)#magenta)
+				i1.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe))
 		if len(enemy_debuffs) > 0:
 #Randomly gets the amount of damage to deal to the enemy while specific debuff is active
 			if "Burning" in enemy_debuffs:
