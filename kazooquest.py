@@ -11,6 +11,8 @@ current_version = "v1.0.6"
 os.system('clear')
 #import Loadingbar
 root = tk.Tk()
+root.resizable(width=0, height=0)
+root.geometry('{}x{}'.format(1000, 200))
 root.title("Kazoo Quest")
 i1 = tk.StringVar()
 i2 = tk.StringVar()
@@ -18,47 +20,45 @@ i3 = tk.StringVar()
 i4 = tk.StringVar()
 i5 = tk.StringVar()
 i6 = tk.StringVar()
-global fgc1
-global fgc2
-global fgc3
-global fgc4
-global fgc5
-global fgc6
-fgc1 = 'red'
-fgc2 = 'black'
-fgc3 = 'black'
-fgc4 = 'black'
-fgc5 = 'black'
-fgc6 = 'black'
+i7 = tk.StringVar()
+i8 = tk.StringVar()
+f1 = 'black'
+f2 = 'black'
+f3 = 'black'
+f4 = 'black'
+f5 = 'black'
+f6 = 'black'
+f7 = 'black'
+f8 = 'black'
 mainframe = tk.Frame(root)
 input_entry = tk.Entry(mainframe, width = 50)
 t = tk.Text(root)
-l1 = tk.Label(root, textvariable=i1, fg = fgc1)
+l1 = tk.Label(root, textvariable=i1, fg = f1)
 l1.pack()
-l2 = tk.Label(root, textvariable=i2, fg = fgc2)
+l2 = tk.Label(root, textvariable=i2, fg = f2)
 l2.pack()
-l3 = tk.Label(root, textvariable=i3, fg = fgc3)
+l3 = tk.Label(root, textvariable=i3, fg = f3)
 l3.pack()
-l4 = tk.Label(root, textvariable=i4, fg = fgc4)
+l4 = tk.Label(root, textvariable=i4, fg = f4)
 l4.pack()
-l5 = tk.Label(root, textvariable=i5, fg = fgc5)
+l5 = tk.Label(root, textvariable=i5, fg = f5)
 l5.pack()
-l6 = tk.Label(root, textvariable=i6, fg = fgc6)
+l6 = tk.Label(root, textvariable=i6, fg = f6)
 l6.pack()
+l7 = tk.Label(root, textvariable=i7, fg = f7)
+l7.pack()
+l8 = tk.Label(root, textvariable=i8, fg = f8)
+l8.pack()
 act = ""
-def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='white'):
-	fgc1 = f1
-	fgc2 = f2
-	fgc3 = f3
-	fgc4 = f4
-	fgc5 = f5
-	fgc6 = f6
-	l1.config(fg = fgc1)
-	l2.config(fg = fgc2)
-	l3.config(fg = fgc3)
-	l4.config(fg = fgc4)
-	l5.config(fg = fgc5)
-	l6.config(fg = fgc6)
+def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white,' w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000):
+	l1.config(fg = f1, wrap = w1)
+	l2.config(fg = f2, wrap = w2)
+	l3.config(fg = f3, wrap = w3)
+	l4.config(fg = f4, wrap = w4)
+	l5.config(fg = f5, wrap = w5)
+	l6.config(fg = f6, wrap = w6)
+	l7.config(fg = f7, wrap = w7)
+	l7.config(fg = f8, wrap = w8)
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -116,20 +116,11 @@ w_words = ['w', 'west']
 u_words = ['u', 'up']
 d_words = ['d', 'down']
 yes_words = ['yes', 'y', 'true', 'indeed', 'yeah', 'afirmative']
-lights_words = ['switch', 'lights', 'light']
+lights_words = ['switch', 'lights', 'light', 'torch']
 spellbook_words = ['spellbook', 'book', 'runebook']
 take_words = ['take', 'grab', 'pick', 'get', 'aquire', 'nab', 'steal']
 use_words = ['use', 'eat', 'read', 'drink', 'flip', 'turn', 'hit']
 stop = 0
-letter = """The letter reads as follows:
-Dear [The name is smudged out]
-	We have recently heard about your ideas with our company. We would like to officially meet with you on the fourth [The rest of the paragraph is blacked out].
-We would also appreciate if you could begin to proceed with your ideas(at least planning) until our meeting.
-
-                                                                               Sincerely,
-                                                                                    A.L.
-[There appears to be a large chunk of the page torn out]
-"""
 enemy_set = 0
 #Time removed in v0.1.4 (Re-implementation being tested in v0.3)
 time = 0
@@ -167,22 +158,22 @@ tut_finished = 0
 loadyload = 0
 dothing = ""
 acted = 0
-global words
 words = ""
 def death():
 	i1.set("You have died!") #red
 	i2.set("Do you want to see your final stats?") #black
-	colorupdate('firebrick1','black','white'*4)
+	colorupdate(f1='firebrick1',f2='black')
 	dead_p = raw_input('y/n ')
 	if dead_p == "y":
-		print "You killed these enemies: "
+		i1.set("You killed these enemies: ")
 		cnt = Counter()
 		for word in kills:
 			cnt[word] += 1
-		print dict(cnt)
-		print "These are your final stats: "
-		print "Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level)
-		print "\nYour final score was %r" % points
+		i2.set(dict(cnt))
+		i3.set("These are your final stats: ")
+		i4.set("Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level))
+		i5.set("\nYour final score was %r" % points)
+		plplplp = raw_input('Press enter to quit.')
 		quit()
 	elif dead_p == "n":
 		quit()
@@ -282,7 +273,7 @@ if silly != 1 and loadyload != 1 and tut_finished == 1:
 	roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
 	i5.set(roominfo)
 	i6.set("")
-	colorupdate(f1='DeepSkyBlue2', f4='black', f5='black')
+	colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
 act = raw_input('> ')
 words = act.split(' ')
 stop = 0
@@ -391,12 +382,6 @@ while stop != 1:
 			var_set = 1
 			dothing = "You pick up the branch and hold it like a spear."
 			acted = 1
-		elif "letter" in words and x == 2 and y == 6 and z == 0 and "letter" not in triggers:
-			inventory.append("letter")
-			triggers.append("letter")
-			dothing = "You take the letter out of the mailbox."
-			acted = 1
-			print letter
 		elif "dagger" in words and x == 3 and y == 7 and z == 1 and weapon < 2:
 			inventory.append("dagger")
 			weapon = 2
@@ -447,6 +432,7 @@ while stop != 1:
 		else:
 			dothing = "You don't see that here."
 			i4.set(dothing)
+			colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
 	if act == "num":
 		print x
 		print y
@@ -690,10 +676,7 @@ while stop != 1:
 		encounter = 1
 		roominfo = "The trees here block your way to the east and north."
 #House area follows
-	elif x == 2 and y == 6 and z == 0 and "letter" not in triggers:
-		encounter = 1
-		roominfo = "You stand in front of the mailbox of the cottage. There appears to be a letter in the mailbox. There is a cave far to the south."
-	elif x == 2 and y == 6 and z == 0 and "letter" in triggers:
+	elif x == 2 and y == 6 and z == 0:
 		encounter = 1
 		roominfo = "You stand in front of the mailbox of the cottage. There is a cave far to the south."
 		enemy_type = "wolf"
@@ -1079,7 +1062,6 @@ while stop != 1:
 			max_mana += 5
 	stop = 1
 	i5.set(roominfo)
-	act = raw_input('> ')
 	try:
 		if i4.get() == "":
 			pass
@@ -1094,6 +1076,11 @@ while stop != 1:
 			i1.set("")
 	except:
 		print "wat"
+	if acted == 1:
+		i4.set(dothing)
+		colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
+		acted = 0
+	act = raw_input('> ')
 	words = act.split(' ')
 	stop = 0
 	while encounter != 0 and encounter_time <= 0 and "dead" not in triggers:
@@ -1174,10 +1161,23 @@ while stop != 1:
 #Remember to fix this silly grammar thingy here
 			os.system('clear')
 			enemy_info = "A "+enemy_type+" suddenly appears!."#red
-			print enemy_info
+			i1.set(enemy_info)
 			enemy_set = 1
-		#fight_act = prompt()
-		fight_act = raw_input("What do you want to do?\n1: Attack\tHealth: %r" % hp + "\tEnemy Health: %r" % enemy_hp + "\n2: Magic\tMana: %r" % mana + "\t\tEnemy Damage: %s" % enemy_dam_info + "\n3: Dodge\n4: Enemy Info\n5: Run Away\n")
+		i2.set("What do you want to do?")
+		i3.set("1: Attack\tHealth: %r" % hp + "\tEnemy Health: %r" % enemy_hp)
+		i4.set("2: Magic\tMana: %r" % mana + "\tEnemy Damage: %s" % enemy_dam_info)
+		i5.set("3: Dodge")
+		i6.set("4: Enemy Info")
+		i7.set("5: Run Away")
+		colorupdate(f1='black',f2='red2',f3='blue2',f4='green2',f5='yellow3',f6='purple3', f7='black')
+		fight_act = raw_input('> ')
+		try:
+			if i1.get() == "":
+				pass
+			else:
+				i1.set("")
+		except:
+			print "wat"
 		dodges = 0
 		if fight_act == "1":
 			enemy_hp = enemy_hp - damage
@@ -1207,7 +1207,7 @@ while stop != 1:
 					enemy_debuffs.append("Burning")
 					enemy_debuff_timer = 5
 					os.system('clear')
-					print "You dealt %r magic damage to the enemy and set it on fire!" % magic_dam
+					i1.set("You dealt %r magic damage to the enemy and set it on fire!" % magic_dam)
 			except ValueError:
 				skip = 0
 			try:
@@ -1229,7 +1229,7 @@ while stop != 1:
 					enemy_debuffs.append("Frozen")
 					enemy_debuff_timer = 5
 					os.system('clear')
-					print "You dealt %r magic damage and froze the enemy!" % magic_dam
+					i1.set("You dealt %r magic damage and froze the enemy!" % magic_dam)
 			except ValueError:
 				skip = 0
 			try:
@@ -1251,7 +1251,7 @@ while stop != 1:
 					enemy_debuffs.append("Poisoned")
 					enemy_debuff_timer = 8
 					os.system('clear')
-					print "You dealt %r magic damage and poisoned the enemy!" % magic_dam
+					i1.set("You dealt %r magic damage and poisoned the enemy!" % magic_dam)
 			except ValueError:
 				skip = 0
 			try:
@@ -1272,7 +1272,7 @@ while stop != 1:
 					enemy_hp -= drain_dam
 					hp += drain_dam
 					os.system('clear')
-					print "You stole %r health from the %r!" % (drain_dam, enemy_type)
+					i1.set("You stole %r health from the %r!" % (drain_dam, enemy_type))
 			except ValueError:
 				skip = 0
 			try:
@@ -1281,7 +1281,7 @@ while stop != 1:
 					hp_heal = random.randint(10, 30)
 					hp += hp_heal
 					os.system('clear')
-					print "You healed %r health!" % hp_heal
+					i1.set("You healed %r health!" % hp_heal)
 			except ValueError:
 				skip = 0
 			try:
@@ -1291,35 +1291,39 @@ while stop != 1:
 					mana -= 5
 					enemy_debuffs.append("Stunned")
 					enemy_debuff_timer = stun_time
-					print "You stunned the enemy!"
+					i1.set("You stunned the enemy!")
 			except ValueError:
 				skip = 0
 		elif fight_act == "3":
 			dodge_act = random.randint(0, 100)
 			if dodge_act <= 25:
 				os.system('clear')
-				print "You dodged the attack!"
+				i1.set("You dodged the attack!")
 				dodges = 1
 			if dodge_act >= 75:
 				parrypowa = damage * 2
 				enemy_hp -= parrypowa
-				print "You parried the attack and dealt %d damage!" % parrypowa
+				i1.set("You parried the attack and dealt %d damage!" % parrypowa)
 				dodges = 1
 		elif fight_act == "4":
-			os.system('clear')
-			print "Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info)
+			i1.set("Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info))
+			acted = 1
 		elif fight_act == "5":
 			run_success = random.randint(0, 3)
 			if run_success == 1:
-				enemy_set = 0
-				encounter_time = random.randint(5, 7)
-				enemy_hp = 0
-				dodges = 0
-				enemy_debuffs = []
-				os.system('clear')
-				print "You ran away!"
+				if boss != 1:
+					enemy_set = 0
+					encounter_time = random.randint(5, 7)
+					enemy_hp = 0
+					dodges = 0
+					enemy_debuffs = []
+					os.system('clear')
+					i1.set("You ran away!")
+				else:
+					os.system('clear')
+					i7.set("You can't run from a boss!")
 		else:
-			os.system('clear')
+			pass
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and "Stunned" not in enemy_debuffs and fight_act != "":
 #It seems like some enemies deal too much damage while some don't deal enough- needs to be reworked
 			if enemy_type == "wolf":
@@ -1337,11 +1341,11 @@ while stop != 1:
 			if enemy_dam - defe <= 0:
 				if fight_act == "3":
 					os.system('clear')
-				print "The enemy missed!"
+				i1.set("The enemy missed!")
 			else:
 				hp = hp - enemy_dam + defe
 				dodges = 0
-				print "The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe)#magenta
+				i1.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe)#magenta)
 		if len(enemy_debuffs) > 0:
 #Randomly gets the amount of damage to deal to the enemy while specific debuff is active
 			if "Burning" in enemy_debuffs:
@@ -1354,7 +1358,7 @@ while stop != 1:
 				elif firebolt_level == 3:
 					burn_dam = random.randint(10, 15)
 				enemy_hp -= burn_dam
-				print "The enemy took %r damage from burning!" % burn_dam
+				i1.set("The enemy took %r damage from burning!" % burn_dam)
 			if "Poisoned" in enemy_debuffs:
 				if poison_level == 0:
 					poison_dam = random.randint(5, 10)
@@ -1369,11 +1373,11 @@ while stop != 1:
 				elif poison_level == 5:
 					poison_dam = random.randint(30, 35)
 				enemy_hp -= poison_dam
-				print "The enemy took %r damage from poison!" % poison_dam
+				i1.set("The enemy took %r damage from poison!" % poison_dam)
 			if "Frozen" in enemy_debuffs:
-				print "The enemy can't attack because it is frozen!"
+				i1.set("The enemy can't attack because it is frozen!")
 			if "Stunned" in enemy_debuffs:
-				print "The enemy can't attack because it is stunned!"
+				i1.set("The enemy can't attack because it is stunned!")
 			enemy_debuff_timer -= 1
 #Clears the enemy's debuffs after 5 turns of not using a spell
 			if enemy_debuff_timer <= 0:
@@ -1381,7 +1385,7 @@ while stop != 1:
 		if enemy_hp <= 0 and fight_act != "5":
 			enemy_set = 0
 			enemy_debuffs = []
-			print "You killed the " + enemy_type +"!"
+			i1.set("You killed the " + enemy_type +"!")
 #Prepare for inefficiency : 3
 			kills.append(enemy_type)
 			skill_energy += 1
