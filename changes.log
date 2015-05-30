@@ -65,3 +65,4 @@
 #Version 1.1.0: -Attempting to split roominfo into its own file
 
 #Version 1.2.0: -Massive revamps, removed some stupid stuff, cleaned up code, new graphics style
+#Version 1.2.5: -(Lots of skipping around in this changelog :P), added comments to certain sections for readability, fixed some minor issues, printing to the terminal is slowly migrating to the graphics window, still working out some kinks

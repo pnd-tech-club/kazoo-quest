@@ -7,15 +7,17 @@ import ttk
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
-#Global variables
-global e
 current_version = "v1.0.6"
 os.system('clear')
 #import Loadingbar
+#Defining graphics window
 root = tk.Tk()
+#Setting it to not be resizable
 root.resizable(width=0, height=0)
+#Setting window dimensions
 root.geometry('{}x{}'.format(1000, 200))
 root.title("Kazoo Quest")
+#Dynamic text variables (for printing to the graphcs window)
 i1 = tk.StringVar()
 i2 = tk.StringVar()
 i3 = tk.StringVar()
@@ -24,6 +26,8 @@ i5 = tk.StringVar()
 i6 = tk.StringVar()
 i7 = tk.StringVar()
 i8 = tk.StringVar()
+i9 = tk.StringVar()
+#Foreground (text) color variables
 f1 = 'black'
 f2 = 'black'
 f3 = 'black'
@@ -32,8 +36,20 @@ f5 = 'black'
 f6 = 'black'
 f7 = 'black'
 f8 = 'black'
+f9 = 'black'
+#Line wrapping length variables
+w1 = 1000
+w2 = 1000
+w3 = 1000
+w4 = 1000
+w5 = 1000
+w6 = 1000
+w7 = 1000
+w8 = 1000
+w9 = 1000
 mainframe = tk.Frame(root)
 t = tk.Text(root)
+#Declaring labels and packing them to the window
 l1 = tk.Label(root, textvariable=i1, fg = f1)
 l1.pack()
 l2 = tk.Label(root, textvariable=i2, fg = f2)
@@ -50,12 +66,16 @@ l7 = tk.Label(root, textvariable=i7, fg = f7)
 l7.pack()
 l8 = tk.Label(root, textvariable=i8, fg = f8)
 l8.pack()
+l9 = tk.Label(root, textvariable=i9, fg = f9)
+l9.pack()
 act = ""
+#Prompts for user input
 def getentry(cv):
 	cv = e.get()
 e = tk.Entry(root, width=50)
 e.bind('<Return>', getentry)
-def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000):
+#Allows easier updating of color scheme/wrapping of each line of text
+def colorupdate(f1='DeepSkyBlue2', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', f9='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000, w9=1000):
 	l1.config(fg = f1, wrap = w1)
 	l2.config(fg = f2, wrap = w2)
 	l3.config(fg = f3, wrap = w3)
@@ -63,7 +83,8 @@ def colorupdate(f1='white', f2='white', f3='white', f4='white', f5='white', f6='
 	l5.config(fg = f5, wrap = w5)
 	l6.config(fg = f6, wrap = w6)
 	l7.config(fg = f7, wrap = w7)
-	l7.config(fg = f8, wrap = w8)
+	l8.config(fg = f8, wrap = w8)
+#Checks for updates and downloads them if there is one
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
 	if ping_test == 0:
@@ -85,6 +106,7 @@ def update():
 			pass
 parser = argparse.ArgumentParser(description='Kazoo Quest!')
 args = parser.parse_args()
+#A lot of variables
 wait = 0
 weapon = 0
 #Weapon list: 0 = hands, 1 = branch, 2 = dagger, 3 = dull sword, 4 = Blade Staff, 5 = sharp spear, 6 = polished axe, 7 = The Blade of Honking
@@ -108,12 +130,12 @@ spells_thing = []
 exp = 0
 evolve_count = 0
 points = 0
-thatonething = 0
 game_diff = 0
 classsc = 0
 boss = 0
 triggers = []
 inventory = []
+#Words that will be checked for later
 n_words = ['n', 'north']
 s_words = ['s', 'south']
 e_words = ['e', 'east']
@@ -164,10 +186,15 @@ loadyload = 0
 dothing = ""
 acted = 0
 words = ""
+#Loops once your health is 0 or less
 def death():
 	i1.set("You have died!") #red
 	i2.set("Do you want to see your final stats?") #black
-	colorupdate(f1='firebrick1',f2='black')
+	i3.set("")
+	i4.set("")
+	i5.set("")
+	i6.set("")
+	colorupdate(f1='firebrick1',f2='black', f3='green', f4='blue3', f5='purple')
 	dead_p = raw_input('y/n ')
 	if dead_p == "y":
 		i1.set("You killed these enemies: ")
@@ -178,12 +205,14 @@ def death():
 		i3.set("These are your final stats: ")
 		i4.set("Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level))
 		i5.set("\nYour final score was %r" % points)
-		plplplp = raw_input('Press enter to quit.')
+		#while anykey("Press 'q' to quit.", 'qwertyuiopasdfghjklzxcvbnm,./[]\;\'0987654321`-=\r~!@#$%^&*()_+QWERTYUIOP{\}|ASDFGHJKL:"ZXCVBNM<>?'):
+		dadadadada = raw_input("")
 		quit()
 	elif dead_p == "n":
 		quit()
 	else:
 		death()
+#Difficulty selection (seperate for ease of reading/access)
 def selectdiff():
 	i1.set("What difficulty do you want to play on?")
 	i2.set("1. Easy")
@@ -220,6 +249,7 @@ def selectdiff():
 		damage = 2
 	else:
 		selectdiff()
+#Class selection (seperate for ease of reading/access)
 def selectclass():
 	i1.set("What class would you like to be?")
 	i2.set("1. Warrior- Has the Rage skill")
@@ -257,21 +287,21 @@ y = 0
 z = 0
 import os.path
 autoload = os.path.isfile('game_save.dat')
+#Autoloading function via pickle
 if autoload == True:
 	tut_finished = 1
 	if os.stat("game_save.dat").st_size != 0:
 		with open('game_save.dat', 'rb') as f:
-			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
+			hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit= pickle.load(f)
 		f.close()
 		loadyload = 1
-		os.system('clear')
+		colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
 		i1.set("Game loaded!")
 		i5.set(roominfo)
 else:
 	import Tutorial
 silly = 0
 if silly != 1 and loadyload != 1 and tut_finished == 1:
-#Gah, this is gross
 	selectdiff()
 	selectclass()
 	i1.set("Welcome to Kazoo Quest! For help type \"help\"!")
@@ -290,7 +320,7 @@ while stop != 1:
 #Variable 'x' is west/east(ex. -1 would be to the west and +1 would be to the east)
 #Variable 'y' is south/north(ex. -1 would be to the south and +1 would be to the north)
 #Variable "z" is an inverted height (+1 would be down and -1 would be up)
-#Debugging command
+#Checks for directional key words in the user's input
 	if list(set(n_words) & set(words)):
 			y += 1
 	elif list(set(s_words) & set(words)):
@@ -367,7 +397,7 @@ while stop != 1:
 			acted = 1
 		elif "portal" in words and "boss1" in triggers and max_level != 5:
 			os.system('clear')
-			acted = 1 #GAHGAHGAHGAHAGHAGAHHGAHGAHGAHGAHGAHGAHGAHGAHGAHGAH
+			acted = 1
 			dothing = "You won't be able to come back here after you go through. Are you still sure you want to proceed?"
 			portal_p = raw_input('> ')
 			words = portal_p.split(' ')
@@ -512,6 +542,7 @@ while stop != 1:
 	    pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 	  f.close()
 	  i3.set("Game Saved!")
+	  colorupdate(f1='DeepSkyBlue2', f4='black', f3='DeepSkyBlue1', f5='black', w5=700)
 	  if encounter >= 1:
 	    encounter_time += 1
 	elif act == "load":
@@ -532,6 +563,8 @@ while stop != 1:
 	elif act == "OP420":
 	  weapon = 7
 	  armor = 7
+	  max_hp = 1000000000
+	  max_mana = 10000e10
 	  spells = []
 	  spells_thing = []
 	  skills = []
@@ -845,6 +878,7 @@ while stop != 1:
 	if encounter != 0:
 		encounter_time -= 1
 	if var_set == 1:
+#Difficulty specific weapons when?
 		if weapon == 0:
 			damage += 3
 		elif weapon == 1:
@@ -1084,10 +1118,17 @@ while stop != 1:
 			i1.set("")
 	except:
 		print "wat"
+	try:
+		if i3.get() == "":
+			pass
+		else:
+			i3.set("")
+	except:
+		print "wat"
 	if acted == 1:
 		i4.set(dothing)
-		colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
 		acted = 0
+	colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
 	act = raw_input('> ')
 	words = act.split(' ')
 	stop = 0
@@ -1216,6 +1257,7 @@ while stop != 1:
 					enemy_debuff_timer = 5
 					os.system('clear')
 					i1.set("You dealt %r magic damage to the enemy and set it on fire!" % magic_dam)
+					colorupdate(f1='orange red', f4='magenta', f5='black', w5=700)
 			except ValueError:
 				skip = 0
 			try:
@@ -1238,6 +1280,7 @@ while stop != 1:
 					enemy_debuff_timer = 5
 					os.system('clear')
 					i1.set("You dealt %r magic damage and froze the enemy!" % magic_dam)
+					colorupdate(f1='light sky blue', f4='magenta', f5='black', w5=700)
 			except ValueError:
 				skip = 0
 			try:
@@ -1260,6 +1303,7 @@ while stop != 1:
 					enemy_debuff_timer = 8
 					os.system('clear')
 					i1.set("You dealt %r magic damage and poisoned the enemy!" % magic_dam)
+					colorupdate(f1='green3', f4='magenta', f5='black', w5=700)
 			except ValueError:
 				skip = 0
 			try:
@@ -1281,6 +1325,7 @@ while stop != 1:
 					hp += drain_dam
 					os.system('clear')
 					i1.set("You stole %r health from the %r!" % (drain_dam, enemy_type))
+					colorupdate(f1='VioletRed4', f4='magenta', f5='black', w5=700)
 			except ValueError:
 				skip = 0
 			try:
@@ -1290,6 +1335,7 @@ while stop != 1:
 					hp += hp_heal
 					os.system('clear')
 					i1.set("You healed %r health!" % hp_heal)
+					colorupdate(f1='DeepPink2', f4='magenta', f5='black', w5=700)
 			except ValueError:
 				skip = 0
 			try:
@@ -1300,6 +1346,7 @@ while stop != 1:
 					enemy_debuffs.append("Stunned")
 					enemy_debuff_timer = stun_time
 					i1.set("You stunned the enemy!")
+					colorupdate(f1='gold2', f4='magenta', f5='black', w5=700)
 			except ValueError:
 				skip = 0
 		elif fight_act == "3":
@@ -1307,11 +1354,13 @@ while stop != 1:
 			if dodge_act <= 25:
 				os.system('clear')
 				i1.set("You dodged the attack!")
+				colorupdate(f1='SpringGreen3', f4='magenta', f5='black', w5=700)
 				dodges = 1
 			if dodge_act >= 75:
 				parrypowa = damage * 2
 				enemy_hp -= parrypowa
 				i1.set("You parried the attack and dealt %d damage!" % parrypowa)
+				colorupdate(f1='SpringGreen3', f4='magenta', f5='black', w5=700)
 				dodges = 1
 		elif fight_act == "4":
 			i1.set("Enemy Health: %d\nEnemy Damage: %s" % (enemy_hp, enemy_dam_info))
@@ -1327,9 +1376,10 @@ while stop != 1:
 					enemy_debuffs = []
 					os.system('clear')
 					i1.set("You ran away!")
+					colorupdate(f4='magenta', f5='black', w5=700)
 				else:
-					os.system('clear')
 					i7.set("You can't run from a boss!")
+					colorupdate(f4='magenta', f5='black', f7='OrangeRed3', w5=700)
 		else:
 			pass
 		if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and "Stunned" not in enemy_debuffs and fight_act != "":
@@ -1350,6 +1400,7 @@ while stop != 1:
 				if fight_act == "3":
 					os.system('clear')
 				i1.set("The enemy missed!")
+				colorupdate(f1='MediumOrchid1', f4='magenta', f5='black', w5=700)
 			else:
 				hp = hp - enemy_dam + defe
 				dodges = 0
