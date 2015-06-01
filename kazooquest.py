@@ -1494,11 +1494,23 @@ def mainmenu():
 	def loadgame(savefile):
 		root.destroy()
 		maingame(savefile)
+	def load1():
+		sub.destroy()
+		maingame(savefile = 'gamesave1.dat')
+	def load2():
+		sub.destroy()
+		maingame(savefile = 'gamesave2.dat')
 	def startgame():
-		ss1 = tk.Button(mainframe, text = "Save slot 1", command = loadgame(savefile = "gamesave1.dat"))
-		ss2 = tk.Button(mainframe, text = "Save slot 2", command = loadgame(savefile = "gamesave2.dat"))
-		ss1.pack()
-		ss2.pack()
+		root.destroy()
+		global sub
+		sub = tk.Tk()
+		sub.resizable(width=0, height=0)
+		sub.geometry('{}x{}'.format(1000, 200))
+		sub.title("Kazoo Quest")
+		mainframe = tk.Frame(sub)
+		mainframe.pack()
+		ss1 = tk.Button(mainframe, text = "Save slot 1", command = load1).pack()
+		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).pack()
 	def settings():
 		print "Coming not very soon!"
 	def quit():
