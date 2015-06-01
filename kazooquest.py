@@ -299,7 +299,12 @@ def maingame(savefile = ""):
 			i1.set("Game loaded!")
 			i5.set(roominfo)
 	else:
-		import Tutorial
+		i1.set("Would you like to play the tutorial?")
+		playtut = raw_input('yes/no ')
+		if playtut == "yes":
+			import Tutorial
+		if playtut == "no":
+			os.system('touch %r' % savefile)
 	silly = 0
 	if silly != 1 and loadyload != 1 and tut_finished == 1:
 		selectdiff()
