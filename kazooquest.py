@@ -15,7 +15,7 @@ def maingame(savefile = ""):
 	#Setting it to not be resizable
 	root.resizable(width=0, height=0)
 	#Setting window dimensions
-	root.geometry('{}x{}'.format(1000, 200))
+	root.geometry('{}x{}'.format(1000, 300))
 	root.title("Kazoo Quest")
 	#Dynamic text variables (for printing to the graphcs window)
 	i1 = tk.StringVar()
@@ -47,7 +47,6 @@ def maingame(savefile = ""):
 	w7 = 1000
 	w8 = 1000
 	w9 = 1000
-	mainframe = tk.Frame(root)
 	t = tk.Text(root)
 	#Declaring labels and packing them to the window
 	l1 = tk.Label(root, textvariable=i1, fg = f1)
@@ -84,6 +83,7 @@ def maingame(savefile = ""):
 		l6.config(fg = f6, wrap = w6)
 		l7.config(fg = f7, wrap = w7)
 		l8.config(fg = f8, wrap = w8)
+		l9.config(fg = f9, wrap = w9)
 	#Checks for updates and downloads them if there is one
 	def update():
 		ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
@@ -477,9 +477,7 @@ def maingame(savefile = ""):
 				i4.set(dothing)
 				colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
 		if act == "num":
-			print x
-			print y
-			print z
+			print x + '\n' + y + '\n' + z
 			if encounter >= 1:
 				encounter_time += 1
 		elif act == "debug.addt":
@@ -489,41 +487,29 @@ def maingame(savefile = ""):
 				encounter_time += 1
 			os.system('clear')
 		elif act == "inv":
-			o = 0
-			try:
-				for o in range(len(inventory)):
-					t = Text(master, '\n'.join(inventory))
-			except:
-				master = Tk()
-				for i in range(len(inventory)):
-					t = Text(master, '\n'.join(inventory))
+			i8.set('%r' % '\n'.join(inventory))
+			colorupdate(f5='black', f8='black', w5=700)
 		  	if encounter >= 1:
 				encounter_time += 1
-			elif act == "restart":
-				while wait == 0:
-					i3.set("Are you sure you want to delete your save and restart all progress?")
-					response = raw_input('(y/n) >')
-					if response == "y":
-						i3.set("Okay, deleting your save and restarting...")
-						os.system('rm %r' % savefile)
-						quit()
-						os.system('python kazooquest.py')
-						wait = 1
-					elif response == "n":
-						wait = 1
+		elif act == "restart":
+			while wait == 0:
+				i3.set("Are you sure you want to delete your save and restart all progress?")
+				response = raw_input('(y/n) >')
+				if response == "y":
+					i3.set("Okay, deleting your save and restarting...")
+					os.system('rm %r' % savefile)
+					quit()
+					os.system('python kazooquest.py')
+					wait = 1
+				elif response == "n":
+					wait = 1
 		elif act == "look":
 		  	skip = 0
 		  	if encounter >= 1:
 				encounter_time += 1
 		elif act == "skills":
-			try:
-				sk.get()
-			except:
-				master = tk.Tk()
-				sk = tk.StringVar()
-				sk1 = tk.Label(master, textvariable = sk).pack()
-				sk.set('\n'.join(skills_thing))
-			skill_act = raw_input('What skill do you want to use?\n> ')
+			i9.set('What skill do you want to use?'+'\n'.join(skills_thing))
+			skill_act = raw_input('> ')
 			if act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 				encounter_time += 6
 				skill_energy -= 5
@@ -1490,12 +1476,17 @@ def maingame(savefile = ""):
 		if hp <= 0:
 			death()
 def mainmenu():
+	try:
+		sub.destroy()
+	except:
+		pass
 	root = tk.Tk()
 	root.resizable(width=0, height=0)
 	root.geometry('{}x{}'.format(1000, 200))
 	root.title("Kazoo Quest")
 	mainframe = tk.Frame(root)
 	mainframe.pack()
+	mmt1 = tk.StringVar()
 	def loadgame(savefile):
 		root.destroy()
 		maingame(savefile)
@@ -1516,12 +1507,23 @@ def mainmenu():
 		mainframe.pack()
 		ss1 = tk.Button(mainframe, text = "Save slot 1", command = load1).pack()
 		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).pack()
+		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).pack()
 	def settings():
-		print "Coming not very soon!"
+		mmt1.set("Coming not very soon!")
 	def quit():
 		root.quit()
 	b1 = tk.Button(mainframe, text = "Start game", command = startgame).pack()
 	b2 = tk.Button(mainframe, text = "Settings", command = settings).pack()
 	b3 = tk.Button(mainframe, text = "Quit", command = quit).pack()
+	mm1 = tk.Label(mainframe, textvariable = mmt1)
+	mm1.pack()
+	try:
+		r = mmt1.get()
+		if r == "":
+			pass
+		else:
+			mmt1.set("")
+	except:
+		pass
 	root.mainloop()
 mainmenu()
