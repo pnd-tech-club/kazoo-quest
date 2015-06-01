@@ -35,7 +35,7 @@ while stop != 1:
 		act = raw_input('> ')
 		os.system('clear')
 	if act == "skip":
-		os.system('touch game_save.dat')
+		os.system('touch gamesave1.dat')
 		print "Run \"python kazooquest.py\" to continue."
 		quit()
 	else:
