@@ -93,7 +93,7 @@ while stop != 1:
 			triggers.append("death")
 			y = 100
 		elif y == 100:
-			os.system('touch game_save.dat')
+			os.system('touch gamesave1.dat')
 			print "Run \"python kazooquest.py\" to continue."
 			quit()
 		else:

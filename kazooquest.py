@@ -9,7 +9,7 @@ import argparse
 from collections import Counter
 current_version = "v1.0.6"
 #import Loadingbar
-def maingame():
+def maingame(savefile = ""):
 	#Defining graphics window
 	root = tk.Tk()
 	#Setting it to not be resizable
@@ -286,12 +286,12 @@ def maingame():
 	y = 0
 	z = 0
 	import os.path
-	autoload = os.path.isfile('game_save.dat')
+	autoload = os.path.isfile(savefile)
 	#Autoloading function via pickle
 	if autoload == True:
 		tut_finished = 1
-		if os.stat("game_save.dat").st_size != 0:
-			with open('game_save.dat', 'rb') as f:
+		if os.stat(savefile).st_size != 0:
+			with open(savefile, 'rb') as f:
 				hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit= pickle.load(f)
 			f.close()
 			loadyload = 1
@@ -500,8 +500,7 @@ def maingame():
 					response = raw_input('(y/n) >')
 					if response == "y":
 						i3.set("Okay, deleting your save and restarting...")
-						os.system('rm game_save.dat')
-						os.system('touch game_save.dat')
+						os.system('rm %r' % savefile)
 						quit()
 						os.system('python kazooquest.py')
 						wait = 1
@@ -538,7 +537,7 @@ def maingame():
 		elif act == "debug.xp":
 		  exp += 100
 		elif act == "save":
-		  with open('game_save.dat', 'wb') as f:
+		  with open(savefile, 'wb') as f:
 		    pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 		  f.close()
 		  i3.set("Game Saved!")
@@ -546,7 +545,7 @@ def maingame():
 		  if encounter >= 1:
 		    encounter_time += 1
 		elif act == "load":
-		  with open('game_save.dat', 'rb') as f:
+		  with open(savefile, 'rb') as f:
 		    hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		  f.close()
 		  os.system('clear')
@@ -1492,16 +1491,20 @@ def mainmenu():
 	root.title("Kazoo Quest")
 	mainframe = tk.Frame(root)
 	mainframe.pack()
-	def startgame():
+	def loadgame(savefile):
 		root.destroy()
-		maingame()
+		maingame(savefile)
+	def startgame():
+		ss1 = tk.Button(mainframe, text = "Save slot 1", command = loadgame(savefile = "gamesave1.dat"))
+		ss2 = tk.Button(mainframe, text = "Save slot 2", command = loadgame(savefile = "gamesave2.dat"))
+		ss1.pack()
+		ss2.pack()
 	def settings():
 		print "Coming not very soon!"
 	def quit():
 		root.quit()
-	tk.Button(mainframe, text = "Start", command = startgame).pack()
-	tk.Button(mainframe, text = "Settings", command = settings).pack()
-	tk.Button(mainframe, text = "").pack()
-	tk.Button(mainframe, text = "Quit", command = quit).pack()
+	b1 = tk.Button(mainframe, text = "Start game", command = startgame).pack()
+	b2 = tk.Button(mainframe, text = "Settings", command = settings).pack()
+	b3 = tk.Button(mainframe, text = "Quit", command = quit).pack()
 	root.mainloop()
 mainmenu()
