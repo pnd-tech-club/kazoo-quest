@@ -17,6 +17,8 @@ def maingame(savefile = ""):
 	#Setting window dimensions
 	root.geometry('{}x{}'.format(1000, 300))
 	root.title("Kazoo Quest")
+	mainframe = tk.Frame(root)
+	mainframe.pack()
 	#Dynamic text variables (for printing to the graphcs window)
 	i1 = tk.StringVar()
 	i2 = tk.StringVar()
@@ -69,10 +71,6 @@ def maingame(savefile = ""):
 	l9.pack()
 	act = ""
 	#Prompts for user input
-	def getentry(cv):
-		cv = e.get()
-	e = tk.Entry(root, width=50)
-	e.bind('<Return>', getentry)
 	#Allows easier updating of color scheme/wrapping of each line of text
 	def colorupdate(f1='DeepSkyBlue2', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', f9='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000, w9=1000):
 		l1.config(fg = f1, wrap = w1)
@@ -162,7 +160,6 @@ def maingame(savefile = ""):
 	enemy_debuff_timer = 5
 	enemy_info = ""
 	enemy_dam_info = ""
-	resetrimer = 10
 	hp = 20
 	defe = 1
 	mana = 5
@@ -185,6 +182,7 @@ def maingame(savefile = ""):
 	loadyload = 0
 	dothing = ""
 	acted = 0
+	resettimer = 0
 	words = ""
 	#Loops once your health is 0 or less
 	def death():
@@ -221,34 +219,30 @@ def maingame(savefile = ""):
 		i5.set("4. Actually insane")
 		i6.set("")
 		colorupdate(f1='black', f2='green2', f3='gold2', f4='orange2', f5='red3')
-	#	e = tk.Entry(root, width=50)
-	#	e.bind('<Return>', getentry(game_diff))
-	#	e.pack()
+#		e = tk.Entry(mainframe)
+#		e.pack()
+#		game_diff = e.get()
 		game_diff = raw_input('> ')
 		if game_diff == "1":
 			hp = 25
 			defe = 2
 			mana = 8
-			damage = 2
-			weapon = 0
+			damage = 3
 		elif game_diff == "2":
 			hp = 20
 			defe = 1
 			mana = 5
-			damage = 1
-			weapon = 0
+			damage = 2
 		elif game_diff == "3":
 			hp = 15
 			defe = 1
 			mana = 5
-			weapon = 0
+			damage = 1
 		elif game_diff == "4":
 			hp = 10
 			defe = 0
 			mana = 0
-			damage = 2
-		else:
-			selectdiff()
+			damage = 1
 	#Class selection (seperate for ease of reading/access)
 	def selectclass():
 		i1.set("What class would you like to be?")
@@ -297,6 +291,7 @@ def maingame(savefile = ""):
 			loadyload = 1
 			colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
 			i1.set("Game loaded!")
+			resettimer = 1
 			i5.set(roominfo)
 	else:
 		i1.set("Would you like to play the tutorial?")
@@ -487,7 +482,8 @@ def maingame(savefile = ""):
 				encounter_time += 1
 			os.system('clear')
 		elif act == "inv":
-			i8.set('%r' % '\n'.join(inventory))
+			resettimer = 2
+			i8.set("Inventory:\n" + '\n'.join(inventory))
 			colorupdate(f5='black', f8='black', w5=700)
 		  	if encounter >= 1:
 				encounter_time += 1
@@ -515,24 +511,25 @@ def maingame(savefile = ""):
 				skill_energy -= 5
 		#Debugging commands
 		elif act == "debug.update":
-		  update()
+			update()
 		elif act == "debug.triggers":
-		  print triggers
+			print triggers
 		elif act == "debug.evolveitem":
-		  inventory.append("mysterious charm")
+			inventory.append("mysterious charm")
 		elif act == "debug.sp":
-		  print spells
-		  print spells_thing
-		  print skills
-		  print skills_thing
+			print spells
+			print spells_thing
+			print skills
+			print skills_thing
 		elif act == "debug.xp":
-		  exp += 100
+			exp += 100
 		elif act == "save":
 		  with open(savefile, 'wb') as f:
 		    pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
 		  f.close()
-		  i3.set("Game Saved!")
-		  colorupdate(f1='DeepSkyBlue2', f4='black', f3='DeepSkyBlue1', f5='black', w5=700)
+		  colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
+		  i1.set("Game Saved!")
+		  resettimer = 2
 		  if encounter >= 1:
 		    encounter_time += 1
 		elif act == "load":
@@ -540,6 +537,7 @@ def maingame(savefile = ""):
 		    hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
 		  f.close()
 		  os.system('clear')
+		  resettimer = 2
 		  i3.set('Game Loaded!')
 		  i5.set(roominfo)
 		elif act == "quit":
@@ -551,10 +549,10 @@ def maingame(savefile = ""):
 		    skip = 0
 		#Debugging command
 		elif act == "OP420":
-		  weapon = 7
-		  armor = 7
+		  damage = 1337
 		  max_hp = 1000000000
 		  max_mana = 10000e10
+		  defe = 420
 		  spells = []
 		  spells_thing = []
 		  skills = []
@@ -865,6 +863,7 @@ def maingame(savefile = ""):
 			elif list(set(u_words) & set(words)):
 				z += 1
 			i5.set(roominfo)
+		resettimer -= 1
 		if encounter != 0:
 			encounter_time -= 1
 		if var_set == 1:
@@ -1027,7 +1026,7 @@ def maingame(savefile = ""):
 				max_mana = 6.9e+42
 		if exp >= exp_limit and level != max_level:
 			exp_extra = exp - exp_limit
-			print "Level up!"
+			i1.set("Level up!")
 			exp = 0
 			exp += exp_extra
 	#EXP limits are weird- needs to be reworked
@@ -1094,20 +1093,21 @@ def maingame(savefile = ""):
 				max_mana += 5
 		stop = 1
 		i5.set(roominfo)
-		try:
-			if i4.get() == "":
-				pass
-			else:
-				i4.set("")
-		except:
-			print "wat"
-		try:
-			if i1.get() == "":
-				pass
-			else:
-				i1.set("")
-		except:
-			print "wat"
+		if resettimer <= 0:
+			try:
+				if i1.get() == "":
+					pass
+				else:
+					i1.set("")
+			except:
+				print "wat"
+			try:
+				if i8.get() == "":
+					pass
+				else:
+					i8.set("")
+			except:
+				print "wat"
 		try:
 			if i3.get() == "":
 				pass
@@ -1115,10 +1115,17 @@ def maingame(savefile = ""):
 				i3.set("")
 		except:
 			print "wat"
+		try:
+			if i4.get() == "":
+				pass
+			else:
+				i4.set("")
+		except:
+			print "wat"
 		if acted == 1:
 			i4.set(dothing)
 			acted = 0
-		colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
+		colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', f8='black', w5=700)
 		act = raw_input('> ')
 		words = act.split(' ')
 		stop = 0
@@ -1132,71 +1139,67 @@ def maingame(savefile = ""):
 					enemy_dam = random.randint(2, 4)
 					min_dam = 2 - defe
 					max_dam = 4 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				elif enemy_type == "elf":
 					enemy_hp = 20
 					enemy_dam = random.randint(3, 5)
 					min_dam = 3 - defe
 					max_dam = 5 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				elif enemy_type == "orc":
 					enemy_hp = 25
 					enemy_dam = random.randint(6, 8)
 					min_dam = 6 - defe
 					max_dam = 8 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 					enemy_dodge = 1
 				elif enemy_type == "wraith":
 					enemy_hp = 30
 					enemy_dam = random.randint(7, 9)
 					min_dam = 7 - defe
 					max_dam = 9 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 					enemy_dodge = 3
 				elif enemy_type == "dwarf":
 					enemy_hp = 35
 					enemy_dam = random.randint(7, 10)
 					min_dam = 7 - defe
 					max_dam = 10 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 					enemy_dodge = 1
 				elif enemy_type == "slime":
 					enemy_hp = 150
 					enemy_dam = random.randint(10, 25)
 					min_dam = 10 - defe
 					max_dam = 25 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 					enemy_dodge = 0
-	#Area 2 enemies
+#Area 2 enemies
+				elif enemy_type == "wall":
+					enemy_hp = 500
+					enemy_dam = random.randint(0, 1)
+					min_dam = 0 - defe
+					max_dam = 1 - defe
 				elif enemy_type == "vulture":
 					enemy_hp = 40
 					enemy_dam = random.randint(12, 15)
 					min_dam = 12 - defe
 					max_dam = 15 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				elif enemy_type == "sand rat":
 					enemy_hp = 35
 					enemy_dam = random.randint(11, 14)
 					min_dam = 11 - defe
 					max_dam = 14 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				elif enemy_type == "spirit":
 					enemy_hp = 40
 					enemy_dam = random.randint(13, 16)
 					min_dam = 8 - defe
 					max_dam = 11 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 					enemy_dodge = 0
 				elif enemy_type == "golem":
 					enemy_hp = 400
 					enemy_dam = random.randint(25, 40)
 					min_dam = 25 - defe
 					max_dam = 40 - defe
-					enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 				if min_dam < 0:
 					min_dam = 0
 				if max_dam < 0:
 					max_dam = 0
+				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
 	#Remember to fix this silly grammar thingy here
 				os.system('clear')
 				enemy_info = "A "+enemy_type+" suddenly appears!."#red
