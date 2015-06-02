@@ -510,6 +510,13 @@ def maingame(savefile = ""):
 				encounter_time += 6
 				skill_energy -= 5
 		#Debugging commands
+		elif act == "death":
+			x = 666
+			y = 666
+			z = 666
+			enemy_type = "Death"
+			encounter_time = -1000000
+			print "You've met with a terrible fate, haven't you?"
 		elif act == "debug.update":
 			update()
 		elif act == "debug.triggers":
@@ -549,7 +556,7 @@ def maingame(savefile = ""):
 		    skip = 0
 		#Debugging command
 		elif act == "OP420":
-		  damage = 1337
+		  damage = 4201337
 		  max_hp = 1000000000
 		  max_mana = 10000e10
 		  defe = 420
@@ -848,6 +855,9 @@ def maingame(savefile = ""):
 			roominfo = "You are in a cave. The exit is to the north."
 		elif x == 0 and y == 1 and z == 10:
 			roominfo = "The area around you seems vastly different from before, but something also seems familiar..."
+		elif x == 666 and y == 666 and z == 666:
+			roominfo = "Muhahahahahahaha..."
+			encounter = 1
 	#This is used to undo movement into an unexisting room V
 		else:
 			if list(set(n_words) & set(words)):
@@ -1192,9 +1202,14 @@ def maingame(savefile = ""):
 					enemy_dodge = 0
 				elif enemy_type == "golem":
 					enemy_hp = 400
-					enemy_dam = random.randint(25, 40)
+					enemy_dam = random.randint(25, 50)
 					min_dam = 25 - defe
-					max_dam = 40 - defe
+					max_dam = 50 - defe
+				elif enemy_type == "Death":
+					enemy_hp = 10000
+					enemy_dam = random.randint(0, 100000000000000000)
+					min_dam = 0
+					max_dam = 100000000000000000 - defe
 				if min_dam < 0:
 					min_dam = 0
 				if max_dam < 0:
@@ -1211,7 +1226,7 @@ def maingame(savefile = ""):
 			i5.set("3: Dodge")
 			i6.set("4: Enemy Info")
 			i7.set("5: Run Away")
-			colorupdate(f1='black',f2='red2',f3='blue2',f4='green2',f5='yellow3',f6='purple3', f7='black')
+			colorupdate(f1='black',f2='red2',f3='blue2',f4='green2',f5='yellow3',f6='purple3', f7='black', f8='black', f9='black')
 			fight_act = raw_input('> ')
 			try:
 				if i1.get() == "":
@@ -1389,15 +1404,32 @@ def maingame(savefile = ""):
 					enemy_dam = random.randint(8, 11)
 				elif enemy_type == "slime":
 					enemy_dam = random.randint(5, 15)
+				elif enemy_type == "wall":
+					enemy_dam = random.randint(0, 1)
+				elif enemy_type == "vulture":
+					enemy_dam = random.randint(12, 15)
+				elif enemy_type == "sand rat":
+					enemy_dam = random.randint(11, 14)
+				elif enemy_type == "spirit":
+					enemy_dam = random.randint(13, 16)
+				elif enemy_type == "golem":
+					enemy_dam = random.randint(25, 50)
 				if enemy_dam - defe <= 0:
-					if fight_act == "3":
-						os.system('clear')
 					i1.set("The enemy missed!")
-					colorupdate(f1='MediumOrchid1', f4='magenta', f5='black', w5=700)
 				else:
 					hp = hp - enemy_dam + defe
 					dodges = 0
-					i1.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe))
+					i9.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe))
+					resettimer = 2
+			resettimer -= 1
+			if resettimer <= 0:
+				try:
+					if i9.get() == "":
+						pass
+					else:
+						i9.set("")
+				except:
+					print "wat"
 			if len(enemy_debuffs) > 0:
 	#Randomly gets the amount of damage to deal to the enemy while specific debuff is active
 				if "Burning" in enemy_debuffs:
@@ -1465,6 +1497,10 @@ def maingame(savefile = ""):
 					exp += 30
 					points += 50
 					triggers.append("boss1")
+				elif enemy_type == "Death":
+					exp += 10000000000
+					points += 10000000000
+					i1.set("noice job you cheater :^ ), good luck doing it again...")
 			if hp > max_hp:
 				hp = max_hp
 			if hp <= 0:
