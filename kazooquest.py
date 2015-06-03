@@ -7,6 +7,13 @@ import ttk
 import os, random, time, pickle, sys, signal
 import argparse
 from collections import Counter
+debug = False
+parser = argparse.ArgumentParser()
+parser.add_argument('--debug', action = 'store_true')
+parser.parse_args()
+args = parser.parse_args()
+if args.debug == True:
+	debug = True
 current_version = "v1.0.6"
 #import Loadingbar
 def maingame(savefile = ""):
@@ -102,8 +109,6 @@ def maingame(savefile = ""):
 					print "Done!"
 			except:
 				pass
-	parser = argparse.ArgumentParser(description='Kazoo Quest!')
-	args = parser.parse_args()
 	#A lot of variables
 	wait = 0
 	weapon = 0
@@ -172,6 +177,8 @@ def maingame(savefile = ""):
 	frost_level = 0
 	poison_level = 0
 	lifesteal_level = 0
+	bolt_level = 0
+	quake_level = 0
 	heal_level = 0
 	stun_level = 0
 	exp_limit = 10
@@ -186,8 +193,8 @@ def maingame(savefile = ""):
 	words = ""
 	#Loops once your health is 0 or less
 	def death():
-		i1.set("You have died!") #red
-		i2.set("Do you want to see your final stats?") #black
+		i1.set("You have died!")
+		i2.set("Do you want to see your final stats?")
 		i3.set("")
 		i4.set("")
 		i5.set("")
@@ -402,7 +409,7 @@ def maingame(savefile = ""):
 				portal_p = raw_input('> ')
 				words = portal_p.split(' ')
 				if list(set(yes_words) & set(words)):
-					dothing = "Okie dokie, let's gooooooo..."
+					dothing = "Okay, here we go!"
 					acted = 1
 					x = 0
 					y = 0
@@ -475,8 +482,6 @@ def maingame(savefile = ""):
 			print x + '\n' + y + '\n' + z
 			if encounter >= 1:
 				encounter_time += 1
-		elif act == "debug.addt":
-			triggers.append(raw_input(''))
 		elif act == "clear":
 			if encounter >= 1:
 				encounter_time += 1
@@ -509,27 +514,63 @@ def maingame(savefile = ""):
 			if act == "sneak" and "Stealth" in skills and skill_energy >= 5:
 				encounter_time += 6
 				skill_energy -= 5
-		#Debugging commands
-		elif act == "death":
+#Beginning of the list of debugging commands
+		elif act == "death" and debug == True:
 			x = 666
 			y = 666
 			z = 666
 			enemy_type = "Death"
 			encounter_time = -1000000
-			print "You've met with a terrible fate, haven't you?"
-		elif act == "debug.update":
+			print "You've met with a terrible fate, haven't you?" #KEK
+		elif act == "update" and debug == True:
 			update()
-		elif act == "debug.triggers":
+		elif act == "triggers" and debug == True:
 			print triggers
-		elif act == "debug.evolveitem":
-			inventory.append("mysterious charm")
-		elif act == "debug.sp":
+		elif act == "item" and debug == True:
+			inventory.append(raw_input(""))
+		elif act == "sp" and debug == True:
 			print spells
 			print spells_thing
 			print skills
 			print skills_thing
-		elif act == "debug.xp":
+		elif act == "xp" and debug == True:
 			exp += 100
+		elif act == "addt" and debug == True:
+			triggers.append(raw_input(''))
+		elif act == "OP420" and debug == True:
+			damage = 4201337
+			max_hp = 1000000000
+			max_mana = 10000e10
+			defe = 420
+			spells = []
+			spells_thing = []
+			skills = []
+			skills_thing = []
+			spells.append("firebolt")
+			spells.append("frost")
+			spells.append("poison")
+			spells.append("life steal")
+			spells.append("heal")
+			spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
+			spells_thing.append("%s. Frost" % str(len(spells_thing) + 1))
+			spells_thing.append("%s. Poison" % str(len(spells_thing) + 1))
+			spells_thing.append("%s. Life Steal" % str(len(spells_thing) + 1))
+			spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
+			skills.append("stealth")
+			skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
+			skills.append("rage")
+			skills_thing.append("%s. Rage" % str(len(skills_thing) + 1))
+			var_set = 1
+		elif act == "etime" and debug == True:
+			print encounter
+			print encounter_time
+			if encounter >= 1:
+				encounter_time += 1
+		elif act == "tp" and debug == True:
+			x = int(raw_input('> '))
+			y = int(raw_input('> '))
+			z = int(raw_input('> '))
+#End of list of debugging commands
 		elif act == "save":
 		  with open(savefile, 'wb') as f:
 		    pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
@@ -554,37 +595,6 @@ def maingame(savefile = ""):
 		    quit()
 		  else:
 		    skip = 0
-		#Debugging command
-		elif act == "OP420":
-		  damage = 4201337
-		  max_hp = 1000000000
-		  max_mana = 10000e10
-		  defe = 420
-		  spells = []
-		  spells_thing = []
-		  skills = []
-		  skills_thing = []
-		  spells.append("firebolt")
-		  spells.append("frost")
-		  spells.append("poison")
-		  spells.append("life steal")
-		  spells.append("heal")
-		  spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
-		  spells_thing.append("%s. Frost" % str(len(spells_thing) + 1))
-		  spells_thing.append("%s. Poison" % str(len(spells_thing) + 1))
-		  spells_thing.append("%s. Life Steal" % str(len(spells_thing) + 1))
-		  spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
-		  skills.append("stealth")
-		  skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
-		  skills.append("rage")
-		  skills_thing.append("%s. Rage" % str(len(skills_thing) + 1))
-		  var_set = 1
-		#Debugging command
-		elif act == "etime":
-		  print encounter
-		  print encounter_time
-		  if encounter >= 1:
-		    encounter_time += 1
 		elif act == "spells":
 		  print '\n'.join(spells_thing)
 		  if encounter >= 1:
@@ -601,11 +611,6 @@ def maingame(savefile = ""):
 		  if hp > max_hp:
 		    hp = max_hp
 		  encounter_time -= 3
-		#Debugging command
-		elif act == "tp":
-		  x = int(raw_input('> '))
-		  y = int(raw_input('> '))
-		  z = int(raw_input('> '))
 		elif act == "stats":
 		  print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r/%r\nExp: %r/%r" % (damage, hp, defe, mana, level, max_level, exp, exp_limit)
 		  encounter_time += 1
@@ -855,6 +860,22 @@ def maingame(savefile = ""):
 			roominfo = "You are in a cave. The exit is to the north."
 		elif x == 0 and y == 1 and z == 10:
 			roominfo = "The area around you seems vastly different from before, but something also seems familiar..."
+			encounter = 0
+#Beginning of main desert area, aiming to have it be much larger than the previous area
+		elif x == 0 and y == 2 and z == 10:
+			encounter = 1
+			enemy_type = "sand rat"
+			roominfo = "To the north there is a large temple, there is a oasis to the west, and a vast desert stretches to the east."
+#East through northeast area(s)- desert
+		elif x == 1 and y == 2 and z == 10:
+			roominfo = "The area out to the east stretches out past the horizon."
+#West through northwest area(s)- oasis
+		elif x == -1 and y == 2 and z == 10:
+			roominfo = "The land to the west appears to be either an oasis or a mirage."
+#North/temple area
+		elif x == 0 and y == 3 and z == 10:
+			roominfo = "There is a massive temple to the north of you."
+#Final room...? (Currently just an easter egg)
 		elif x == 666 and y == 666 and z == 666:
 			roominfo = "Muhahahahahahaha..."
 			encounter = 1
@@ -898,9 +919,6 @@ def maingame(savefile = ""):
 			elif weapon == 6:
 				damage += 10
 				points += 25
-	#This weapon is going to be available for debugging through the input of "OP420"
-			elif weapon == 7:
-				damage = 1337
 			var_set = 0
 		if game_diff == "1":
 			if armor == 0:
@@ -931,10 +949,6 @@ def maingame(savefile = ""):
 				defe = 20
 				max_hp = 75
 				max_mana = 50
-			elif armor == 7:
-				defe = 420
-				max_hp = 9001
-				max_mana = 6.9e+42
 		if game_diff == "2":
 			if armor == 0:
 				defe = 1
@@ -964,10 +978,6 @@ def maingame(savefile = ""):
 				defe = 20
 				max_hp = 75
 				max_mana = 50
-			elif armor == 7:
-				defe = 420
-				max_hp = 9001
-				max_mana = 6.9e+42
 		if game_diff == "3":
 			if armor == 0:
 				defe = 1
@@ -997,10 +1007,6 @@ def maingame(savefile = ""):
 				defe = 18
 				max_hp = 70
 				max_mana = 45
-			elif armor == 7:
-				defe = 420
-				max_hp = 9001
-				max_mana = 6.9e+42
 		if game_diff == "4":
 			if armor == 0:
 				defe = 0
@@ -1030,10 +1036,6 @@ def maingame(savefile = ""):
 				defe = 20
 				max_hp = 50
 				max_mana = 35
-			elif armor == 7:
-				defe = 420
-				max_hp = 9001
-				max_mana = 6.9e+42
 		if exp >= exp_limit and level != max_level:
 			exp_extra = exp - exp_limit
 			i1.set("Level up!")
@@ -1242,7 +1244,6 @@ def maingame(savefile = ""):
 				print "You dealt %d damage to the %s!" % (damage, enemy_type)
 			elif fight_act == "2":
 				print "Available spells:\n" + '\n'.join(spells_thing)
-				#prompt()
 				magic_attack = raw_input('> ')
 	#Magic is(as usual) OP- needs to be reworked
 				try:
@@ -1260,6 +1261,8 @@ def maingame(savefile = ""):
 						elif firebolt_level == 5:
 							magic_dam = random.randint(35, 50)
 						mana -= 5
+						if classsc == "5":
+							magic_dam = magic_dam + (level/2 * 3)
 						enemy_hp -= magic_dam
 						enemy_debuffs.append("Burning")
 						enemy_debuff_timer = 5
@@ -1357,6 +1360,13 @@ def maingame(savefile = ""):
 						colorupdate(f1='gold2', f4='magenta', f5='black', w5=700)
 				except ValueError:
 					skip = 0
+				try:
+					if magic_attack == str(spells.index('bolt') + 1) and "bolt" in spells and mana >= 8:
+						if bolt_level == 0:
+							magic_dam = random.randint(13, 18)
+						mana -= 8
+				except ValueError:
+					skip = 0
 			elif fight_act == "3":
 				dodge_act = random.randint(0, 100)
 				if dodge_act <= 25:
@@ -1441,6 +1451,8 @@ def maingame(savefile = ""):
 						burn_dam = random.randint(8, 12)
 					elif firebolt_level == 3:
 						burn_dam = random.randint(10, 15)
+					if classsc == "5":
+						burn_dam = burn_dam + (level/2 * 3)
 					enemy_hp -= burn_dam
 					i1.set("The enemy took %r damage from burning!" % burn_dam)
 				if "Poisoned" in enemy_debuffs:
@@ -1456,6 +1468,8 @@ def maingame(savefile = ""):
 						poison_dam = random.randint(25, 30)
 					elif poison_level == 5:
 						poison_dam = random.randint(30, 35)
+					if classsc == "5":
+						poison_dam = poison_dam + (level/2 * 3)
 					enemy_hp -= poison_dam
 					i1.set("The enemy took %r damage from poison!" % poison_dam)
 				if "Frozen" in enemy_debuffs:
@@ -1512,6 +1526,7 @@ def maingame(savefile = ""):
 			mana = max_mana
 		if skill_energy > max_energy:
 			skill_energy = max_energy
+		magic_dam = 0
 		if hp <= 0:
 			death()
 def mainmenu():
@@ -1556,6 +1571,8 @@ def mainmenu():
 	b3 = tk.Button(mainframe, text = "Quit", command = quit).pack()
 	mm1 = tk.Label(mainframe, textvariable = mmt1)
 	mm1.pack()
+	if debug == True:
+		msg1 = tk.Label(mainframe, text = "Debug on", fg = 'SpringGreen3').pack()
 	try:
 		r = mmt1.get()
 		if r == "":
