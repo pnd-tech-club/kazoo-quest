@@ -77,6 +77,8 @@ def maingame(savefile = ""):
 	l9 = tk.Label(root, textvariable=i9, fg = f9)
 	l9.pack()
 	act = ""
+	if debug == True:
+		msg1 = tk.Label(mainframe, text = "Debug on", fg = 'SpringGreen3').pack()
 	#Prompts for user input
 	#Allows easier updating of color scheme/wrapping of each line of text
 	def colorupdate(f1='DeepSkyBlue2', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', f9='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000, w9=1000):
