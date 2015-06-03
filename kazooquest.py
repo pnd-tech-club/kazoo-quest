@@ -9,7 +9,7 @@ import argparse
 from collections import Counter
 debug = False
 parser = argparse.ArgumentParser()
-parser.add_argument('--debug', action = 'store_true')
+parser.add_argument('--debug', action = 'store_true', help = "Defaults to off, allows debugging commands to be used.")
 parser.parse_args()
 args = parser.parse_args()
 if args.debug == True:
