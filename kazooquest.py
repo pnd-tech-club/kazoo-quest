@@ -16,20 +16,13 @@ if args.debug == True:
 	debug = True
 current_version = "v1.0.6"
 #import Loadingbar
-def leaderboard():
-	try:
-		response = urllib2.urlopen('http://9.svi.com/library/KQleaderboard')
-		currentlb = response.read()
-		print currentlb
-	except:
-		print "Score submission failed"
 def maingame(savefile = ""):
 	#Defining graphics window
 	root = tk.Tk()
 	#Setting it to not be resizable
 	root.resizable(width=0, height=0)
 	#Setting window dimensions
-	root.geometry('{}x{}'.format(1000, 300))
+	root.geometry('{}x{}'.format(1000, 400))
 	root.title("Kazoo Quest")
 	mainframe = tk.Frame(root)
 	mainframe.pack()
@@ -43,6 +36,7 @@ def maingame(savefile = ""):
 	i7 = tk.StringVar()
 	i8 = tk.StringVar()
 	i9 = tk.StringVar()
+	i10 = tk.StringVar()
 	#Foreground (text) color variables
 	f1 = 'black'
 	f2 = 'black'
@@ -53,6 +47,7 @@ def maingame(savefile = ""):
 	f7 = 'black'
 	f8 = 'black'
 	f9 = 'black'
+	f10 = 'black'
 	#Line wrapping length variables
 	w1 = 1000
 	w2 = 1000
@@ -63,6 +58,7 @@ def maingame(savefile = ""):
 	w7 = 1000
 	w8 = 1000
 	w9 = 1000
+	w10 = 1000
 	t = tk.Text(root)
 	#Declaring labels and packing them to the window
 	l1 = tk.Label(root, textvariable=i1, fg = f1)
@@ -83,12 +79,21 @@ def maingame(savefile = ""):
 	l8.pack()
 	l9 = tk.Label(root, textvariable=i9, fg = f9)
 	l9.pack()
+	l10 = tk.Label(root, textvariable=i10, fg = f10)
+	l10.pack()
 	act = ""
+	def leaderboard():
+		try:
+			response = urllib2.urlopen('http://9.svi.com/library/KQleaderboard')
+			currentlb = response.read()
+			i7.set(currentlb)
+		except:
+			i7.set("Score submission failed")
 	if debug == True:
 		msg1 = tk.Label(mainframe, text = "Debug on", fg = 'SpringGreen3').pack()
 	#Prompts for user input
 	#Allows easier updating of color scheme/wrapping of each line of text
-	def colorupdate(f1='DeepSkyBlue2', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', f9='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000, w9=1000):
+	def colorupdate(f1='DeepSkyBlue2', f2='white', f3='white', f4='white', f5='white', f6='white', f7='white', f8='white', f9='white', f10='white', w1=1000, w2=1000, w3=1000, w4=1000, w5=1000, w6=1000, w7=1000, w8=1000, w9=1000, w10=1000):
 		l1.config(fg = f1, wrap = w1)
 		l2.config(fg = f2, wrap = w2)
 		l3.config(fg = f3, wrap = w3)
@@ -208,7 +213,8 @@ def maingame(savefile = ""):
 		i4.set("")
 		i5.set("")
 		i6.set("")
-		colorupdate(f1='firebrick1',f2='black', f3='green', f4='blue3', f5='purple')
+		i7.set("")
+		colorupdate(f1='firebrick1',f2='black', f3='green', f4='blue3', f5='purple', f7='black')
 		dead_p = raw_input('y/n ')
 		if dead_p == "y":
 			i1.set("You killed these enemies: ")
@@ -220,7 +226,6 @@ def maingame(savefile = ""):
 			i4.set("Damage: %r\nHealth:%r\nDefense:%r\nMana:%r\nLevel:%r/%r" % (damage, max_hp, defe, max_mana, level, max_level))
 			i5.set("\nYour final score was %r" % points)
 			leaderboard()
-			#while anykey("Press 'q' to quit.", 'qwertyuiopasdfghjklzxcvbnm,./[]\;\'0987654321`-=\r~!@#$%^&*()_+QWERTYUIOP{\}|ASDFGHJKL:"ZXCVBNM<>?'):
 			dadadadada = raw_input("")
 			quit()
 		elif dead_p == "n":
@@ -602,7 +607,8 @@ def maingame(savefile = ""):
 		  print "Are you sure you want to quit? (yes/no)"
 		  quit_response = raw_input('> ')
 		  if quit_response == "yes":
-		    quit()
+			root.destroy()
+			mainmenu()
 		  else:
 		    skip = 0
 		elif act == "spells":
@@ -1574,11 +1580,12 @@ def mainmenu():
 		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).pack()
 	def settings():
 		mmt1.set("Coming not very soon!")
-	def quit():
-		root.quit()
+	def fquit():
+		root.destroy()
+		quit()
 	b1 = tk.Button(mainframe, text = "Start game", command = startgame).pack()
 	b2 = tk.Button(mainframe, text = "Settings", command = settings).pack()
-	b3 = tk.Button(mainframe, text = "Quit", command = quit).pack()
+	b3 = tk.Button(mainframe, text = "Quit", command = fquit).pack()
 	mm1 = tk.Label(mainframe, textvariable = mmt1)
 	mm1.pack()
 	if debug == True:
