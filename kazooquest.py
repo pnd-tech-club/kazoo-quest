@@ -642,21 +642,21 @@ def maingame(savefile = ""):
 		elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 			encounter = 0
 			roominfo = "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 		elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 			encounter = 0
 			roominfo = "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north."
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 		elif x == 2 and y == 2 and z == 0:
 			encounter = 1
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 			roominfo = "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north."
 		elif x == 2 and y == 3 and z == 0:
 			roominfo = "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east."
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 		elif x == 2 and y == 4 and z == 0:
 			roominfo = "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north."
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 		elif x == 2 and y == 5 and z == 0:
 			roominfo = "You are nearing the cottage. There is a cave far to the south."
 	#Forest area follows
@@ -667,7 +667,7 @@ def maingame(savefile = ""):
 			roominfo = "The sunlight is slightly filtered by the trees above. There is a cave to the west."
 		elif x == 4 and y == 1 and z == 0:
 			encounter = 1
-			enemy_type = "elf"
+			enemy_type = "An elf"
 			roominfo = "The trees here are denser than around the edge of the forest."
 		elif x == 5 and y == 1 and z == 0:
 			roominfo = "The forest seems to only get darker further to the east. There is a clearing to the north."
@@ -680,14 +680,14 @@ def maingame(savefile = ""):
 			roominfo = "The sunlight is slightly filtered by the trees above. There is a stream to the west."
 		elif x == 4 and y == 2 and z == 0:
 			encounter = 1
-			enemy_type = "elf"
+			enemy_type = "An elf"
 			roominfo = "There appears to be an opening in the trees to the east."
 		elif x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			if boss == 0:
 				encounter = 0
 			if boss == 1:
 				encounter = 1
-			enemy_type = "slime"
+			enemy_type = "A slime"
 			roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
 		elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
 			encounter = 0
@@ -703,31 +703,31 @@ def maingame(savefile = ""):
 			roominfo = "The trees are too dense for you to go east.  There is a clearing to the west."
 	#Row 3
 		elif x == 3 and y == 3 and z == 0:
-			enemy_type = "elf"
+			enemy_type = "An elf"
 			encounter = 0
 			roominfo = "The sunlight is slightly filtered by the trees above. There is a mountain to the west."
 		elif x == 4 and y == 3 and z == 0:
 			encounter = 1
-			enemy_type = "elf"
+			enemy_type = "An elf"
 			roominfo = "The trees here are denser than around the edge of the forest."
 		elif x == 5 and y == 3 and z == 0:
-			enemy_type = "elf"
+			enemy_type = "An elf"
 			encounter = 1
 			roominfo = "There is a clearing in the trees to the south."
 		elif x == 6 and y == 3 and z == 0:
-			enemy_type = "elf"
+			enemy_type = "An elf"
 			encounter = 1
 			roominfo = "The trees here block your way to the east and north."
 	#House area follows
 		elif x == 2 and y == 6 and z == 0:
 			encounter = 1
 			roominfo = "You stand in front of the mailbox of the cottage. There is a cave far to the south."
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 		elif x == 2 and y == 7 and z == 0 and "lights" not in triggers:
 			encounter = 0
 			roominfo = "The inside of the house is cold and dark. You have an unexplainable feeling of gloom. There are rooms to the east and the north."
 		elif x == 2 and y == 7 and z == 0 and "lights" in triggers:
-			enemy_type = "wolf"
+			enemy_type = "A wolf"
 			encounter = 0
 			roominfo = "There is a bright red stain on the rug in front of the door. You have an unexplainable feeling of dread. The kitchen is to the east and the living room is to the north."
 		elif x == 3 and y == 7 and z == 0 and "lights" not in triggers:
@@ -777,11 +777,11 @@ def maingame(savefile = ""):
 	#Player has dagger ^
 		elif x == 3 and y == 8 and z == 1:
 			encounter = 0
-			enemy_type = "orc"
+			enemy_type = "An orc"
 			roominfo = "As you walk, an ominous presence overwhelms you."
 		elif x == 3 and y == 9 and z == 1:
 			encounter = 1
-			enemy_type = "orc"
+			enemy_type = "An orc"
 			roominfo = "There are paths to the north, east, and west."
 		elif x == 2 and y == 9 and z == 1:
 			roominfo = "You hear dripping water in the distance. There is a path to the west"
@@ -792,7 +792,7 @@ def maingame(savefile = ""):
 		elif x == 0 and y == 10 and z == 1:
 			roominfo = "The dripping sound is very audible now and the moaning sound seems to be rapidly increasing in volume. The path continues to the west."
 		elif x == -1 and y == 10 and z == 1:
-			enemy_type = "wraith"
+			enemy_type = "A wraith"
 			roominfo = "You notice a rapidly dripping spot on the ceiling. You can hear the moaning sound ahead. The path continues to the north."
 		elif x == -1 and y == 11 and z == 1:
 			roominfo = "As you look north, you can't see the end of the passage. The path continues to the north."
@@ -817,7 +817,7 @@ def maingame(savefile = ""):
 		elif x == 4 and y == 9 and z == 1:
 			roominfo = "There is a slight clanking noise in the distance. There is a path that stretches far ahead of you."
 		elif x == 5 and y == 9 and z == 1:
-			enemy_type = "dwarf"
+			enemy_type = "A dwarf"
 			roominfo = "You sense something small nearby."
 		elif x == 6 and y == 9 and z == 1:
 			roominfo = "You smell something foreign to you... Then again you don't really remember anything..."
@@ -866,7 +866,7 @@ def maingame(savefile = ""):
 #Beginning of main desert area, aiming to have it be much larger than the previous area
 		elif x == 0 and y == 2 and z == 10:
 			encounter = 1
-			enemy_type = "sand rat"
+			enemy_type = "A sand rat"
 			roominfo = "To the north there is a large temple, there is a oasis to the west, and a vast desert stretches to the east."
 #East through northeast area(s)- desert
 		elif x == 1 and y == 2 and z == 10:
@@ -1088,7 +1088,7 @@ def maingame(savefile = ""):
 				damage += 8
 				max_hp += 10
 				max_mana += 7
-	#Limits level until certain item is used, I think
+#This is a really cool thing used to stop the player from leveling up after a certain point. It's cool because the XP gained while at this point will count after they can progress
 			elif level == 6 and max_level > 5:
 				damage += 10
 				max_hp += 10
@@ -1108,6 +1108,7 @@ def maingame(savefile = ""):
 		stop = 1
 		i5.set(roominfo)
 		if resettimer <= 0:
+#Reseting certain things after one loop (after the user inputs something at least once)
 			try:
 				if i1.get() == "":
 					pass
@@ -1148,63 +1149,63 @@ def maingame(savefile = ""):
 			while enemy_set != 1:
 	#Some enemies have too high/too low of stats- needs to be reworked
 	#Area 1 enemies
-				if enemy_type == "wolf":
+				if enemy_type == "A wolf":
 					enemy_hp = 15
 					enemy_dam = random.randint(2, 4)
 					min_dam = 2 - defe
 					max_dam = 4 - defe
-				elif enemy_type == "elf":
+				elif enemy_type == "An elf":
 					enemy_hp = 20
 					enemy_dam = random.randint(3, 5)
 					min_dam = 3 - defe
 					max_dam = 5 - defe
-				elif enemy_type == "orc":
+				elif enemy_type == "An orc":
 					enemy_hp = 25
 					enemy_dam = random.randint(6, 8)
 					min_dam = 6 - defe
 					max_dam = 8 - defe
 					enemy_dodge = 1
-				elif enemy_type == "wraith":
+				elif enemy_type == "A wraith":
 					enemy_hp = 30
 					enemy_dam = random.randint(7, 9)
 					min_dam = 7 - defe
 					max_dam = 9 - defe
 					enemy_dodge = 3
-				elif enemy_type == "dwarf":
+				elif enemy_type == "A dwarf":
 					enemy_hp = 35
 					enemy_dam = random.randint(7, 10)
 					min_dam = 7 - defe
 					max_dam = 10 - defe
 					enemy_dodge = 1
-				elif enemy_type == "slime":
+				elif enemy_type == "A slime":
 					enemy_hp = 150
 					enemy_dam = random.randint(10, 25)
 					min_dam = 10 - defe
 					max_dam = 25 - defe
 					enemy_dodge = 0
 #Area 2 enemies
-				elif enemy_type == "wall":
+				elif enemy_type == "A wall":
 					enemy_hp = 500
 					enemy_dam = random.randint(0, 1)
 					min_dam = 0 - defe
 					max_dam = 1 - defe
-				elif enemy_type == "vulture":
+				elif enemy_type == "A vulture":
 					enemy_hp = 40
 					enemy_dam = random.randint(12, 15)
 					min_dam = 12 - defe
 					max_dam = 15 - defe
-				elif enemy_type == "sand rat":
+				elif enemy_type == "A sand rat":
 					enemy_hp = 35
 					enemy_dam = random.randint(11, 14)
 					min_dam = 11 - defe
 					max_dam = 14 - defe
-				elif enemy_type == "spirit":
+				elif enemy_type == "A spirit":
 					enemy_hp = 40
 					enemy_dam = random.randint(13, 16)
 					min_dam = 8 - defe
 					max_dam = 11 - defe
 					enemy_dodge = 0
-				elif enemy_type == "golem":
+				elif enemy_type == "A golem":
 					enemy_hp = 400
 					enemy_dam = random.randint(25, 50)
 					min_dam = 25 - defe
@@ -1219,9 +1220,8 @@ def maingame(savefile = ""):
 				if max_dam < 0:
 					max_dam = 0
 				enemy_dam_info = "%r to %r" % (min_dam, max_dam)
-	#Remember to fix this silly grammar thingy here
 				os.system('clear')
-				enemy_info = "A "+enemy_type+" suddenly appears!."#red
+				enemy_info = enemy_type+" suddenly appears!."
 				i1.set(enemy_info)
 				enemy_set = 1
 			i2.set("What do you want to do?")
@@ -1404,27 +1404,27 @@ def maingame(savefile = ""):
 				pass
 			if enemy_hp > 0 and dodges == 0 and fight_act != "4" and "Frozen" not in enemy_debuffs and "Stunned" not in enemy_debuffs and fight_act != "":
 	#It seems like some enemies deal too much damage while some don't deal enough- needs to be reworked
-				if enemy_type == "wolf":
+				if enemy_type == "A wolf":
 					enemy_dam = random.randint(2, 4)
-				elif enemy_type == "orc":
+				elif enemy_type == "An orc":
 					enemy_dam = random.randint(6, 8)
-				elif enemy_type == "wraith":
+				elif enemy_type == "A wraith":
 					enemy_dam = random.randint(7, 9)
-				elif enemy_type == "dwarf":
+				elif enemy_type == "A dwarf":
 					enemy_dam = random.randint(7, 10)
-				elif enemy_type == "spirit":
+				elif enemy_type == "A spirit":
 					enemy_dam = random.randint(8, 11)
-				elif enemy_type == "slime":
+				elif enemy_type == "A slime":
 					enemy_dam = random.randint(5, 15)
-				elif enemy_type == "wall":
+				elif enemy_type == "A wall":
 					enemy_dam = random.randint(0, 1)
-				elif enemy_type == "vulture":
+				elif enemy_type == "A vulture":
 					enemy_dam = random.randint(12, 15)
-				elif enemy_type == "sand rat":
+				elif enemy_type == "A sand rat":
 					enemy_dam = random.randint(11, 14)
-				elif enemy_type == "spirit":
+				elif enemy_type == "A spirit":
 					enemy_dam = random.randint(13, 16)
-				elif enemy_type == "golem":
+				elif enemy_type == "A golem":
 					enemy_dam = random.randint(25, 50)
 				if enemy_dam - defe <= 0:
 					i1.set("The enemy missed!")
@@ -1491,25 +1491,25 @@ def maingame(savefile = ""):
 				skill_energy += 1
 				encounter_time = random.randint(5, 8)
 	#EXP points might be a bit unbalanced, needs to be reworked
-				if enemy_type == "wolf":
+				if enemy_type == "A wolf":
 					exp += 1
 					points += 2
-				elif enemy_type == "orc":
+				elif enemy_type == "An orc":
 					exp += 2
 					points += 3
-				elif enemy_type == "wraith":
+				elif enemy_type == "A wraith":
 					exp += 3
 					points += 4
-				elif enemy_type == "dwarf":
+				elif enemy_type == "A dwarf":
 					exp += 4
 					points += 6
-				elif enemy_type == "elf":
+				elif enemy_type == "An elf":
 					exp += 5
 					points += 5
-				elif enemy_type == "spirit":
+				elif enemy_type == "A spirit":
 					exp += 8
 					points += 8
-				elif enemy_type == "slime":
+				elif enemy_type == "A slime":
 					exp += 30
 					points += 50
 					triggers.append("boss1")
