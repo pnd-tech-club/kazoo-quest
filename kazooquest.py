@@ -22,7 +22,7 @@ def maingame(savefile = ""):
 	#Setting it to not be resizable
 	root.resizable(width=0, height=0)
 	#Setting window dimensions
-	root.geometry('{}x{}'.format(1000, 400))
+	root.geometry('{}x{}'.format(1000, 375))
 	root.title("Kazoo Quest")
 	mainframe = tk.Frame(root)
 	mainframe.pack()
@@ -60,6 +60,16 @@ def maingame(savefile = ""):
 	w9 = 1000
 	w10 = 1000
 	t = tk.Text(root)
+	def fquit():
+		root.destroy()
+		mainmenu()
+	def fsave():
+		with open(savefile, 'wb') as f:
+			pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
+		f.close()
+		colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
+		i1.set("Game Saved!")
+		resettimer = 2
 	#Declaring labels and packing them to the window
 	l1 = tk.Label(root, textvariable=i1, fg = f1)
 	l1.pack()
@@ -81,6 +91,9 @@ def maingame(savefile = ""):
 	l9.pack()
 	l10 = tk.Label(root, textvariable=i10, fg = f10)
 	l10.pack()
+	b1 = tk.Button(root, text = 'Quit', command = fquit)
+	b1.pack()
+	b2 = tk.Button(root, text = 'Save', command = fsave)
 	act = ""
 	def leaderboard():
 		try:
@@ -298,6 +311,7 @@ def maingame(savefile = ""):
 			silly = 1
 		else:
 			selectclass()
+		b2.pack()
 	x = 0
 	y = 0
 	z = 0
@@ -587,14 +601,7 @@ def maingame(savefile = ""):
 			z = int(raw_input('> '))
 #End of list of debugging commands
 		elif act == "save":
-		  with open(savefile, 'wb') as f:
-		    pickle.dump([hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit], f, protocol = 2)
-		  f.close()
-		  colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
-		  i1.set("Game Saved!")
-		  resettimer = 2
-		  if encounter >= 1:
-		    encounter_time += 1
+		  fsave()
 		elif act == "load":
 		  with open(savefile, 'rb') as f:
 		    hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit = pickle.load(f)
