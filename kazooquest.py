@@ -92,7 +92,6 @@ def maingame(savefile = ""):
 	l10 = tk.Label(root, textvariable=i10, fg = f10)
 	l10.pack()
 	b1 = tk.Button(root, text = 'Quit', command = fquit)
-	b1.pack()
 	b2 = tk.Button(root, text = 'Save', command = fsave)
 	act = ""
 	def leaderboard():
@@ -311,6 +310,7 @@ def maingame(savefile = ""):
 			silly = 1
 		else:
 			selectclass()
+		b1.pack()
 		b2.pack()
 	x = 0
 	y = 0
@@ -327,6 +327,8 @@ def maingame(savefile = ""):
 			loadyload = 1
 			colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
 			i1.set("Game loaded!")
+			b1.pack()
+			b2.pack()
 			resettimer = 1
 			i5.set(roominfo)
 	else:
