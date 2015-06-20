@@ -7,7 +7,11 @@ import ttk
 import os, random, time, pickle, sys, signal
 import argparse, socket, urllib2
 from collections import Counter
+for foundfiles in os.listdir("Mods"):
+	if foundfiles.endswith(".py"):
+		modlist = foundfiles
 debug = False
+currentmapmod = "Default"
 parser = argparse.ArgumentParser()
 parser.add_argument('--debug', action = 'store_true', help = "Defaults to off, allows debugging commands to be used.")
 parser.parse_args()
@@ -164,6 +168,7 @@ def maingame(savefile = ""):
 	boss = 0
 	triggers = []
 	inventory = []
+	fap_count = 0 # >:3
 	#Words that will be checked for later
 	n_words = ['n', 'north']
 	s_words = ['s', 'south']
@@ -310,8 +315,8 @@ def maingame(savefile = ""):
 			silly = 1
 		else:
 			selectclass()
-		b1.pack()
 		b2.pack()
+		b1.pack()
 	x = 0
 	y = 0
 	z = 0
@@ -327,8 +332,8 @@ def maingame(savefile = ""):
 			loadyload = 1
 			colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
 			i1.set("Game loaded!")
-			b1.pack()
 			b2.pack()
+			b1.pack()
 			resettimer = 1
 			i5.set(roominfo)
 	else:
@@ -510,7 +515,9 @@ def maingame(savefile = ""):
 				i4.set(dothing)
 				colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', w5=700)
 		if act == "num":
-			print x + '\n' + y + '\n' + z
+			print x
+			print y
+			print z
 			if encounter >= 1:
 				encounter_time += 1
 		elif act == "clear":
@@ -555,6 +562,8 @@ def maingame(savefile = ""):
 			print "You've met with a terrible fate, haven't you?" #KEK
 		elif act == "update" and debug == True:
 			update()
+		elif act == "activate dating sim" and debug == True:
+			print "heh, not yet :3"
 		elif act == "triggers" and debug == True:
 			print triggers
 		elif act == "item" and debug == True:
@@ -602,6 +611,15 @@ def maingame(savefile = ""):
 			y = int(raw_input('> '))
 			z = int(raw_input('> '))
 #End of list of debugging commands
+		elif act == "fap":
+			fap_count += 1
+			if fap_count >= 25:
+				i10.set("Wow, you're very lewd. It seems you need to be... PUNISHED!")
+				x = 666
+				y = 666
+				z = 666
+				enemy_type = "Death"
+				encounter_time = -1000000
 		elif act == "save":
 		  fsave()
 		elif act == "load":
@@ -646,29 +664,34 @@ def maingame(savefile = ""):
 		  if encounter >= 1:
 			encounter_time += 1
 		else:
-			pass #Will eventually fix this
+			i6.set("You don't know how to do that.")
+			colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', f6='green2', w5=700)
+		if currentmapmod == "Default":
+			rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north and south.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north."]
+		else:
+			from Mods import cmap
 		if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			encounter = 0
-			roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
+			roominfo = rooms[0]
 		elif x == 0 and y == 0 and z == 0 and "torch" in triggers:
-			roominfo = "Your torch lights up the walls of the cave. There is a path to the north and south."
+			roominfo = rooms[1]
 		elif x == 0 and y == 1 and z == 0 and "torch" not in triggers:
-			roominfo = "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source."
+			roominfo = rooms[2]
 			y -= 1
 		elif x == 0 and y == 1 and z == 0 and "torch" in triggers:
-			roominfo = "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east."
+			roominfo = rooms[3]
 		elif x == 1 and y == 1 and z == 0 and "outside1" not in triggers:
-			roominfo = "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead."
+			roominfo = rooms[4]
 			triggers.append("outside1")
 		elif x == 1 and y == 1 and z == 0 and "outside1" in triggers:
-			roominfo = "The exit to the cave is to the east."
+			roominfo = rooms[5]
 		elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 			encounter = 0
-			roominfo = "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end."
+			roominfo = rooms[6]
 			enemy_type = "wolf"
 		elif x == 2 and y == 1 and z == 0 and "branch" in triggers:
 			encounter = 0
-			roominfo = "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north."
+			roominfo = rooms[7]
 			enemy_type = "wolf"
 		elif x == 2 and y == 2 and z == 0:
 			encounter = 1
@@ -1559,6 +1582,10 @@ def mainmenu():
 		sub.destroy()
 	except:
 		pass
+	try:
+		settingswin.destroy()
+	except:
+		pass
 	root = tk.Tk()
 	root.resizable(width=0, height=0)
 	root.geometry('{}x{}'.format(1000, 200))
@@ -1588,7 +1615,23 @@ def mainmenu():
 		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).pack()
 		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).pack()
 	def settings():
-		mmt1.set("Coming not very soon!")
+		root.destroy()
+		global settingswin
+		global currentmapmod
+		settingswin = tk.Tk()
+		settingswin.resizable(width=0, height=0)
+		settingswin.geometry('{}x{}'.format(1000, 200))
+		settingswin.title("Kazoo Quest")
+		mainframe = tk.Frame(settingswin)
+		mainframe.pack()
+		sdefaultmapmod = tk.IntVar()
+		modselectdefault = Checkbutton(settingswin, text = "Default map? (Turn off for custom map)", variable = sdefaultmapmod)
+		modselectdefault.pack()
+		if sdefaultmapmod == 1:
+			currentmapmod = "Default"
+		else:
+			currentmapmod = "imported"
+		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).pack()
 	def fquit():
 		root.destroy()
 		quit()
