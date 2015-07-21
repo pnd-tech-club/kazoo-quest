@@ -1,30 +1,28 @@
 # -*- coding: latin-1 -*-
 import sys, os, argparse
-from Tkinter import *
+import Tkinter as tk
 from ttk import *
-from graphics import *
-parser = argparse.ArgumentParser(description='Kazoo Quest!')
+import ttk
+parser = argparse.ArgumentParser(description='Kazoo Quest')
 args = parser.parse_args()
-strtpnt= 195
-l = 0
-w = GraphWin('Kazoo Quest', 1000, 200)
-os.system('clear')
+root = tk.Tk()
+root.geometry('{}x{}'.format(1000, 100))
+root.title("Kazoo Quest")
+f1="black"
+f2="SpringGreen3"
 desu = ""
 wait = 0
-os.system('clear')
-outline = Text(Point(500, 100), """
- _________________________________________LOADING GAME__________________________________________
-|											|""")
-outline.setTextColor('yellow3')
-outline.draw(w)
-while len(desu) < 123:
+i1 = tk.StringVar()
+i2 = tk.StringVar()
+l1 = tk.Label(root, textvariable=i1, fg=f1)
+l1.pack()
+l2 = tk.Label(root, textvariable=i2, fg=f2)
+l2.pack()
+i1.set("________________________________________Loading game________________________________________")
+while len(desu) < 205:
     wait += 1
     if wait >= 90000:
         wait = 0
         desu += '|'
-        bar = Text(Point(strtpnt + 5, 115), "|")
-        bar.setTextColor('green3')
-        bar.draw(w)
-        strtpnt += 5
-w.close()
-import kazooquest
+    i2.set(desu)
+tk.mainloop()

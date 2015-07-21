@@ -11,15 +11,41 @@ for foundfiles in os.listdir("Mods"):
 	if foundfiles.endswith(".py"):
 		modlist = foundfiles
 debug = False
+update = False
 currentmapmod = "Default"
 parser = argparse.ArgumentParser()
 parser.add_argument('--debug', action = 'store_true', help = "Defaults to off, allows debugging commands to be used.")
+parser.add_argument('--update', action = 'store_true', help = "Forces the update of game files, requires an internet connection.")
 parser.parse_args()
 args = parser.parse_args()
 if args.debug == True:
 	debug = True
+if args.update == True:
+	update = True
 current_version = "v1.0.6"
 #import Loadingbar
+#Checks for updates and downloads them if there is one
+def update():
+	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
+	if ping_test == 0:
+		pstatus = "Connection to Github available. Downloading update."
+	else:
+		print "Connection failed. Check your internet connection and try again."
+		try:
+			os.system('git pull')
+			if False:
+				print "Would you like to clone the game to your current directory?"
+				thing = raw_input('y/n ')
+				if thing == "y":
+					os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
+					print "Done!"
+			elif True:
+				os.system('git pull')
+				print "Done!"
+		except:
+			pass
+
+update()
 def maingame(savefile = ""):
 	#Defining graphics window
 	root = tk.Tk()
@@ -119,26 +145,6 @@ def maingame(savefile = ""):
 		l7.config(fg = f7, wrap = w7)
 		l8.config(fg = f8, wrap = w8)
 		l9.config(fg = f9, wrap = w9)
-	#Checks for updates and downloads them if there is one
-	def update():
-		ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
-		if ping_test == 0:
-			pstatus = "Connection to Github available. Downloading update."
-		else:
-			print "Connection failed. Check your internet connection and try again."
-			try:
-				os.system('git pull')
-				if False:
-					print "Would you like to clone the game to your current directory?"
-					thing = raw_input('y/n ')
-					if thing == "y":
-						os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
-						print "Done!"
-				elif True:
-					os.system('git pull')
-					print "Done!"
-			except:
-				pass
 	#A lot of variables
 	wait = 0
 	weapon = 0
@@ -666,10 +672,8 @@ def maingame(savefile = ""):
 		else:
 			i6.set("You don't know how to do that.")
 			colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', f6='green2', w5=700)
-		if currentmapmod == "Default":
-			rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north and south.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north."]
-		else:
-			from Mods import cmap
+		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north and south.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south."]
+		#from Mods import cmap
 		if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			encounter = 0
 			roominfo = rooms[0]
@@ -696,17 +700,17 @@ def maingame(savefile = ""):
 		elif x == 2 and y == 2 and z == 0:
 			encounter = 1
 			enemy_type = "wolf"
-			roominfo = "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north."
+			roominfo = rooms[8]
 		elif x == 2 and y == 3 and z == 0:
-			roominfo = "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east."
+			roominfo = rooms[9]
 			enemy_type = "wolf"
 		elif x == 2 and y == 4 and z == 0:
-			roominfo = "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north."
+			roominfo = rooms[10]
 			enemy_type = "wolf"
 		elif x == 2 and y == 5 and z == 0:
-			roominfo = "You are nearing the cottage. There is a cave far to the south."
+			roominfo = rooms[11]
 	#Forest area follows
-	#To prevent a lot of mistakes here, I'm spliting the forest into 3 rows(at least for now)
+	#To prevent a lot of mistakes here, I'm spliting the forest into 3 rows
 	#Row 1
 		elif x == 3 and y == 1 and z == 0:
 			encounter = 0
@@ -1614,8 +1618,11 @@ def mainmenu():
 		ss1 = tk.Button(mainframe, text = "Save slot 1", command = load1).pack()
 		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).pack()
 		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).pack()
+	def check():
+		print sdefaultmapmod
 	def settings():
 		root.destroy()
+		global sdefaultmapmod
 		global settingswin
 		global currentmapmod
 		settingswin = tk.Tk()
@@ -1625,7 +1632,7 @@ def mainmenu():
 		mainframe = tk.Frame(settingswin)
 		mainframe.pack()
 		sdefaultmapmod = tk.IntVar()
-		modselectdefault = Checkbutton(settingswin, text = "Default map? (Turn off for custom map)", variable = sdefaultmapmod)
+		modselectdefault = Checkbutton(settingswin, text = "Default map? (Turn off for custom map)", variable = sdefaultmapmod, command = check)
 		modselectdefault.pack()
 		if sdefaultmapmod == 1:
 			currentmapmod = "Default"
