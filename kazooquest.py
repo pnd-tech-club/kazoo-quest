@@ -1643,7 +1643,7 @@ def mainmenu():
 		root.destroy()
 		quit()
 	b1 = tk.Button(mainframe, text = "Start game", command = startgame).pack()
-	b2 = tk.Button(mainframe, text = "Settings", command = settings).pack()
+	b2 = tk.Button(mainframe, text = "Settings (Currently broken)", command = settings).pack()
 	b3 = tk.Button(mainframe, text = "Quit", command = fquit).pack()
 	mm1 = tk.Label(mainframe, textvariable = mmt1)
 	mm1.pack()
