@@ -2,8 +2,10 @@
 #Written by Matthew Knecht
 #Written in Python 2.7
 import Tkinter as tk
+from Tkinter import *
 from ttk import *
 import ttk
+from PIL import Image, ImageTk
 import os, random, time, pickle, sys, signal
 import argparse, socket, urllib2
 from collections import Counter
@@ -22,7 +24,7 @@ if args.debug == True:
 	debug = True
 if args.update == True:
 	update = True
-current_version = "v1.0.6"
+current_version = "v1.3.1"
 #import Loadingbar
 #Checks for updates and downloads them if there is one
 def update():
@@ -44,18 +46,20 @@ def update():
 				print "Done!"
 		except:
 			pass
-
-update()
 def maingame(savefile = ""):
 	#Defining graphics window
 	root = tk.Tk()
 	#Setting it to not be resizable
 	root.resizable(width=0, height=0)
 	#Setting window dimensions
-	root.geometry('{}x{}'.format(1000, 375))
+	root.geometry('{}x{}'.format(1000, 400))
 	root.title("Kazoo Quest")
 	mainframe = tk.Frame(root)
 	mainframe.pack()
+	#canvas = Canvas(mainframe, bg="white", width=1000, height=400)
+	#canvas.pack()
+	#photoimage = ImageTk.PhotoImage(file="mainmenu.png")
+	#canvas.create_image(500, 200, image=photoimage)
 	#Dynamic text variables (for printing to the graphcs window)
 	i1 = tk.StringVar()
 	i2 = tk.StringVar()
@@ -100,6 +104,8 @@ def maingame(savefile = ""):
 		colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
 		i1.set("Game Saved!")
 		resettimer = 2
+	def stats():
+		i8.set("Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r/%r\nExp: %r/%r" % (damage, hp, defe, mana, level, max_level, exp, exp_limit))
 	#Declaring labels and packing them to the window
 	l1 = tk.Label(root, textvariable=i1, fg = f1)
 	l1.pack()
@@ -123,6 +129,7 @@ def maingame(savefile = ""):
 	l10.pack()
 	b1 = tk.Button(root, text = 'Quit', command = fquit)
 	b2 = tk.Button(root, text = 'Save', command = fsave)
+	b3 = tk.Button(root, text = 'Stats', command = stats).pack()
 	act = ""
 	def leaderboard():
 		try:
@@ -172,6 +179,7 @@ def maingame(savefile = ""):
 	game_diff = 0
 	classsc = 0
 	boss = 0
+	bossattackchoice = 0
 	triggers = []
 	inventory = []
 	fap_count = 0 # >:3
@@ -321,8 +329,9 @@ def maingame(savefile = ""):
 			silly = 1
 		else:
 			selectclass()
-		b2.pack()
 		b1.pack()
+		b2.pack()
+		b3.pack()
 	x = 0
 	y = 0
 	z = 0
@@ -357,7 +366,7 @@ def maingame(savefile = ""):
 		i2.set("")
 		i3.set("")
 		i4.set("")
-		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground."
+		roominfo = "You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north. You see a torch on the ground."
 		i5.set(roominfo)
 		i6.set("")
 		colorupdate(f1='DeepSkyBlue2', f4='black', f5='black', w5=700)
@@ -574,6 +583,8 @@ def maingame(savefile = ""):
 			print triggers
 		elif act == "item" and debug == True:
 			inventory.append(raw_input(""))
+		elif act == "itemlist" and debug == True:
+			i1.set("torch, branch, dagger, leather armor, lamp, Chainmail armor, crowbar, key, old book, mysterious charm, spellbook- Fire, spellbook- Frost, spellbook- Poison, spellbook- Life Steal")
 		elif act == "sp" and debug == True:
 			print spells
 			print spells_thing
@@ -620,7 +631,7 @@ def maingame(savefile = ""):
 		elif act == "fap":
 			fap_count += 1
 			if fap_count >= 25:
-				i10.set("Wow, you're very lewd. It seems you need to be... PUNISHED!")
+				i10.set("Wow, you're very lewd. It seems you need to be... PUNISHED!") #B-baka...
 				x = 666
 				y = 666
 				z = 666
@@ -645,7 +656,7 @@ def maingame(savefile = ""):
 		  else:
 		    skip = 0
 		elif act == "spells":
-		  print '\n'.join(spells_thing)
+		  i10.set('\n'.join(spells_thing))
 		  if encounter >= 1:
 		    encounter_time += 1
 		elif act == "heal":
@@ -660,9 +671,6 @@ def maingame(savefile = ""):
 		  if hp > max_hp:
 		    hp = max_hp
 		  encounter_time -= 3
-		elif act == "stats":
-		  print "Damage: %r\nHealth: %r\nDefense: %r\nMana: %r\nLevel: %r/%r\nExp: %r/%r" % (damage, hp, defe, mana, level, max_level, exp, exp_limit)
-		  encounter_time += 1
 		elif act == "credits":
 		  print "This game was written by Matthew Knecht in Python 2.7. It is currently in %r. The story of the game revolves around a player who has lost his memory and has to find his Golden Kazoo. The game doesn't have much content- but that will be resolved shortly. Thanks for playing!" % current_version
 		elif act == "help":
@@ -672,7 +680,7 @@ def maingame(savefile = ""):
 		else:
 			i6.set("You don't know how to do that.")
 			colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', f6='green2', w5=700)
-		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north and south. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north and south.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south."]
+		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south."]
 		#from Mods import cmap
 		if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			encounter = 0
@@ -1293,9 +1301,9 @@ def maingame(savefile = ""):
 			if fight_act == "1":
 				enemy_hp = enemy_hp - damage
 				os.system('clear')
-				print "You dealt %d damage to the %s!" % (damage, enemy_type)
+				i1.set("You dealt %d damage to the %s!" % (damage, enemy_type))
 			elif fight_act == "2":
-				print "Available spells:\n" + '\n'.join(spells_thing)
+				i9.set("Available spells:\n" + '\n'.join(spells_thing))
 				magic_attack = raw_input('> ')
 	#Magic is(as usual) OP- needs to be reworked
 				try:
@@ -1465,7 +1473,7 @@ def maingame(savefile = ""):
 				elif enemy_type == "spirit":
 					enemy_dam = random.randint(8, 11)
 				elif enemy_type == "slime":
-					enemy_dam = random.randint(5, 15)
+					bossattackchoice = random.randint(1, 100)
 				elif enemy_type == "wall":
 					enemy_dam = random.randint(0, 1)
 				elif enemy_type == "vulture":
@@ -1475,14 +1483,33 @@ def maingame(savefile = ""):
 				elif enemy_type == "spirit":
 					enemy_dam = random.randint(13, 16)
 				elif enemy_type == "golem":
-					enemy_dam = random.randint(25, 50)
-				if enemy_dam - defe <= 0:
-					i1.set("The enemy missed!")
+					bossattackchoice = random.randint(1, 100)
+				if bossattackchoice != 0:
+					if bossattackchoice <= 25:
+						if enemy_type == "slime":
+							enemy_dam = random.randint(7, 16)
+							i9.set("The slime spat on you! and dealt %r damage!" % enemy_dam)
+							hp = hp - enemy_dam + defe
+					if bossattackchoice > 25 and bossattackchoice < 75:
+						if enemy_type == "slime":
+							enemy_dam = random.randint(5, 14)
+							i9.set("The slime lunged at you and dealt %r damage!" % enemy_dam)
+							hp = hp - enemy_dam + defe
+					if bossattackchoice >= 75:
+						if enemy_type == "slime":
+							enemy_dam = random.randint(6, 17)
+							i9.set("The slime grasped your arm and dealt %r damage!" % enemy_dam)
+							hp = hp - enemy_dam + defe
+				if bossattackchoice == 0:
+					if enemy_dam - defe <= 0:
+						i1.set("The enemy missed!")
+					else:
+						hp = hp - enemy_dam + defe
+						dodges = 0
+						i9.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe))
+						resettimer = 2
 				else:
-					hp = hp - enemy_dam + defe
-					dodges = 0
-					i9.set("The %s dealt %r damage to you!" % (enemy_type, enemy_dam-defe))
-					resettimer = 2
+					pass
 			resettimer -= 1
 			if resettimer <= 0:
 				try:
@@ -1562,6 +1589,7 @@ def maingame(savefile = ""):
 				elif enemy_type == "slime":
 					exp += 30
 					points += 50
+					bossattackchoice = 0
 					triggers.append("boss1")
 				elif enemy_type == "Death":
 					exp += 10000000000
@@ -1642,8 +1670,8 @@ def mainmenu():
 	def fquit():
 		root.destroy()
 		quit()
-	b1 = tk.Button(mainframe, text = "Start game(Currently broken)", command = startgame).pack()
-	b2 = tk.Button(mainframe, text = "Settings (Currently broken)", command = settings).pack()
+	b1 = tk.Button(mainframe, text = "Start game", command = startgame).pack()
+	b2 = tk.Button(mainframe, text = "Settings", command = settings).pack()
 	b3 = tk.Button(mainframe, text = "Quit", command = fquit).pack()
 	mm1 = tk.Label(mainframe, textvariable = mmt1)
 	mm1.pack()
