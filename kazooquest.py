@@ -647,14 +647,6 @@ def maingame(savefile = ""):
 		  resettimer = 2
 		  i3.set('Game Loaded!')
 		  i5.set(roominfo)
-		elif act == "quit":
-		  print "Are you sure you want to quit? (yes/no)"
-		  quit_response = raw_input('> ')
-		  if quit_response == "yes":
-			root.destroy()
-			mainmenu()
-		  else:
-		    skip = 0
 		elif act == "spells":
 		  i10.set('\n'.join(spells_thing))
 		  if encounter >= 1:
