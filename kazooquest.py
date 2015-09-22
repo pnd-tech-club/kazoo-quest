@@ -52,7 +52,7 @@ def maingame(savefile = ""):
 	#Setting it to not be resizable
 	root.resizable(width=0, height=0)
 	#Setting window dimensions
-	root.geometry('{}x{}'.format(1000, 400))
+	root.geometry('{}x{}'.format(1000, 450))
 	root.title("Kazoo Quest")
 	mainframe = tk.Frame(root)
 	mainframe.pack()
