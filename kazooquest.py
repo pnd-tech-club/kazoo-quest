@@ -197,8 +197,8 @@ def maingame(savefile = ""):
 	use_words = ['use', 'eat', 'read', 'drink', 'flip', 'turn', 'hit']
 	stop = 0
 	enemy_set = 0
-	#Time removed in v0.1.4 (Re-implementation being tested in v0.3)
-	time = 0
+	#Time removed in v0.1.4 (Re-implementation being tested in v0.3) (Completely broken, but I decided to leave the code in)
+	#time = 0
 	encounter_time = 5
 	skip = 0
 	enemy_type = ""
@@ -672,7 +672,7 @@ def maingame(savefile = ""):
 		else:
 			i6.set("You don't know how to do that.")
 			colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', f6='green2', w5=700)
-		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south."]
+		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south.", "The sunlight is slightly filtered by the trees above. There is a cave to the west.", "The trees here are denser than around the edge of the forest.", "The forest seems to only get darker further to the east. There is a clearing to the north.", "The trees here are wat too thick to even get by, you turn around and go back.", "The sunlight is slightly filtered by the trees above. There is a stream to the west.", "There appears to be an opening in the trees to the east.", "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\"", "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed.", "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."]
 		#from Mods import cmap
 		if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			encounter = 0
@@ -714,37 +714,37 @@ def maingame(savefile = ""):
 	#Row 1
 		elif x == 3 and y == 1 and z == 0:
 			encounter = 0
-			roominfo = "The sunlight is slightly filtered by the trees above. There is a cave to the west."
+			roominfo = rooms[12]
 		elif x == 4 and y == 1 and z == 0:
 			encounter = 1
 			enemy_type = "elf"
-			roominfo = "The trees here are denser than around the edge of the forest."
+			roominfo = rooms[13]
 		elif x == 5 and y == 1 and z == 0:
-			roominfo = "The forest seems to only get darker further to the east. There is a clearing to the north."
+			roominfo = rooms[14]
 		elif x == 6 and y == 1 and z == 0:
-			roominfo = "The trees here are wat too thick to even get by, you turn around and go back."
+			roominfo = rooms[15]
 			x -= 1
 	#Row 2
 		elif x == 3 and y == 2 and z == 0:
 			encounter = 0
-			roominfo = "The sunlight is slightly filtered by the trees above. There is a stream to the west."
+			roominfo = rooms[16]
 		elif x == 4 and y == 2 and z == 0:
 			encounter = 1
 			enemy_type = "elf"
-			roominfo = "There appears to be an opening in the trees to the east."
+			roominfo = rooms[17]
 		elif x == 5 and y == 2 and z == 0 and "boss1" not in triggers:
 			if boss == 0:
 				encounter = 0
 			if boss == 1:
 				encounter = 1
 			enemy_type = "slime"
-			roominfo = "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\""
+			roominfo = rooms[18]
 		elif x == 5 and y == 2 and z == 0 and "boss1" in triggers and "charm" not in triggers and evolve_count != 1:
 			encounter = 0
-			roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed."
+			roominfo = rooms[19]
 		elif x == 5 and y == 2 and z == 0 and "mysterious charm" in inventory:
 			encounter = 0
-			roominfo = "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."
+			roominfo = rooms[20]
 		elif x == 5 and y == 2 and z == 0 and max_level != 5:
 			encounter = 0
 			roominfo = "The pool of water appears to have opened into a strange portal-ish thing.  You know you won't be able to get back if you go in..."
@@ -1138,7 +1138,7 @@ def maingame(savefile = ""):
 				damage += 8
 				max_hp += 10
 				max_mana += 7
-#This is a really cool thing used to stop the player from leveling up after a certain point. It's cool because the XP gained while at this point will count after they can progress
+#This is a really cool thing used to stop the player from leveling up after a certain point. It's cool because the XP gained while at this point will count after they can progress. It's also cool because I made i- I mean it is... uuhhhhh.... nevermind
 			elif level == 6 and max_level > 5:
 				damage += 10
 				max_hp += 10
@@ -1197,7 +1197,7 @@ def maingame(savefile = ""):
 		while encounter != 0 and encounter_time <= 0 and "dead" not in triggers:
 			stop = 1
 			while enemy_set != 1:
-	#Some enemies have too high/too low of stats- needs to be reworked
+	#Some enemies have too high/too low of stats- needs to be reworked (Idea pending for version 1.5- enemies scale with your level)
 	#Area 1 enemies
 				if enemy_type == "wolf":
 					enemy_hp = 15
@@ -1262,9 +1262,9 @@ def maingame(savefile = ""):
 					max_dam = 50 - defe
 				elif enemy_type == "Death":
 					enemy_hp = 10000
-					enemy_dam = random.randint(0, 100000000000000000)
+					enemy_dam = random.randint(0, 10000000000)
 					min_dam = 0
-					max_dam = 100000000000000000 - defe
+					max_dam = 10000000000 - defe
 				if min_dam < 0:
 					min_dam = 0
 				if max_dam < 0:
@@ -1548,7 +1548,7 @@ def maingame(savefile = ""):
 				if "Stunned" in enemy_debuffs:
 					i1.set("The enemy can't attack because it is stunned!")
 				enemy_debuff_timer -= 1
-	#Clears the enemy's debuffs after 5 turns of not using a spell
+	#Clears the enemy's debuffs after 5 turns of not using a spell (debuffs do stack- ie. giving the fire debuff and 4 turns later giving the frozen debuff makes both debuffs last until the next 5 turns are up)
 				if enemy_debuff_timer <= 0:
 					enemy_debuffs = []
 			if enemy_hp <= 0 and fight_act != "5":

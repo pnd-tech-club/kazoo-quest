@@ -1,28 +1,42 @@
 # -*- coding: latin-1 -*-
+from __future__ import print_function
 import sys, os, argparse
-import Tkinter as tk
-from ttk import *
-import ttk
-parser = argparse.ArgumentParser(description='Kazoo Quest')
+parser = argparse.ArgumentParser(description='Kazoo Quest!')
 args = parser.parse_args()
-root = tk.Tk()
-root.geometry('{}x{}'.format(1000, 100))
-root.title("Kazoo Quest")
-f1="black"
-f2="SpringGreen3"
-desu = ""
+sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=30, cols=120))
+os.system('clear')
+desu = []
+color = {
+    'white':    "\033[1;37m",
+    'yellow':   "\033[1;33m",
+    'green':    "\033[1;32m",
+    'blue':     "\033[1;34m",
+    'cyan':     "\033[1;36m",
+    'red':      "\033[1;31m",
+    'magenta':  "\033[1;35m",
+    'black':      "\033[1;30m",
+    'darkwhite':  "\033[0;37m",
+    'darkyellow': "\033[0;33m",
+    'darkgreen':  "\033[0;32m",
+    'darkblue':   "\033[0;34m",
+    'darkcyan':   "\033[0;36m",
+    'darkred':    "\033[0;31m",
+    'darkmagenta':"\033[0;35m",
+    'darkblack':  "\033[0;30m",
+    'dimyellow':  "\033[2:33m",
+    'off':        "\033[0;0m"
+}
+global wait
 wait = 0
-i1 = tk.StringVar()
-i2 = tk.StringVar()
-l1 = tk.Label(root, textvariable=i1, fg=f1)
-l1.pack()
-l2 = tk.Label(root, textvariable=i2, fg=f2)
-l2.pack()
-i1.set("________________________________________Loading game________________________________________")
-while len(desu) < 205:
-    wait += 1
-    if wait >= 90000:
-        wait = 0
-        desu += '|'
-    i2.set(desu)
-tk.mainloop()
+os.system('clear')
+print(color['yellow'] + """
+ _________________________________________LOADING GAME__________________________________________
+|												|""" + color['off'], end = '\r')
+while len(desu) < 289:
+	wait += 1
+	if wait >= 6000:
+		desu.extend('◼')
+		wait = 0
+	print(color['cyan'] + ''.join(desu), end = '\r' + color['off'])
+print('\n')
+import kazooquest
