@@ -25,7 +25,9 @@ if args.debug == True:
 if args.update == True:
 	update = True
 current_version = "v1.3.1"
-#import Loadingbar
+import Loadingbar
+os.system('clear')
+sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=20, cols=80))
 #Checks for updates and downloads them if there is one
 def update():
 	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
@@ -331,7 +333,6 @@ def maingame(savefile = ""):
 			selectclass()
 		b1.pack()
 		b2.pack()
-		b3.pack()
 	x = 0
 	y = 0
 	z = 0
@@ -672,23 +673,30 @@ def maingame(savefile = ""):
 		else:
 			i6.set("You don't know how to do that.")
 			colorupdate(f1='DeepSkyBlue2', f4='magenta', f5='black', f6='green2', w5=700)
-		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south.", "The sunlight is slightly filtered by the trees above. There is a cave to the west.", "The trees here are denser than around the edge of the forest.", "The forest seems to only get darker further to the east. There is a clearing to the north.", "The trees here are wat too thick to even get by, you turn around and go back.", "The sunlight is slightly filtered by the trees above. There is a stream to the west.", "There appears to be an opening in the trees to the east.", "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\"", "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the slime was killed.", "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."]
+		rooms = ["You have found yourself in a dimly lit cave. You have no memory of how you got here or who you are. There is a path to the north. You see a torch on the ground.", "Your torch lights up the walls of the cave. There is a path to the north.", "You start walking to the north yet find that the mysterious light is dimming rapidly. You decide to turn back until you find a light source.", "You begin to walk to the north, allowing your torch to light the way. As you walk you begin to hear a slight howl of wind from ahead of you. There is a path to the east.", "You walk to the east and begin to feel the breeze picking up. You look ahead of you and see outside a little bit ahead.", "The exit to the cave is to the east.", "You reach the end of the tunnel and feel the heat of the sun around you. The trees tower over you and you hear the sound of rushing water to the north. You see a good sized tree branch with a pointed end.", "You reach the end of the tunnel and see a forest to the east. You hear the sound of rushing water to the north.", "There is a swiftly flowing stream here. To the east is a path to the forest. You think you see a small cottage far to the north.", "You keep walking around the side of the mountain. There is a cottage far to the north and a cave to the south. There is a forest to the east.", "The mountain path seems to be rougher here. You see that the stream flows from a grate in the mountain. There is a forest to the east, a cave to the south, and a cottage to the north.", "You are nearing the cottage. There is a cave far to the south.", "The sunlight is slightly filtered by the trees above. There is a cave to the west.", "The trees here are denser than around the edge of the forest.", "The forest seems to only get darker further to the east. There is a clearing to the north.", "The trees here are wat too thick to even get by, you turn around and go back.", "The sunlight is slightly filtered by the trees above. There is a stream to the west.", "There appears to be an opening in the trees to the east.", "There is a mysterious pool of water in the center of this clearing. Various flowers surround it in a circle. There are runes on the ground next to the pool that say \"Ye who seeks power, stand here and read from the book which you find set in stone.\"", "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. You see a purple charm where the s was killed.", "The pool of water appears to be glowing a slight orange. The flowers around the pool are also glowing a faint orange. The strange charm you have is also glowing orange..."]
+		#enemies = ['', '', '', '', '', '', 'wolf']
 		#from Mods import cmap
 		if x == 0 and y == 0 and z == 0 and "torch" not in triggers:
 			encounter = 0
 			roominfo = rooms[0]
+			#enemy_type = enemies[1]
 		elif x == 0 and y == 0 and z == 0 and "torch" in triggers:
 			roominfo = rooms[1]
+			#enemy_type = enemies[2]
 		elif x == 0 and y == 1 and z == 0 and "torch" not in triggers:
 			roominfo = rooms[2]
 			y -= 1
+			#enemy_type = enemies[3]
 		elif x == 0 and y == 1 and z == 0 and "torch" in triggers:
 			roominfo = rooms[3]
+			#enemy_type = enemies[4]
 		elif x == 1 and y == 1 and z == 0 and "outside1" not in triggers:
 			roominfo = rooms[4]
 			triggers.append("outside1")
+			#enemy_type = enemies[5]
 		elif x == 1 and y == 1 and z == 0 and "outside1" in triggers:
 			roominfo = rooms[5]
+			#enemy_type = enemies[6]
 		elif x == 2 and y == 1 and z == 0 and "branch" not in triggers:
 			encounter = 0
 			roominfo = rooms[6]
