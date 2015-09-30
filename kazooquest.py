@@ -609,11 +609,15 @@ def maingame(savefile = ""):
 			spells.append("poison")
 			spells.append("life steal")
 			spells.append("heal")
+			spells.append("quake")
+			spells.append("bolt")
 			spells_thing.append("%s. Firebolt" % str(len(spells_thing) + 1))
 			spells_thing.append("%s. Frost" % str(len(spells_thing) + 1))
 			spells_thing.append("%s. Poison" % str(len(spells_thing) + 1))
 			spells_thing.append("%s. Life Steal" % str(len(spells_thing) + 1))
 			spells_thing.append("%s. Heal" % str(len(spells_thing) + 1))
+			spells_thing.append("%s. Quake" % str(len(spells_thing) + 1))
+			spells_thing.append("%s. Bolt" % str(len(spells_thing) + 1))
 			skills.append("stealth")
 			skills_thing.append("%s. Stealth" % str(len(skills_thing) + 1))
 			skills.append("rage")
@@ -1410,6 +1414,29 @@ def maingame(savefile = ""):
 				except ValueError:
 					skip = 0
 				try:
+					if magic_attack == str(spells.index('quake') + 1) and "quake" in spells and mana >= 5:
+						if quake_level == 0:
+							magic_dam = random.randint(20, 35)
+						elif quake_level == 1:
+							magic_dam = random.randint(25, 40)
+						elif quake_level == 2:
+							magic_dam = random.randint(30, 45)
+						elif quake_level == 3:
+							magic_dam = random.randint(35, 50)
+						elif quake_level == 4:
+							magic_dam = random.randint(40, 55)
+						elif quake_level == 5:
+							magic_dam = random.randint(45, 60)
+						mana -= 10
+						if classsc == "5":
+							magic_dam = magic_dam + (level/2 * 3)
+						enemy_hp -= magic_dam
+						os.system('clear')
+						i1.set("You dealt %r magic damage to the enemy!" % magic_dam)
+						colorupdate(f1='orange red', f4='magenta', f5='black', w5=700)
+				except ValueError:
+					skip = 0
+				try:
 					if magic_attack == str(spells.index('stun') + 1) and "stun" in spells and mana >= 5:
 						if stun_level == 0:
 							stun_time = 5
@@ -1555,6 +1582,8 @@ def maingame(savefile = ""):
 					i1.set("The enemy can't attack because it is frozen!")
 				if "Stunned" in enemy_debuffs:
 					i1.set("The enemy can't attack because it is stunned!")
+				if "Paralyzed" in enemy_debuffs:
+					i1.set("The enemy is paralyzed and can't move!")
 				enemy_debuff_timer -= 1
 	#Clears the enemy's debuffs after 5 turns of not using a spell (debuffs do stack- ie. giving the fire debuff and 4 turns later giving the frozen debuff makes both debuffs last until the next 5 turns are up)
 				if enemy_debuff_timer <= 0:
