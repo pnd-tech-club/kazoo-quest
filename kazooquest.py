@@ -25,29 +25,31 @@ if args.debug == True:
 if args.update == True:
 	update = True
 current_version = "v1.3.1"
-import Loadingbar
+#import Loadingbar
 os.system('clear')
 sys.stdout.write("\x1b[8;{rows};{cols}t".format(rows=20, cols=80))
 #Checks for updates and downloads them if there is one
 def update():
-	ping_test = os.system('ping -q -c3 http://www.github.com >/dev/null')
+	try:
+		root.destroy
+	except:
+		pass
+	ping_test = os.system('ping -q -c3 http://www.github.com')
 	if ping_test == 0:
 		pstatus = "Connection to Github available. Downloading update."
-	else:
-		print "Connection failed. Check your internet connection and try again."
 		try:
 			os.system('git pull')
-			if False:
-				print "Would you like to clone the game to your current directory?"
-				thing = raw_input('y/n ')
-				if thing == "y":
-					os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
-					print "Done!"
-			elif True:
-				os.system('git pull')
-				print "Done!"
 		except:
-			pass
+			print "Needed files not found. Would you like to clone the game to your current directory?"
+			thing = raw_input('y/n ')
+			if thing == "y":
+				os.system('git clone https://github.com/pnd-tech-club/kazoo-quest.git')
+				print "Done!"
+			else:
+				print "Response not yes, exiting now."
+				exit()
+	else:
+		print "Connection failed. Check your internet connection and try again."
 def maingame(savefile = ""):
 	#Defining graphics window
 	root = tk.Tk()
@@ -1639,6 +1641,9 @@ def maingame(savefile = ""):
 		if hp <= 0:
 			death()
 def mainmenu():
+	if update == True:
+		update()
+		quit()
 	try:
 		sub.destroy()
 	except:
@@ -1666,15 +1671,37 @@ def mainmenu():
 	def startgame():
 		root.destroy()
 		global sub
+		check1 = os.path.isfile('gamesave1.dat')
+		if check1 == True:
+			if os.stat('gamesave1.dat').st_size != 0:
+				with open('gamesave1.dat', 'r') as f:
+					hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit= pickle.load(f)
+				f.close()
+				sv1lvl = level
+				sv1maxhp = max_hp
+				sv1hp = hp
+		check2 = os.path.isfile('gamesave2.dat')
+		if check2 == True:
+			if os.stat('gamesave2.dat').st_size != 0:
+				with open('gamesave2.dat', 'r') as f:
+					hp, damage, defe, mana, inventory, spells, spells_thing, skills, max_hp, max_mana, x, y, z, triggers, kills, points, armor, weapon, encounter, encounter_time,  enemy_type, level, max_level, firebolt_level, frost_level, poison_level, lifesteal_level, heal_level, game_diff, roominfo, exp, exp_limit= pickle.load(f)
+				f.close()
+				sv2lvl = level
+				sv2maxhp = max_hp
+				sv2hp = hp
 		sub = tk.Tk()
 		sub.resizable(width=0, height=0)
 		sub.geometry('{}x{}'.format(1000, 200))
 		sub.title("Kazoo Quest")
 		mainframe = tk.Frame(sub)
-		mainframe.pack()
-		ss1 = tk.Button(mainframe, text = "Save slot 1", command = load1).pack()
-		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).pack()
-		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).pack()
+		mainframe.grid()
+		random1 = tk.Label(mainframe, text = "Level: %r HP:%r/%r" % (sv1lvl, sv1hp, sv1maxhp))
+		random1.grid(row = 0, column = 15)
+		ss1 = tk.Button(mainframe, text = "Save slot 1", command = load1).grid(row = 0, column = 10)
+		random2 = tk.Label(mainframe, text = "Level: %r HP:%r/%r" % (sv2lvl, sv2hp, sv2maxhp))
+		random2.grid(row = 1, column = 15)
+		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).grid(row = 1, column = 10)
+		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).grid(row = 2, column = 10)
 	def check():
 		print sdefaultmapmod
 	def settings():
