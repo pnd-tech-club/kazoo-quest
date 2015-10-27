@@ -1695,11 +1695,13 @@ def mainmenu():
 		sub.title("Kazoo Quest")
 		mainframe = tk.Frame(sub)
 		mainframe.grid()
-		random1 = tk.Label(mainframe, text = "Level: %r HP:%r/%r" % (sv1lvl, sv1hp, sv1maxhp))
-		random1.grid(row = 0, column = 15)
+		if check1 == True:
+			random1 = tk.Label(mainframe, text = "Level: %r HP:%r/%r" % (sv1lvl, sv1hp, sv1maxhp))
+			random1.grid(row = 0, column = 15)
 		ss1 = tk.Button(mainframe, text = "Save slot 1", command = load1).grid(row = 0, column = 10)
-		random2 = tk.Label(mainframe, text = "Level: %r HP:%r/%r" % (sv2lvl, sv2hp, sv2maxhp))
-		random2.grid(row = 1, column = 15)
+		if check2 == True:
+			random2 = tk.Label(mainframe, text = "Level: %r HP:%r/%r" % (sv2lvl, sv2hp, sv2maxhp))
+			random2.grid(row = 1, column = 15)
 		ss2 = tk.Button(mainframe, text = "Save slot 2", command = load2).grid(row = 1, column = 10)
 		ss3 = tk.Button(mainframe, text = "Back", command = mainmenu).grid(row = 2, column = 10)
 	def check():
